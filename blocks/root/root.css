@@ -5,6 +5,7 @@
   color: rgb(255, 255, 255);
   font-family: 'Inter', 'Arial', sans-serif;
   font-weight: 400;
+  position: relative;
 
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

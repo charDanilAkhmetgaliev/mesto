@@ -13,7 +13,7 @@
 <body class="root">
   <header class="header">
     <div class="header__logo"></div>
-  </header>
+    </header>
   <main class="content">
     <section class="profile">
       <div class="profile__container">
@@ -77,8 +77,19 @@
   </main>
   <footer class="footer">
     <p class="footer__copyright">&copy; 2022 Mesto Russia, Kazan</p>
-  </footer>
-  <div class="popup"></div>
-  <script></script>
+    </footer>
+  <section class="popup">
+    <div class="overlay"></div>
+    <div class="popup__container">
+      <h3 class="popup__title">Редактировать профиль</h3>
+      <div class="popup__inputs">
+        <input type="text" class="popup__input popup__input_name">
+        <input type="text" class="popup__input popup__input_status">
+      </div>
+      <button class="popup__save-button">Сохранить</button>
+      <button class="popup__close-button">&#10005;</button>
+    </div>
+  </section>
+  <script src="./scripts/index.js"></script>
 </body>
 </html>
