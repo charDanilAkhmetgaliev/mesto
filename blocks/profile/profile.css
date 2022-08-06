@@ -4,13 +4,13 @@
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	gap: 36px;
+	gap: 34px;
 	justify-content: space-between;
 }
 
 @media screen and (min-width: 900px) {
 	.profile {
-		padding: 40px 0 0;
+		padding: 39px 0 0;
 		flex-direction: row;
 	}
 }

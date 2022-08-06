@@ -3,13 +3,14 @@
 	padding: 0;
 	text-align: center;
 	font-size: 27px;
-	line-height: 33px;
+	line-height: 27px;
 	font-weight: 500;
+	transform: translate(0px, 3px);
 }
 
 @media screen and (min-width: 900px) {
 	.profile__name {
 		font-size: 42px;
-		line-height: 48px;
+		line-height: 43px;
 	}
 }
