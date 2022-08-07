@@ -7,7 +7,7 @@ let profileStatus = document.querySelector('.profile__status');
 let inputName = document.querySelector('.popup__input_name');
 let inputStatus = document.querySelector('.popup__input_status');
 
-let savePopupButton = document.querySelector('.popup__save-button')
+let formElement = document.querySelector('.popup__container')
 
 function popupToggle() {
 	if (!(popup.classList.contains('popup_opened'))) {
@@ -17,13 +17,14 @@ function popupToggle() {
 	popup.classList.toggle('popup_opened');
 }
 
-function moveProfileData() {
-	profileName.textContent = inputName.value;
+function formSubmitHandler(evt) {
+	evt.preventDefault()
 	profileStatus.textContent = inputStatus.value;
+	profileName.textContent = inputName.value;
 	popup.classList.toggle('popup_opened');
 }
 
 editPopupButton.addEventListener('click', popupToggle);
 closePopupButton.addEventListener('click', popupToggle);
 
-savePopupButton.addEventListener('click', moveProfileData);
+formElement.addEventListener('submit', formSubmitHandler);

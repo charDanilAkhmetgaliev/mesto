@@ -80,15 +80,15 @@
     </footer>
   <section class="popup">
     <div class="overlay"></div>
-    <div class="popup__container">
+    <form class="popup__container">
       <h3 class="popup__title">Редактировать профиль</h3>
       <div class="popup__inputs">
         <input type="text" class="popup__input popup__input_name">
         <input type="text" class="popup__input popup__input_status">
       </div>
-      <button class="popup__save-button">Сохранить</button>
-      <button class="popup__close-button">&#10005;</button>
-    </div>
+      <input type="submit" class="popup__save-button" value="Сохранить">
+      <button type="button" class="popup__close-button">&#10005;</button>
+    </form>
   </section>
   <script src="./scripts/index.js"></script>
 </body>
