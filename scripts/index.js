@@ -1,3 +1,4 @@
+// Объявление переменных
 let editPopupButton = document.querySelector('.profile__edit-button');
 let closePopupButton = document.querySelector('.popup__close-button');
 let popup = document.querySelector('.popup');
@@ -9,22 +10,35 @@ let inputStatus = document.querySelector('.popup__input_status');
 
 let formElement = document.querySelector('.popup__container')
 
+// Функция открытия/закрытия попапа
 function popupToggle() {
-	if (!(popup.classList.contains('popup_opened'))) {
-		inputName.value = profileName.textContent;
-		inputStatus.value = profileStatus.textContent;
-	}
-	popup.classList.toggle('popup_opened');
+  // Условие: если попап НЕ открыт
+  if (!(popup.classList.contains('popup_opened'))) {
+    // Перенос актуальных значений в инпуты
+    inputName.value = profileName.textContent;
+    inputStatus.value = profileStatus.textContent;
+  }
+  // Открывает или закрывает поппап в зависимости от наличия/отсутствия класса
+  popup.classList.toggle('popup_opened');
 }
 
+// Функция переноса данных с попапа на главную страницу
 function formSubmitHandler(evt) {
-	evt.preventDefault()
-	profileStatus.textContent = inputStatus.value;
-	profileName.textContent = inputName.value;
-	popup.classList.toggle('popup_opened');
+
+  // Отмена отправки данных и перезагрузки страницы после события submit
+  evt.preventDefault()
+
+  // Перенос значений инпутов на главную страницу
+  profileStatus.textContent = inputStatus.value;
+  profileName.textContent = inputName.value;
+
+  // Открывает или закрывает поппап в зависимости от наличия/отсутствия класса
+  popup.classList.toggle('popup_opened');
 }
 
+// Привязка события открытия/закрытия попапа к кнопкам
 editPopupButton.addEventListener('click', popupToggle);
 closePopupButton.addEventListener('click', popupToggle);
 
+// Событие переноса данных на главную страницу
 formElement.addEventListener('submit', formSubmitHandler);
