@@ -6,6 +6,8 @@
   line-height: 17px;
   font-weight: 400;
   transform: translate(0, -1px);
+  text-overflow: ellipsis;
+  overflow: hidden;
   max-width: 230px;
 }
 
@@ -14,7 +16,7 @@
     font-size: 18px;
     line-height: 22px;
     max-width: 500px;
-    text-overflow: ellipsis;
     text-align: inherit;
+    white-space: nowrap;
   }
 }
