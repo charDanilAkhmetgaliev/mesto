@@ -2,8 +2,7 @@
   margin: 0;
   padding: 0;
   display: flex;
-  justify-content: center;
   gap: 10px;
-  align-items: center;
   position: relative;
+  max-width: 100%;
 }
