@@ -1,7 +1,7 @@
+// РЕАЛИЗАЦИЯ РЕДАКТИРОВАНИЯ ДАННЫХ ПРОФИЛЯ
 // Объявление переменных
 let editPopupButton = document.querySelector('.profile__edit-button');
 let closePopupButton = document.querySelector('.popup__close-button');
-let popup = document.querySelector('.popup');
 
 let profileName = document.querySelector('.profile__name');
 let profileStatus = document.querySelector('.profile__status');
@@ -14,7 +14,7 @@ let formElement = document.querySelector('.popup__container');
 function togglePopup() {
   // Условие: если попап НЕ открыт
   if (!(popup.classList.contains('popup_opened'))) {
-    // Перенос актуальных значений в инпуты
+    // Перенос значений в инпуты
     inputName.value = profileName.textContent;
     inputStatus.value = profileStatus.textContent;
   }
@@ -43,8 +43,9 @@ closePopupButton.addEventListener('click', togglePopup);
 // Событие переноса данных на главную страницу
 formElement.addEventListener('submit', formSubmitHandler);
 
-//Реализация добавления стандартных карточек(6)
-//Объявление массива данных стандартных карточек
+
+//РЕАЛИЗАЦИЯ ДОБАВЛЕНИЯ СТАНДАРТНЫХ КАРТОЧЕК(6)
+//Объявление массива данных
 const initialCards = [
   {
     name: 'Кулл-шариф',
@@ -81,17 +82,20 @@ const initialCards = [
 const template = document.querySelector('.template').content;
 //Объявляем переменную списка карточек
 let cardsList = document.querySelector('.elements__list');
-//Объявляем переменную элемента с карточкой
 
-//Цикл добавления стандартных карточек
-for (let i = 0; i < 6; i++) {
+//Функция добавления карточки
+let addCard = (link, name, description) => {
+  //Объявляем и клонируем переменную card
   let card = template.querySelector('.card').cloneNode(true);
-  // card.querySelector('.card__image').;
-  card.querySelector('.card__image').src = initialCards[i].link;
-  card.querySelector('.card__image').alt = initialCards[i].description;
-  card.querySelector('.card__title').textContent = initialCards[i].name;
-
+  //Заполняем данные карточки
+  card.querySelector('.card__image').src = link;
+  card.querySelector('.card__image').alt = description;
+  card.querySelector('.card__title').textContent = name;
+  //Добавляем карточку в список
   cardsList.append(card);
 }
 
-
+//Цикл добавления стандартных карточек
+for (let i = 0; i < initialCards.length; i++) {
+  addCard(initialCards[i].link, initialCards[i].name, initialCards[i].description);
+};
