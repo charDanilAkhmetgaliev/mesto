@@ -8,6 +8,7 @@ let profileStatus = document.querySelector('.profile__status');
 let inputName = document.querySelector('.popup__input_value-type_name');
 let inputStatus = document.querySelector('.popup__input_value-type_status');
 
+let popup = document.querySelector('.popup');
 let formElement = document.querySelector('.popup__container');
 
 // Функция открытия/закрытия попапа
