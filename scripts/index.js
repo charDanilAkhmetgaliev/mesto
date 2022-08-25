@@ -32,7 +32,7 @@ function formSubmitHandler(evt) {
   profileStatus.textContent = inputStatus.value;
   profileName.textContent = inputName.value;
 
-  // Функция открытия/закрытия попапа
+  // Вызов функции открытия/закрытия попапа
   togglePopup();
 }
 
@@ -42,3 +42,56 @@ closePopupButton.addEventListener('click', togglePopup);
 
 // Событие переноса данных на главную страницу
 formElement.addEventListener('submit', formSubmitHandler);
+
+//Реализация добавления стандартных карточек(6)
+//Объявление массива данных стандартных карточек
+const initialCards = [
+  {
+    name: 'Кулл-шариф',
+    link: './images/kul-sharif.jpg',
+    description: 'Изображение мечети Кул Шариф'
+  },
+  {
+    name: 'Казанский Кремль',
+    link: './images/kremlin.jpg',
+    description: 'Изображение Казанского Кремля'
+  },
+  {
+    name: 'Дворец Земледельцев',
+    link: './images/dvorec-zem.jpg',
+    description: 'Изображение Дворца Земледельцев'
+  },
+  {
+    name: 'Центр семьи "Казан"',
+    link: './images/chasha.jpg',
+    description: 'Изображение Центра семьи "Казан"'
+  },
+  {
+    name: 'Памятник Мусе Джалилю',
+    link: './images/musa-djalil.jpg',
+    description: 'Изображение памятника Мусе Джалилю'
+  },
+  {
+    name: 'Мост "Миллениум"',
+    link: './images/millenium.jpg',
+    description: 'Изображение моста "Миллениум"'
+  }
+];
+//Объявляем переменную содержимого template-элемента
+const template = document.querySelector('.template').content;
+//Объявляем переменную списка карточек
+let cardsList = document.querySelector('.elements__list');
+//Объявляем переменную элемента с карточкой
+
+//Цикл добавления стандартных карточек
+for (let i = 0; i < 6; i++) {
+  let card = template.querySelector('.card').cloneNode(true);
+  // card.querySelector('.card__image').;
+  card.querySelector('.card__image').src = initialCards[i].link;
+  card.querySelector('.card__image').alt = initialCards[i].description;
+  card.querySelector('.card__title').textContent = initialCards[i].name;
+
+  cardsList.append(card);
+}
+
+
