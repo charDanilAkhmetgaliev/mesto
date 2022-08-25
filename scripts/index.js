@@ -84,7 +84,7 @@ const template = document.querySelector('.template').content;
 let cardsList = document.querySelector('.elements__list');
 
 //Функция добавления карточки
-let addCard = (link, name, description) => {
+let addCard = (link, name, description = 'Изображение места') => {
   //Объявляем и клонируем переменную card
   let card = template.querySelector('.card').cloneNode(true);
   //Заполняем данные карточки
@@ -95,7 +95,13 @@ let addCard = (link, name, description) => {
   cardsList.append(card);
 }
 
-//Цикл добавления стандартных карточек
-for (let i = 0; i < initialCards.length; i++) {
-  addCard(initialCards[i].link, initialCards[i].name, initialCards[i].description);
-};
+//Функция обновления карточек
+function refreshCards() {
+  initialCards.forEach((initialCard) => {
+    //Вызов функции добавления карточки
+    addCard(initialCard.link, initialCard.name, initialCard.description);
+  });
+}
+
+//Вызов функции обновления карточек
+refreshCards();
