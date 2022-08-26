@@ -9,6 +9,8 @@ let profileStatus = document.querySelector('.profile__status');
 let inputName = popup.querySelector('.popup__input_value-type_name');
 let inputStatus = popup.querySelector('.popup__input_value-type_status');
 
+let formElement = popup.querySelector('.popup__form');
+
 // Универсальная функция открывает попап
 function openPopup(popup) {
   popup.classList.add('popup_opened');
@@ -18,7 +20,7 @@ function openPopup(popup) {
 function closePopup(popup) {
   popup.classList.remove('popup_opened');
 }
-
+// Функция переносит данные со страницы на сайт
 function openEventProfilePopup() {
   inputName.value = profileName.textContent;
   inputStatus.value = profileStatus.textContent;
@@ -83,7 +85,7 @@ let initialCards = [
 const template = document.querySelector('.template').content;
 //Объявляем переменную списка карточек
 let cardsList = document.querySelector('.elements__list');
-
+// Функция добавления карточек на страницу
 function addCard(dataCards) {
   dataCards.reverse().forEach((dataCard) => {
     let card = template.querySelector('.card').cloneNode(true);
@@ -92,9 +94,11 @@ function addCard(dataCards) {
     card.querySelector('.card__title').textContent = dataCard.name;
     cardsList.prepend(card);
   });
+  activateLike();
 }
-
+// Вызов функции добавления стандартных карточек
 addCard(initialCards);
+
 
 //РЕАЛИЗАЦИЯ ДОБАВЛЕНИЯ КАРТОЧКИ
 // Объявление перемнных
@@ -105,10 +109,10 @@ let formCardElement = cardPopup.querySelector('.popup__form');
 let cardName = cardPopup.querySelector('.popup__input_value-type_name');
 let cardLink = cardPopup.querySelector('.popup__input_value-type_link');
 
-// Функция сохраняет карточку на странице
+// Функция добавляет карточку на страницу
 function formCardSubmitHandler(evt) {
   evt.preventDefault();
-  newCardData = [
+  let newCardData = [
     {
       name: cardName.value,
       link: cardLink.value
@@ -125,5 +129,11 @@ closeCardPopupButton.addEventListener('click', () => closePopup(cardPopup));
 // Событие добавления карточки
 formCardElement.addEventListener('submit', formCardSubmitHandler);
 
-
-// РЕАЛИЗАЦИЯ ЛАЙКА
+// Функция лайка
+function activateLike() {
+  let cardsLikes = document.querySelectorAll('.card__like');
+  console.log(cardsLikes);
+  cardsLikes.forEach((cardlike) => {
+    cardlike.addEventListener('click', () => cardlike.classList.toggle('card__like_active'))
+  });
+}
