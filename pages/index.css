@@ -47,3 +47,13 @@
 @import url(../blocks/popup/__save-button/popup__save-button.css);
 @import url(../blocks/popup/__close-button/popup__close-button.css);
 @import url(../blocks/popup/__form/popup__form.css);
+
+/* card-popup */
+@import url(../blocks/card-popup/card-popup.css);
+@import url(../blocks/card-popup/__container/card-popup__container.css);
+@import url(../blocks/card-popup/__title/card-popup__title.css);
+@import url(../blocks/card-popup/__inputs/card-popup__inputs.css);
+@import url(../blocks/card-popup/__input/card-popup__input.css);
+@import url(../blocks/card-popup/__save-button/card-popup__save-button.css);
+@import url(../blocks/card-popup/__close-button/card-popup__close-button.css);
+@import url(../blocks/card-popup/__form/card-popup__form.css);
