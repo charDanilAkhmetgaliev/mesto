@@ -9,6 +9,8 @@ let profileStatus = document.querySelector('.profile__status');
 let inputName = popup.querySelector('.popup__input_value-type_name');
 let inputStatus = popup.querySelector('.popup__input_value-type_status');
 
+let formElement = popup.querySelector('.popup__form');
+
 // Универсальная функция открывает попап
 function openPopup(popup) {
   popup.classList.add('popup_opened');
@@ -18,7 +20,7 @@ function openPopup(popup) {
 function closePopup(popup) {
   popup.classList.remove('popup_opened');
 }
-
+// Функция переносит данные со страницы на сайт
 function openEventProfilePopup() {
   inputName.value = profileName.textContent;
   inputStatus.value = profileStatus.textContent;
@@ -83,20 +85,26 @@ let initialCards = [
 const template = document.querySelector('.template').content;
 //Объявляем переменную списка карточек
 let cardsList = document.querySelector('.elements__list');
+let cardsLikes = cardsList.querySelectorAll('.card__like');;
 
+// Функция добавления карточек на страницу
 function addCard(dataCards) {
   dataCards.reverse().forEach((dataCard) => {
     let card = template.querySelector('.card').cloneNode(true);
     card.querySelector('.card__image').src = dataCard.link;
     card.querySelector('.card__image').alt = dataCard.description;
     card.querySelector('.card__title').textContent = dataCard.name;
+    let cardLike = card.querySelector('.card__like');
+    cardLike.addEventListener('click', () => cardLike.classList.toggle('card__like_active'));
     cardsList.prepend(card);
   });
+  
 }
-
+// Вызов функции добавления стандартных карточек
 addCard(initialCards);
 
-//РЕАЛИЗАЦИЯ ДОБАВЛЕНИЯ КАРТОЧКИ
+
+// РЕАЛИЗАЦИЯ ДОБАВЛЕНИЯ КАРТОЧКИ
 // Объявление перемнных
 const addCardButton = document.querySelector('.profile__add-button');
 let cardPopup = document.querySelector('.popup_card');
@@ -105,10 +113,10 @@ let formCardElement = cardPopup.querySelector('.popup__form');
 let cardName = cardPopup.querySelector('.popup__input_value-type_name');
 let cardLink = cardPopup.querySelector('.popup__input_value-type_link');
 
-// Функция сохраняет карточку на странице
+// Функция добавляет карточку на страницу
 function formCardSubmitHandler(evt) {
   evt.preventDefault();
-  newCardData = [
+  let newCardData = [
     {
       name: cardName.value,
       link: cardLink.value
@@ -122,8 +130,5 @@ function formCardSubmitHandler(evt) {
 addCardButton.addEventListener('click', () => openPopup(cardPopup));
 closeCardPopupButton.addEventListener('click', () => closePopup(cardPopup));
 
-// Событие добавления карточки
+// Привязка события добавления карточки
 formCardElement.addEventListener('submit', formCardSubmitHandler);
-
-
-// РЕАЛИЗАЦИЯ ЛАЙКА
