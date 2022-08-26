@@ -1,45 +1,45 @@
 // РЕАЛИЗАЦИЯ РЕДАКТИРОВАНИЯ ДАННЫХ ПРОФИЛЯ
 // Объявление переменных
 let editPopupButton = document.querySelector('.profile__edit-button');
-let closePopupButton = document.querySelector('.popup__close-button');
+let popup = document.querySelector('.popup');
+let closePopupButton = popup.querySelector('.popup__close-button');
 
 let profileName = document.querySelector('.profile__name');
 let profileStatus = document.querySelector('.profile__status');
-let inputName = document.querySelector('.popup__input_value-type_name');
-let inputStatus = document.querySelector('.popup__input_value-type_status');
+let inputName = popup.querySelector('.popup__input_value-type_name');
+let inputStatus = popup.querySelector('.popup__input_value-type_status');
 
-let popup = document.querySelector('.popup');
-let formElement = document.querySelector('.popup__container');
+// Универсальная функция открывает попап
+function openPopup(popup) {
+  popup.classList.add('popup_opened');
+}
 
-// Функция открытия/закрытия попапа
-function togglePopup() {
-  // Условие: если попап НЕ открыт
-  if (!(popup.classList.contains('popup_opened'))) {
-    // Перенос значений в инпуты
-    inputName.value = profileName.textContent;
-    inputStatus.value = profileStatus.textContent;
-  }
-  // Открывает или закрывает поппап в зависимости от наличия/отсутствия класса
-  popup.classList.toggle('popup_opened');
+// Универсальная функция закрывает попап
+function closePopup(popup) {
+  popup.classList.remove('popup_opened');
+}
+
+function openEventProfilePopup() {
+  inputName.value = profileName.textContent;
+  inputStatus.value = profileStatus.textContent;
+
+  openPopup(popup);
 }
 
 // Функция переноса данных с попапа на главную страницу
 function formSubmitHandler(evt) {
-
   // Отмена отправки данных и перезагрузки страницы после события submit
   evt.preventDefault();
-
-  // Перенос значений инпутов на главную страницу
+  // Перенос значений инпутов на главную страницу-------------
   profileStatus.textContent = inputStatus.value;
   profileName.textContent = inputName.value;
-
   // Вызов функции открытия/закрытия попапа
-  togglePopup();
+  closePopup(popup);
 }
 
 // Привязка события открытия/закрытия попапа к кнопкам
-editPopupButton.addEventListener('click', togglePopup);
-closePopupButton.addEventListener('click', togglePopup);
+editPopupButton.addEventListener('click', openEventProfilePopup);
+closePopupButton.addEventListener('click', () => closePopup(popup));
 
 // Событие переноса данных на главную страницу
 formElement.addEventListener('submit', formSubmitHandler);
@@ -47,7 +47,7 @@ formElement.addEventListener('submit', formSubmitHandler);
 
 //РЕАЛИЗАЦИЯ ДОБАВЛЕНИЯ СТАНДАРТНЫХ КАРТОЧЕК(6)
 //Объявление массива данных
-const initialCards = [
+let initialCards = [
   {
     name: 'Кулл-шариф',
     link: './images/kul-sharif.jpg',
@@ -84,25 +84,46 @@ const template = document.querySelector('.template').content;
 //Объявляем переменную списка карточек
 let cardsList = document.querySelector('.elements__list');
 
-//Функция добавления карточки
-let addCard = (link, name, description = 'Изображение места') => {
-  //Объявляем и клонируем переменную card
-  let card = template.querySelector('.card').cloneNode(true);
-  //Заполняем данные карточки
-  card.querySelector('.card__image').src = link;
-  card.querySelector('.card__image').alt = description;
-  card.querySelector('.card__title').textContent = name;
-  //Добавляем карточку в список
-  cardsList.append(card);
-}
-
-//Функция обновления карточек
-function refreshCards() {
-  initialCards.forEach((initialCard) => {
-    //Вызов функции добавления карточки
-    addCard(initialCard.link, initialCard.name, initialCard.description);
+function addCard(dataCards) {
+  dataCards.reverse().forEach((dataCard) => {
+    let card = template.querySelector('.card').cloneNode(true);
+    card.querySelector('.card__image').src = dataCard.link;
+    card.querySelector('.card__image').alt = dataCard.description;
+    card.querySelector('.card__title').textContent = dataCard.name;
+    cardsList.prepend(card);
   });
 }
 
-//Вызов функции обновления карточек
-refreshCards();
+addCard(initialCards);
+
+//РЕАЛИЗАЦИЯ ДОБАВЛЕНИЯ КАРТОЧКИ
+// Объявление перемнных
+const addCardButton = document.querySelector('.profile__add-button');
+let cardPopup = document.querySelector('.popup_card');
+const closeCardPopupButton = cardPopup.querySelector('.popup__close-button');
+let formCardElement = cardPopup.querySelector('.popup__form');
+let cardName = cardPopup.querySelector('.popup__input_value-type_name');
+let cardLink = cardPopup.querySelector('.popup__input_value-type_link');
+
+// Функция сохраняет карточку на странице
+function formCardSubmitHandler(evt) {
+  evt.preventDefault();
+  newCardData = [
+    {
+      name: cardName.value,
+      link: cardLink.value
+    }
+  ];
+  addCard(newCardData);
+  closePopup(cardPopup);
+}
+
+// Привязка события открытия/закрытия попапа к кнопкам
+addCardButton.addEventListener('click', () => openPopup(cardPopup));
+closeCardPopupButton.addEventListener('click', () => closePopup(cardPopup));
+
+// Событие добавления карточки
+formCardElement.addEventListener('submit', formCardSubmitHandler);
+
+
+// РЕАЛИЗАЦИЯ ЛАЙКА
