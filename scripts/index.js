@@ -13,12 +13,14 @@ let formElement = popup.querySelector('.popup__form');
 
 // Универсальная функция открывает попап
 function openPopup(popup) {
+  popup.classList.remove('popup_closed');
   popup.classList.add('popup_opened');
 }
 
 // Универсальная функция закрывает попап
 function closePopup(popup) {
   popup.classList.remove('popup_opened');
+  popup.classList.add('popup_closed');
 }
 
 // Функция переносит данные со страницы на сайт
@@ -92,7 +94,7 @@ let cardsLikes = cardsList.querySelectorAll('.card__like');
 function addCard(dataCards) {
   dataCards.reverse().forEach((dataCard) => {
     let card = template.querySelector('.card').cloneNode(true);
-	let cardImage = card.querySelector('.card__image');
+    let cardImage = card.querySelector('.card__image');
     // перенос данных из инпутов в кароточку
     cardImage.src = dataCard.link;
     cardImage.alt = dataCard.description;
@@ -102,29 +104,28 @@ function addCard(dataCards) {
     let cardLikeButton = card.querySelector('.card__like');
     cardLikeButton.addEventListener('click', () => cardLikeButton.classList.toggle('card__like_active'));
     
-	// привязка события удаления карточки
+    // привязка события удаления карточки
     let cardDeleteButton = card.querySelector('.card__delete-button');
     cardDeleteButton.addEventListener('click', () => cardDeleteButton.closest('.card').remove());
-	
-    // функция открытия попапа карточки	
-	let openedCardPopup = document.querySelector('.popup_opened-card');
-	let closeCardPopupButton = openedCardPopup.querySelector('.popup__close-button');
+    
+    // функция открытия попапа карточки
+    let openedCardPopup = document.querySelector('.popup_opened-card');
+    let closeCardPopupButton = openedCardPopup.querySelector('.popup__close-button');
     let openCardPopup = () => {
         let popupImage = openedCardPopup.querySelector('.popup__image');
         popupImage.src = dataCard.link;
         popupImage.alt = dataCard.description;
         openedCardPopup.querySelector('.popup__label').textContent = dataCard.name;
         openPopup(openedCardPopup);
-	}
+    }
     // привязка события открытия попапа карточки
     cardImage.addEventListener('click', openCardPopup);
     // привязка события закрытия попапа карточки
     closeCardPopupButton.addEventListener('click', () => closePopup(openedCardPopup));
 
-	// добавление новой карточки в начало
+    // добавление новой карточки в начало
     cardsList.prepend(card);
   });
-  
 }
 // Вызов функции добавления стандартных карточек
 addCard(initialCards);
