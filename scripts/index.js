@@ -1,29 +1,29 @@
 // РЕАЛИЗАЦИЯ РЕДАКТИРОВАНИЯ ДАННЫХ ПРОФИЛЯ
-// Объявление переменных
-let editPopupButton = document.querySelector('.profile__edit-button');
-let popup = document.querySelector('.popup');
-let closePopupButton = popup.querySelector('.popup__close-button');
+// объявление переменных
+const editPopupButton = document.querySelector('.profile__edit-button');
+const popup = document.querySelector('.popup');
+const closePopupButton = popup.querySelector('.popup__close-button');
 
-let profileName = document.querySelector('.profile__name');
-let profileStatus = document.querySelector('.profile__status');
-let inputName = popup.querySelector('.popup__input_value-type_name');
-let inputStatus = popup.querySelector('.popup__input_value-type_status');
+const profileName = document.querySelector('.profile__name');
+const profileStatus = document.querySelector('.profile__status');
+const inputName = popup.querySelector('.popup__input_value-type_name');
+const inputStatus = popup.querySelector('.popup__input_value-type_status');
 
-let formElement = popup.querySelector('.popup__form');
+const formElement = popup.querySelector('.popup__form');
 
-// Универсальная функция открывает попап
+// универсальная функция открывает попап
 function openPopup(popup) {
   popup.classList.remove('popup_closed');
   popup.classList.add('popup_opened');
 }
 
-// Универсальная функция закрывает попап
+// универсальная функция закрывает попап
 function closePopup(popup) {
   popup.classList.remove('popup_opened');
   popup.classList.add('popup_closed');
 }
 
-// Функция переносит данные со страницы на сайт
+// функция переносит данные со страницы на сайт
 function openEventProfilePopup() {
   inputName.value = profileName.textContent;
   inputStatus.value = profileStatus.textContent;
@@ -31,28 +31,36 @@ function openEventProfilePopup() {
   openPopup(popup);
 }
 
-// Функция переноса данных с попапа на главную страницу
+// функция переноса данных с попапа на главную страницу
 function formSubmitHandler(evt) {
-  // Отмена отправки данных и перезагрузки страницы после события submit
+  // отмена отправки данных и перезагрузки страницы после события submit
   evt.preventDefault();
-  // Перенос значений инпутов на главную страницу-------------
+  // перенос значений инпутов на главную страницу-------------
   profileStatus.textContent = inputStatus.value;
   profileName.textContent = inputName.value;
-  // Вызов функции открытия/закрытия попапа
+  // вызов функции открытия/закрытия попапа
   closePopup(popup);
 }
 
+// универсальная функция привязки события
+function tieEvent(event, target, func, param) {
+  if (event === 'submit') {
+    target.addEventListener(event, func);
+  } else {
+    target.addEventListener(event, () => func(param));
+  }
+}
+
 // Привязка события открытия/закрытия попапа к кнопкам
-editPopupButton.addEventListener('click', openEventProfilePopup);
-closePopupButton.addEventListener('click', () => closePopup(popup));
+tieEvent('click', editPopupButton, openEventProfilePopup);
+tieEvent('click', closePopupButton, closePopup, popup);
 
 // привязка события переноса данных на главную страницу
-formElement.addEventListener('submit', formSubmitHandler);
-
+tieEvent('submit', formElement, formSubmitHandler);
 
 //РЕАЛИЗАЦИЯ АВТОМАТИЧЕСКОГО ДОБАВЛЕНИЯ СТАНДАРТНЫХ КАРТОЧЕК
 //Объявление массива данных стандартных карточек
-let initialCards = [
+const initialCards = [
   {
     name: 'Кулл-шариф',
     link: './images/kul-sharif.jpg',
@@ -93,35 +101,35 @@ let cardsLikes = cardsList.querySelectorAll('.card__like');
 // Функция добавления новых карточек на страницу
 function addCard(dataCards) {
   dataCards.reverse().forEach((dataCard) => {
-    let card = template.querySelector('.card').cloneNode(true);
-    let cardImage = card.querySelector('.card__image');
-    // перенос данных из инпутов в кароточку
+    const card = template.querySelector('.card').cloneNode(true);
+    const cardImage = card.querySelector('.card__image');
+    // перенос данных из инпутов в карточку
     cardImage.src = dataCard.link;
     cardImage.alt = dataCard.description;
     card.querySelector('.card__title').textContent = dataCard.name;
 
     // привязка события добавления/удаления лайка
-    let cardLikeButton = card.querySelector('.card__like');
+    const cardLikeButton = card.querySelector('.card__like');
     cardLikeButton.addEventListener('click', () => cardLikeButton.classList.toggle('card__like_active'));
     
     // привязка события удаления карточки
-    let cardDeleteButton = card.querySelector('.card__delete-button');
+    const cardDeleteButton = card.querySelector('.card__delete-button');
     cardDeleteButton.addEventListener('click', () => cardDeleteButton.closest('.card').remove());
     
     // функция открытия попапа карточки
-    let openedCardPopup = document.querySelector('.popup_opened-card');
-    let closeCardPopupButton = openedCardPopup.querySelector('.popup__close-button');
-    let openCardPopup = () => {
-        let popupImage = openedCardPopup.querySelector('.popup__image');
+    const openedCardPopup = document.querySelector('.popup_opened-card');
+    const closeCardPopupButton = openedCardPopup.querySelector('.popup__close-button');
+    const openCardPopup = () => {
+        const popupImage = openedCardPopup.querySelector('.popup__image');
         popupImage.src = dataCard.link;
         popupImage.alt = dataCard.description;
         openedCardPopup.querySelector('.popup__label').textContent = dataCard.name;
         openPopup(openedCardPopup);
     }
     // привязка события открытия попапа карточки
-    cardImage.addEventListener('click', openCardPopup);
+    tieEvent('click', cardImage, openCardPopup);
     // привязка события закрытия попапа карточки
-    closeCardPopupButton.addEventListener('click', () => closePopup(openedCardPopup));
+    tieEvent('click', closeCardPopupButton, closePopup, openedCardPopup);
 
     // добавление новой карточки в начало
     cardsList.prepend(card);
@@ -131,34 +139,44 @@ function addCard(dataCards) {
 addCard(initialCards);
 
 
+
 // РЕАЛИЗАЦИЯ РУЧНОГО ДОБАВЛЕНИЯ КАРТОЧКИ
 // Объявление переменных
 const addCardButton = document.querySelector('.profile__add-button');
-let addCardPopup = document.querySelector('.popup_add-card');
-const closeCardPopupButton = addCardPopup.querySelector('.popup__close-button');
-let formCardElement = addCardPopup.querySelector('.popup__form');
-let cardName = addCardPopup.querySelector('.popup__input_value-type_name');
-let cardLink = addCardPopup.querySelector('.popup__input_value-type_link');
+const addedCardPopup = document.querySelector('.popup_add-card');
+const closeCardPopupButton = addedCardPopup.querySelector('.popup__close-button');
+const addedCardFormElement = addedCardPopup.querySelector('.popup__form');
+const cardName = addedCardPopup.querySelector('.popup__input_value-type_name');
+const cardLink = addedCardPopup.querySelector('.popup__input_value-type_link');
 
-// Функция сбора данных о новой карточке и добавления на страницу
+// функция очистки инпутов
+function clearAddedCardPopup() {
+  cardName.value = '';
+  cardLink.value = '';
+}
+
+// Функция добавления карточки на страницу
 function formCardSubmitHandler(evt) {
   evt.preventDefault();
-  let newCardData = [
-    {
-      name: cardName.value,
-      link: cardLink.value
-    }
-  ];
+  let newCardData = [];
+  function addCardData(cardName, cardLink, cardDescription = 'Изображение места') {
+    return newCardData = [
+      {
+        name: cardName.value,
+        link: cardLink.value,
+        description: cardDescription
+      }
+    ];
+  }
+  addCardData(cardName, cardLink);
   addCard(newCardData);
-  closePopup(addCardPopup);
+  closePopup(addedCardPopup);
+  clearAddedCardPopup();
 }
 
 // Привязка события открытия/закрытия попапа к кнопкам
-addCardButton.addEventListener('click', () => openPopup(addCardPopup));
-closeCardPopupButton.addEventListener('click', () => closePopup(addCardPopup));
+tieEvent('click', addCardButton, openPopup, addedCardPopup);
+tieEvent('click', closeCardPopupButton, closePopup, addedCardPopup);
 
 // Привязка события добавления новой карточки
-formCardElement.addEventListener('submit', formCardSubmitHandler);
-
-
-
+tieEvent('submit', addedCardFormElement, formCardSubmitHandler);
