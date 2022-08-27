@@ -9,9 +9,15 @@ const profileStatus = document.querySelector('.profile__status');
 const inputName = popup.querySelector('.popup__input_value-type_name');
 const inputStatus = popup.querySelector('.popup__input_value-type_status');
 
+<<<<<<< HEAD
 const formElement = popup.querySelector('.popup__form');
 
 // универсальная функция открывает попап
+=======
+let formElement = popup.querySelector('.popup__form');
+
+// Универсальная функция открывает попап
+>>>>>>> cae58e2ad17004362e9a0c5f2b8af19625e193f1
 function openPopup(popup) {
   popup.classList.remove('popup_closed');
   popup.classList.add('popup_opened');
@@ -22,8 +28,12 @@ function closePopup(popup) {
   popup.classList.remove('popup_opened');
   popup.classList.add('popup_closed');
 }
+<<<<<<< HEAD
 
 // функция переносит данные со страницы на сайт
+=======
+// Функция переносит данные со страницы на сайт
+>>>>>>> cae58e2ad17004362e9a0c5f2b8af19625e193f1
 function openEventProfilePopup() {
   inputName.value = profileName.textContent;
   inputStatus.value = profileStatus.textContent;
@@ -92,6 +102,7 @@ const initialCards = [
     description: 'Изображение моста "Миллениум"'
   }
 ];
+<<<<<<< HEAD
 
 //Объявление переменных
 const template = document.querySelector('.template').content;
@@ -99,6 +110,13 @@ let cardsList = document.querySelector('.elements__list');
 let cardsLikes = cardsList.querySelectorAll('.card__like');
 
 // Функция добавления новых карточек на страницу
+=======
+//Объявляем переменную содержимого template-элемента
+const template = document.querySelector('.template').content;
+//Объявляем переменную списка карточек
+let cardsList = document.querySelector('.elements__list');
+// Функция добавления карточек на страницу
+>>>>>>> cae58e2ad17004362e9a0c5f2b8af19625e193f1
 function addCard(dataCards) {
   dataCards.reverse().forEach((dataCard) => {
     const card = template.querySelector('.card').cloneNode(true);
@@ -134,10 +152,12 @@ function addCard(dataCards) {
     // добавление новой карточки в начало
     cardsList.prepend(card);
   });
+  activateLike();
 }
 // Вызов функции добавления стандартных карточек
 addCard(initialCards);
 
+<<<<<<< HEAD
 
 
 // РЕАЛИЗАЦИЯ РУЧНОГО ДОБАВЛЕНИЯ КАРТОЧКИ
@@ -169,6 +189,27 @@ function formCardSubmitHandler(evt) {
     ];
   }
   addCardData(cardName, cardLink);
+=======
+
+//РЕАЛИЗАЦИЯ ДОБАВЛЕНИЯ КАРТОЧКИ
+// Объявление перемнных
+const addCardButton = document.querySelector('.profile__add-button');
+let cardPopup = document.querySelector('.popup_card');
+const closeCardPopupButton = cardPopup.querySelector('.popup__close-button');
+let formCardElement = cardPopup.querySelector('.popup__form');
+let cardName = cardPopup.querySelector('.popup__input_value-type_name');
+let cardLink = cardPopup.querySelector('.popup__input_value-type_link');
+
+// Функция добавляет карточку на страницу
+function formCardSubmitHandler(evt) {
+  evt.preventDefault();
+  let newCardData = [
+    {
+      name: cardName.value,
+      link: cardLink.value
+    }
+  ];
+>>>>>>> cae58e2ad17004362e9a0c5f2b8af19625e193f1
   addCard(newCardData);
   closePopup(addedCardPopup);
   clearAddedCardPopup();
@@ -178,5 +219,19 @@ function formCardSubmitHandler(evt) {
 tieEvent('click', addCardButton, openPopup, addedCardPopup);
 tieEvent('click', closeCardPopupButton, closePopup, addedCardPopup);
 
+<<<<<<< HEAD
 // Привязка события добавления новой карточки
 tieEvent('submit', addedCardFormElement, formCardSubmitHandler);
+=======
+// Событие добавления карточки
+formCardElement.addEventListener('submit', formCardSubmitHandler);
+
+// Функция лайка
+function activateLike() {
+  let cardsLikes = document.querySelectorAll('.card__like');
+  console.log(cardsLikes);
+  cardsLikes.forEach((cardlike) => {
+    cardlike.addEventListener('click', () => cardlike.classList.toggle('card__like_active'))
+  });
+}
+>>>>>>> cae58e2ad17004362e9a0c5f2b8af19625e193f1
