@@ -10,4 +10,5 @@
   gap: 25px;
   color: rgb(0, 0, 0);
   align-items: center;
+  position: relative;
 }

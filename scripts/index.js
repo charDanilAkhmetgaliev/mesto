@@ -91,11 +91,17 @@ let cardsLikes = cardsList.querySelectorAll('.card__like');;
 function addCard(dataCards) {
   dataCards.reverse().forEach((dataCard) => {
     let card = template.querySelector('.card').cloneNode(true);
+    // перенос данных из ипутов в каротчку
     card.querySelector('.card__image').src = dataCard.link;
     card.querySelector('.card__image').alt = dataCard.description;
     card.querySelector('.card__title').textContent = dataCard.name;
-    let cardLike = card.querySelector('.card__like');
-    cardLike.addEventListener('click', () => cardLike.classList.toggle('card__like_active'));
+    // добавление/удаление лайков
+    let cardLikeButton = card.querySelector('.card__like');
+    cardLikeButton.addEventListener('click', () => cardLikeButton.classList.toggle('card__like_active'));
+    // удаление карточки
+    let cardDeleteButton = card.querySelector('.card__delete-button');
+    cardDeleteButton.addEventListener('click', () => cardDeleteButton.closest('.card').remove());
+
     cardsList.prepend(card);
   });
   
