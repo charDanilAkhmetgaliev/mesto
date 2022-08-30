@@ -13,14 +13,12 @@ const formElement = popup.querySelector('.popup__form');
 
 // универсальная функция открывает попап
 function openPopup(popup) {
-  popup.classList.remove('popup_closed');
   popup.classList.add('popup_opened');
 }
 
 // универсальная функция закрывает попап
 function closePopup(popup) {
   popup.classList.remove('popup_opened');
-  popup.classList.add('popup_closed');
 }
 
 // функция переносит данные со страницы на сайт
