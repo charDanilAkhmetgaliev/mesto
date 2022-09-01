@@ -13,7 +13,7 @@
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
-    transition: opacity 0.3 ease;
+    transition: opacity 0.3s ease;
 }
 
 .card__delete-button:hover {
