@@ -1,13 +1,13 @@
 // РЕАЛИЗАЦИЯ РЕДАКТИРОВАНИЯ ДАННЫХ ПРОФИЛЯ
 // объявление переменных
-const openPopupButton = document.querySelector('.profile__edit-button');
+const openEditProfilePopupButton = document.querySelector('.profile__edit-button');
 const popupProfile = document.querySelector('.popup_edit-profile');
 const closePopupProfileButton = popupProfile.querySelector('.popup__close-button');
 
 const profileName = document.querySelector('.profile__name');
 const profileStatus = document.querySelector('.profile__status');
-const inputName = popupProfile.querySelector('.popup__input_value-type_name');
-const inputStatus = popupProfile.querySelector('.popup__input_value-type_status');
+const firstPopupInput = document.querySelectorAll('.popup__input_value-type_first');
+const secondPopupInput = document.querySelectorAll('.popup__input_value-type_second');
 
 const popupProfileFormElement = popupProfile.querySelector('.popup__form');
 
@@ -21,10 +21,10 @@ function closePopup(popup) {
   popup.classList.remove('popup_opened');
 }
 
-// функция переносит данные со страницы на сайт
+// функция переносит данные со страницы в попап
 function openEventProfilePopup() {
-  inputName.value = profileName.textContent;
-  inputStatus.value = profileStatus.textContent;
+  firstPopupInput[0].value = profileName.textContent;
+  secondPopupInput[0].value = profileStatus.textContent;
 
   openPopup(popupProfile);
 }
@@ -34,14 +34,14 @@ function submitPopupProfileForm(evt) {
   // отмена отправки данных и перезагрузки страницы после события submit
   evt.preventDefault();
   // перенос значений инпутов на главную страницу-------------
-  profileStatus.textContent = inputStatus.value;
-  profileName.textContent = inputName.value;
+  profileStatus.textContent = secondPopupInput[0].value;
+  profileName.textContent = firstPopupInput[0].value;
   // вызов функции открытия/закрытия попапа
   closePopup(popupProfile);
 }
 
 // Привязка события открытия/закрытия попапа к кнопкам
-openPopupButton.addEventListener('click', openEventProfilePopup);
+openEditProfilePopupButton.addEventListener('click', openEventProfilePopup);
 closePopupProfileButton.addEventListener('click', () => closePopup(popupProfile));
 
 // привязка события переноса данных на главную страницу
@@ -77,8 +77,8 @@ const openCardPopup = (cardName, cardLink) => {
 // привязка события закрывает попап с карточкой
 closeCardPopupButton.addEventListener('click', () => closePopup(cardPopup));
 
-// функция добавляет новую карточку на страницу
-function addCard(cardName, cardLink) {
+// функция создает карточку
+const createCard = (cardName, cardLink) => {
   // создает новую карточку из шаблона
   const card = template.cloneNode(true);
   const cardImage = card.querySelector('.card__image');
@@ -93,10 +93,17 @@ function addCard(cardName, cardLink) {
   deleteCard(card);
   // привязка события открывает попап карточки
   cardImage.addEventListener('click', () => openCardPopup(cardName, cardLink));
-  // добавляет новую карточку в html разметку
-  cardsList.prepend(card);
+  // возвращает готовую новую карточку
+  return(card);
 }
-// проходит по каждым данным карточек из массива стандартных в обратном порядке, 
+
+// функция добавляет новую карточку на страницу
+function addCard(cardName, cardLink) {
+  // добавляет новую карточку в html разметку
+  cardsList.prepend(createCard(cardName, cardLink));
+}
+
+// проходит по каждым данным карточек из массива стандартных в обратном порядке,
 // и вызывает функцию добавления новой карточки с соответствующими данными
 initialCards.reverse().forEach((initialCardData) => addCard(initialCardData.name, initialCardData.link));
 
@@ -113,8 +120,8 @@ function submitNewCardPopupForm(evt) {
   // отменяет отправку данных и перезагрузку страницы после события submit
   evt.preventDefault();
   // объявление переменных
-  const cardName = newCardPopup.querySelector('.popup__input_value-type_name').value;
-  const cardLink = newCardPopup.querySelector('.popup__input_value-type_link').value;
+  const cardName = firstPopupInput[1].value;
+  const cardLink = secondPopupInput[1].value;
   // вызывает функцию добваления новой карточки
   addCard(cardName, cardLink);
   // закрывает попап
