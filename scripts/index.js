@@ -1,15 +1,15 @@
 // РЕАЛИЗАЦИЯ РЕДАКТИРОВАНИЯ ДАННЫХ ПРОФИЛЯ
 // объявление переменных
 const openEditProfilePopupButton = document.querySelector('.profile__edit-button');
-const popupProfile = document.querySelector('.popup_edit-profile');
-const closePopupProfileButton = popupProfile.querySelector('.popup__close-button');
+const profilePopup = document.querySelector('.popup_edit-profile');
+const closePopupProfileButton = profilePopup.querySelector('.popup__close-button');
 
 const profileName = document.querySelector('.profile__name');
 const profileStatus = document.querySelector('.profile__status');
-const firstPopupInput = document.querySelectorAll('.popup__input_value-type_first');
-const secondPopupInput = document.querySelectorAll('.popup__input_value-type_second');
+const profilePopupNameInput = profilePopup.querySelector('.popup__input_value-type_name');
+const profilePopupStatusInput = profilePopup.querySelector('.popup__input_value-type_status');
 
-const popupProfileFormElement = popupProfile.querySelector('.popup__form');
+const profilePopupFormElement = profilePopup.querySelector('.popup__form');
 
 // универсальная функция открывает попап
 function openPopup(popup) {
@@ -23,10 +23,10 @@ function closePopup(popup) {
 
 // функция переносит данные со страницы в попап
 function openEventProfilePopup() {
-  firstPopupInput[0].value = profileName.textContent;
-  secondPopupInput[0].value = profileStatus.textContent;
+  profilePopupNameInput.value = profileName.textContent;
+  profilePopupStatusInput.value = profileStatus.textContent;
 
-  openPopup(popupProfile);
+  openPopup(profilePopup);
 }
 
 // функция переноса данных с попапа на главную страницу
@@ -34,10 +34,10 @@ function submitPopupProfileForm(evt) {
   // отмена отправки данных и перезагрузки страницы после события submit
   evt.preventDefault();
   // перенос значений инпутов на главную страницу-------------
-  profileStatus.textContent = secondPopupInput[0].value;
-  profileName.textContent = firstPopupInput[0].value;
+  profileStatus.textContent = profilePopupStatusInput.value;
+  profileName.textContent = profilePopupNameInput.value;
   // вызов функции открытия/закрытия попапа
-  closePopup(popupProfile);
+  closePopup(profilePopup);
 }
 
 // Привязка события открытия/закрытия попапа к кнопкам
@@ -45,7 +45,7 @@ openEditProfilePopupButton.addEventListener('click', openEventProfilePopup);
 closePopupProfileButton.addEventListener('click', () => closePopup(popupProfile));
 
 // привязка события переноса данных на главную страницу
-popupProfileFormElement.addEventListener('submit', submitPopupProfileForm);
+profilePopupFormElement.addEventListener('submit', submitPopupProfileForm);
 
 // РЕАЛИЗАЦИЯ АВТОМАТИЧЕСКОГО ДОБАВЛЕНИЯ СТАНДАРТНЫХ КАРТОЧЕК
 // объявление переменных
@@ -94,7 +94,7 @@ const createCard = (cardName, cardLink) => {
   // привязка события открывает попап карточки
   cardImage.addEventListener('click', () => openCardPopup(cardName, cardLink));
   // возвращает готовую новую карточку
-  return(card);
+  return card;
 }
 
 // функция добавляет новую карточку на страницу
@@ -114,14 +114,16 @@ const addNewCardButton = document.querySelector('.profile__add-button');
 const newCardPopup = document.querySelector('.popup_new-card');
 const closeNewCardPopupButton = newCardPopup.querySelector('.popup__close-button');
 const newCardPopupForm = newCardPopup.querySelector('.popup__form');
+const newCardPopupNameInput = newCardPopup.querySelector('.popup__input_value-type_name');
+const newCardPopupLinkInput = newCardPopup.querySelector('.popup__input_value-type_link');
 
 // Функция добавления карточки на страницу
 function submitNewCardPopupForm(evt) {
   // отменяет отправку данных и перезагрузку страницы после события submit
   evt.preventDefault();
   // объявление переменных
-  const cardName = firstPopupInput[1].value;
-  const cardLink = secondPopupInput[1].value;
+  const cardName = newCardPopupNameInput.value;
+  const cardLink = newCardPopupLinkInput.value;
   // вызывает функцию добваления новой карточки
   addCard(cardName, cardLink);
   // закрывает попап
