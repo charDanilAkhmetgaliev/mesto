@@ -42,7 +42,7 @@ function submitPopupProfileForm(evt) {
 
 // Привязка события открытия/закрытия попапа к кнопкам
 openEditProfilePopupButton.addEventListener('click', openEventProfilePopup);
-closePopupProfileButton.addEventListener('click', () => closePopup(popupProfile));
+closePopupProfileButton.addEventListener('click', () => closePopup(profilePopup));
 
 // привязка события переноса данных на главную страницу
 profilePopupFormElement.addEventListener('submit', submitPopupProfileForm);
