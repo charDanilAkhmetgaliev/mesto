@@ -103,7 +103,7 @@ function addCard(cardName, cardLink) {
   cardsList.prepend(createCard(cardName, cardLink));
 }
 
-// проходит по каждым данным карточек из массива стандартных в обратном порядке,
+// цикл проходит по каждым данным карточек из массива стандартных в обратном порядке,
 // и вызывает функцию добавления новой карточки с соответствующими данными
 initialCards.reverse().forEach((initialCardData) => addCard(initialCardData.name, initialCardData.link));
 
