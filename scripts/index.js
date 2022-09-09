@@ -14,8 +14,8 @@ const profilePopupFormElement = profilePopup.querySelector('.popup__form');
 // функция очищает форму
 function clearFormData(popup) {
   const popupForm = popup.querySelector('.popup__form');
-  const formErrorList = popupForm.querySelectorAll('.popup__error');
-  const formInputList = popupForm.querySelectorAll('.popup__input');
+  const formErrorList = Array.from(popupForm.querySelectorAll('.popup__error'));
+  const formInputList = Array.from(popupForm.querySelectorAll('.popup__input'));
 
   formErrorList.forEach(function (formError) {
     formError.textContent = '';
@@ -24,21 +24,21 @@ function clearFormData(popup) {
   formInputList.forEach(function (formInput) {
     formInput.classList.remove(validationSetting.inputErrorClass);
   });
-
-  popupForm.reset();
 }
 
 // функция открывает попап
 function openPopup(popup) {
-  // popup.addEventListener('click', () => closePopup(popup));
+  const popupForm = popup.querySelector('.popup__form');
+  const formButton = popup.querySelector('.popup__save-button');
+  const formInputList = Array.from(popupForm.querySelectorAll('.popup__input'));
+
+  toggleButtonState(formInputList, formButton);
   popup.classList.add('popup_opened');
 }
 
 // функция закрывает попап
 function closePopup(popup) {
-  if (!(Array.from(popup.classList).includes('popup_card'))) {
-    clearFormData(popup);
-  }
+  clearFormData(popup);
   popup.classList.remove('popup_opened');
 }
 
@@ -67,6 +67,7 @@ closePopupProfileButton.addEventListener('click', () => closePopup(profilePopup)
 
 // привязка события переноса данных на главную страницу
 profilePopupFormElement.addEventListener('submit', submitPopupProfileForm);
+
 
 // РЕАЛИЗАЦИЯ АВТОМАТИЧЕСКОГО ДОБАВЛЕНИЯ СТАНДАРТНЫХ КАРТОЧЕК
 // объявление переменных
@@ -157,7 +158,7 @@ function submitNewCardPopupForm(evt) {
 addNewCardButton.addEventListener('click', () => openPopup(newCardPopup));
 closeNewCardPopupButton.addEventListener('click', () => {
   closePopup(newCardPopup);
-  // newCardPopupForm.reset();
+  newCardPopupForm.reset();
 });
 
 // Привязка обрабатвает событие добавления новой карточки
