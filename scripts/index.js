@@ -23,15 +23,17 @@ function clearFormData(popup) {
   popupForm.reset();
 }
 
-// универсальная функция открывает попап
+// функция открывает попап
 function openPopup(popup) {
   // popup.addEventListener('click', () => closePopup(popup));
   popup.classList.add('popup_opened');
 }
 
-// универсальная функция закрывает попап
+// функция закрывает попап
 function closePopup(popup) {
-  clearFormData(popup);
+  if (!(Array.from(popup.classList).includes('popup_card'))) {
+    clearFormData(popup);
+  }
   popup.classList.remove('popup_opened');
 }
 
