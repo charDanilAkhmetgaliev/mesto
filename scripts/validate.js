@@ -1,7 +1,15 @@
+const validationSetting = {
+  formSelector: '.popup__form',
+  inputSelector: '.popup__input',
+  submitButtonSelector: '.popup__save-button',
+  inactiveButtonClass: 'popup__save-button_inactive',
+  inputErrorClass: 'popup__input_error',
+  errorClass: '.popup__error_active'
+}
+
 // функция показывает ошибку
 const showInputError = (formElement, inputElement, errorMessage, validationSetting) => {
   const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
-
   inputElement.classList.add(validationSetting.inputErrorClass);
   errorElement.textContent = errorMessage;
   errorElement.classList.add(validationSetting.errorClass);
@@ -49,7 +57,8 @@ const setInputEventListeners = (formElement, validationSetting) => {
   toggleButtonState(inputList, buttonElement, validationSetting);
   inputList.forEach(function (inputElement) {
     inputElement.addEventListener('input', function () {
-      checkInputValidity(inputElement, formElement, inputList, validationSetting);
+      checkInputValidity(inputElement, formElement, validationSetting);
+      console.log(validationSetting.inputErrorClass);
       toggleButtonState(inputList, buttonElement, validationSetting);
     });
   });
@@ -68,11 +77,4 @@ const enableValidation = (validationSetting) => {
 }
 
 // вызов функции валидации
-enableValidation({
-  formSelector: '.popup__form',
-  inputSelector: '.popup__input',
-  submitButtonSelector: '.popup__save-button',
-  inactiveButtonClass: 'popup__save-button_inactive',
-  inputErrorClass: 'popup__input_error',
-  errorClass: '.popup__error_active'
-});
+enableValidation(validationSetting);

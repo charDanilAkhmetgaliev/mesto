@@ -15,9 +15,14 @@ const profilePopupFormElement = profilePopup.querySelector('.popup__form');
 function clearFormData(popup) {
   const popupForm = popup.querySelector('.popup__form');
   const formErrorList = popupForm.querySelectorAll('.popup__error');
+  const formInputList = popupForm.querySelectorAll('.popup__input');
 
   formErrorList.forEach(function (formError) {
     formError.textContent = '';
+  });
+
+  formInputList.forEach(function (formInput) {
+    formInput.classList.remove(validationSetting.inputErrorClass);
   });
 
   popupForm.reset();
