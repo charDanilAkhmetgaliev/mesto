@@ -11,13 +11,27 @@ const profilePopupStatusInput = profilePopup.querySelector('.popup__input_value-
 
 const profilePopupFormElement = profilePopup.querySelector('.popup__form');
 
+// функция очищает форму
+function clearFormData(popup) {
+  const popupForm = popup.querySelector('.popup__form');
+  const formErrorList = popupForm.querySelectorAll('.popup__error');
+
+  formErrorList.forEach(function (formError) {
+    formError.textContent = '';
+  });
+
+  popupForm.reset();
+}
+
 // универсальная функция открывает попап
 function openPopup(popup) {
+  // popup.addEventListener('click', () => closePopup(popup));
   popup.classList.add('popup_opened');
 }
 
 // универсальная функция закрывает попап
 function closePopup(popup) {
+  clearFormData(popup);
   popup.classList.remove('popup_opened');
 }
 
@@ -136,7 +150,7 @@ function submitNewCardPopupForm(evt) {
 addNewCardButton.addEventListener('click', () => openPopup(newCardPopup));
 closeNewCardPopupButton.addEventListener('click', () => {
   closePopup(newCardPopup);
-  newCardPopupForm.reset();
+  // newCardPopupForm.reset();
 });
 
 // Привязка обрабатвает событие добавления новой карточки

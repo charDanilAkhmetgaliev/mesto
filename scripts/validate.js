@@ -24,7 +24,7 @@ const hasInvalidInput = (inputList) => {
 }
 
 // функция валидирует
-const checkInputValidity = (inputElement, formElement, inputList, validationSetting) => {
+const checkInputValidity = (inputElement, formElement, validationSetting) => {
   if (!inputElement.validity.valid) {
     showInputError(formElement, inputElement, inputElement.validationMessage, validationSetting);
   } else {
