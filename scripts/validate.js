@@ -43,12 +43,22 @@ const checkInputValidity = (inputElement, formElement) => {
 // функция вкл/выкл кнопку
 const toggleButtonState = (inputList, buttonElement) => {
   if (hasInvalidInput(inputList)) {
-    buttonElement.classList.add(validationSetting.inactiveButtonClass);
-    buttonElement.setAttribute('disabled', 'true');
+    inactiveButton(buttonElement);
   } else {
-    buttonElement.classList.remove(validationSetting.inactiveButtonClass);
-    buttonElement.removeAttribute('disabled', 'false');
+    aciveButton(buttonElement);
   }
+}
+
+// функция деактивирует кнопку
+function inactiveButton(buttonElement) {
+  buttonElement.classList.add(validationSetting.inactiveButtonClass);
+  buttonElement.setAttribute('disabled', 'true');
+}
+
+// функция активирует кнопку
+function aciveButton(buttonElement) {
+  buttonElement.classList.remove(validationSetting.inactiveButtonClass);
+  buttonElement.removeAttribute('disabled', 'false');
 }
 
 // функция связывает событие валидации с инпутами
@@ -70,6 +80,7 @@ const enableValidation = () => {
   formList.forEach(function (formElement) {
     formElement.addEventListener('submit', function (evt) {
       evt.preventDefault();
+
     });
     setInputEventListeners(formElement);
   });

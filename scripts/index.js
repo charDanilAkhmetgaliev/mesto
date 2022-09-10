@@ -24,21 +24,28 @@ function clearFormData(popup) {
   formInputList.forEach(function (formInput) {
     formInput.classList.remove(validationSetting.inputErrorClass);
   });
+
+  popupForm.reset();
 }
 
 // функция открывает попап
 function openPopup(popup) {
-  const popupForm = popup.querySelector('.popup__form');
-  const formButton = popup.querySelector('.popup__save-button');
-  const formInputList = Array.from(popupForm.querySelectorAll('.popup__input'));
+  if (!(popup.classList.contains('popup_card'))) {
+    saveButton = popup.querySelector(validationSetting.submitButtonSelector);
+    inactiveButton(saveButton);
+  }
+  
+  document.addEventListener('keydown', (evt) => handlerClosePopupEsc(evt, popup));
 
-  toggleButtonState(formInputList, formButton);
+  // tieClosePopupOverlay(popup);
   popup.classList.add('popup_opened');
 }
 
 // функция закрывает попап
 function closePopup(popup) {
-  clearFormData(popup);
+  if (!(popup.classList.contains('popup_card'))) {
+    clearFormData(popup);
+  }
   popup.classList.remove('popup_opened');
 }
 
@@ -164,3 +171,30 @@ closeNewCardPopupButton.addEventListener('click', () => {
 // Привязка обрабатвает событие добавления новой карточки
 newCardPopupForm.addEventListener('submit', submitNewCardPopupForm);
 
+// функция привязки события закрытия попапа на esc
+// function tieClosePopupEsc(openedPopup) {
+//   document.addEventListener('keydown', function (evt) {
+//     if (evt.keyCode === 27) {
+//       closePopup(openedPopup);
+//     }
+//   });
+// }
+
+// функция закрывает попап при нажатии на esc
+function handlerClosePopupEsc(evt, openedPopup) {
+  if (evt.keyCode === 27) {
+    closePopup(openedPopup);
+    document.removeEventListener('keydown', handlerClosePopupEsc);
+  }
+}
+
+// функция привязки события закрытия попапа на клик по overlay
+// function tieClosePopupOverlay(openedPopup) {
+//   openedPopupContainer = openedPopup.querySelector('.popup__container');
+//   console.log(openedPopupContainer);
+//   openedPopup.addEventListener('click', function (evt) {
+//     if (!(evt.Target > evt.currentTarget)) {
+//       closePopup(openedPopup);
+//     }
+//   });
+// }
