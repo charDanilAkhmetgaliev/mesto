@@ -36,9 +36,29 @@ function openPopup(popup) {
   }
   
   document.addEventListener('keydown', (evt) => handlerClosePopupEsc(evt, popup));
+  handlerClosePopupOverlay(popup);
 
-  // tieClosePopupOverlay(popup);
   popup.classList.add('popup_opened');
+}
+
+// функция закрывает попап при нажатии на esc
+function handlerClosePopupEsc(evt, openedPopup) {
+  if (evt.keyCode === 27) {
+    closePopup(openedPopup);
+  }
+}
+
+// функция закрывает попап на клик по overlay
+function handlerClosePopupOverlay(openedPopup) {
+  const popupContainer = openedPopup.querySelector('.popup__container');
+
+  openedPopup.addEventListener('click', function(evt) {
+    if (evt.Target !== evt.currentTarget) {
+      closePopup(openedPopup);
+    }
+  });
+
+  popupContainer.addEventListener('click', (evt) => evt.stopPropagation());
 }
 
 // функция закрывает попап
@@ -165,36 +185,7 @@ function submitNewCardPopupForm(evt) {
 addNewCardButton.addEventListener('click', () => openPopup(newCardPopup));
 closeNewCardPopupButton.addEventListener('click', () => {
   closePopup(newCardPopup);
-  newCardPopupForm.reset();
 });
 
 // Привязка обрабатвает событие добавления новой карточки
 newCardPopupForm.addEventListener('submit', submitNewCardPopupForm);
-
-// функция привязки события закрытия попапа на esc
-// function tieClosePopupEsc(openedPopup) {
-//   document.addEventListener('keydown', function (evt) {
-//     if (evt.keyCode === 27) {
-//       closePopup(openedPopup);
-//     }
-//   });
-// }
-
-// функция закрывает попап при нажатии на esc
-function handlerClosePopupEsc(evt, openedPopup) {
-  if (evt.keyCode === 27) {
-    closePopup(openedPopup);
-    document.removeEventListener('keydown', handlerClosePopupEsc);
-  }
-}
-
-// функция привязки события закрытия попапа на клик по overlay
-// function tieClosePopupOverlay(openedPopup) {
-//   openedPopupContainer = openedPopup.querySelector('.popup__container');
-//   console.log(openedPopupContainer);
-//   openedPopup.addEventListener('click', function (evt) {
-//     if (!(evt.Target > evt.currentTarget)) {
-//       closePopup(openedPopup);
-//     }
-//   });
-// }
