@@ -4,7 +4,7 @@ const validationSetting = {
   submitButtonSelector: '.popup__save-button',
   inactiveButtonClass: 'popup__save-button_inactive',
   inputErrorClass: 'popup__input_error',
-  errorClass: '.popup__error_active'
+  errorClass: 'popup__error_active'
 }
 
 // функция показывает ошибку
@@ -44,8 +44,10 @@ const checkInputValidity = (inputElement, formElement) => {
 const toggleButtonState = (inputList, buttonElement) => {
   if (hasInvalidInput(inputList)) {
     buttonElement.classList.add(validationSetting.inactiveButtonClass);
+    buttonElement.setAttribute('disabled', 'true');
   } else {
     buttonElement.classList.remove(validationSetting.inactiveButtonClass);
+    buttonElement.removeAttribute('disabled', 'false');
   }
 }
 
@@ -65,7 +67,6 @@ const setInputEventListeners = (formElement) => {
 // функция связывает событие валидации с формами
 const enableValidation = () => {
   const formList = Array.from(document.querySelectorAll(validationSetting.formSelector));
-  console.log(formList);
   formList.forEach(function (formElement) {
     formElement.addEventListener('submit', function (evt) {
       evt.preventDefault();

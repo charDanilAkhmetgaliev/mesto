@@ -163,3 +163,4 @@ closeNewCardPopupButton.addEventListener('click', () => {
 
 // Привязка обрабатвает событие добавления новой карточки
 newCardPopupForm.addEventListener('submit', submitNewCardPopupForm);
+
