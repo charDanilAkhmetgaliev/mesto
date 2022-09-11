@@ -11,40 +11,21 @@ const profilePopupStatusInput = profilePopup.querySelector('.popup__input_value-
 
 const profilePopupFormElement = profilePopup.querySelector('.popup__form');
 
-// функция очищает форму
-function clearFormData(popup) {
-  const popupForm = popup.querySelector('.popup__form');
-  const formErrorList = Array.from(popupForm.querySelectorAll('.popup__error'));
-  const formInputList = Array.from(popupForm.querySelectorAll('.popup__input'));
-
-  formErrorList.forEach(function (formError) {
-    formError.textContent = '';
-  });
-
-  formInputList.forEach(function (formInput) {
-    formInput.classList.remove(validationSetting.inputErrorClass);
-  });
-
-  popupForm.reset();
-}
-
 // функция открывает попап
 function openPopup(popup) {
-  if (!(popup.classList.contains('popup_card'))) {
-    saveButton = popup.querySelector(validationSetting.submitButtonSelector);
-    inactiveButton(saveButton);
-  }
-  
-  document.addEventListener('keydown', (evt) => handlerClosePopupEsc(evt, popup));
-  handlerClosePopupOverlay(popup);
+  resetValidation(popup, validationSetting.inactiveButtonClass);
 
   popup.classList.add('popup_opened');
+  handlerClosePopupOverlay(popup);
+  document.addEventListener('keydown', handlerClosePopupEsc);
 }
 
 // функция закрывает попап при нажатии на esc
-function handlerClosePopupEsc(evt, openedPopup) {
+function handlerClosePopupEsc(evt) {
   if (evt.keyCode === 27) {
+    const openedPopup = document.querySelector('.popup_opened');
     closePopup(openedPopup);
+    document.removeEventListener('keydown', handlerClosePopupEsc);
   }
 }
 
@@ -63,18 +44,14 @@ function handlerClosePopupOverlay(openedPopup) {
 
 // функция закрывает попап
 function closePopup(popup) {
-  if (!(popup.classList.contains('popup_card'))) {
-    clearFormData(popup);
-  }
   popup.classList.remove('popup_opened');
 }
 
 // функция переносит данные со страницы в попап
 function openEventProfilePopup() {
+  openPopup(profilePopup);
   profilePopupNameInput.value = profileName.textContent;
   profilePopupStatusInput.value = profileStatus.textContent;
-
-  openPopup(profilePopup);
 }
 
 // функция переноса данных с попапа на главную страницу
@@ -182,10 +159,16 @@ function submitNewCardPopupForm(evt) {
 }
 
 // Привязка события открытия/закрытия попапа к кнопкам
-addNewCardButton.addEventListener('click', () => openPopup(newCardPopup));
+addNewCardButton.addEventListener('click', openNewCardPopup);
 closeNewCardPopupButton.addEventListener('click', () => {
   closePopup(newCardPopup);
 });
 
 // Привязка обрабатвает событие добавления новой карточки
 newCardPopupForm.addEventListener('submit', submitNewCardPopupForm);
+
+// функция закрытия попапа добавления новой карточки
+function openNewCardPopup() {
+  resetValidation(newCardPopup);
+  openPopup(newCardPopup);
+}
