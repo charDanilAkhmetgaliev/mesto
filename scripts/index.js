@@ -13,10 +13,7 @@ const profilePopupFormElement = profilePopup.querySelector('.popup__form');
 
 // функция открывает попап
 function openPopup(popup) {
-  resetValidation(popup, validationSetting.inactiveButtonClass);
-
   popup.classList.add('popup_opened');
-  handlerClosePopupOverlay(popup);
   document.addEventListener('keydown', handlerClosePopupEsc);
 }
 
@@ -25,30 +22,18 @@ function handlerClosePopupEsc(evt) {
   if (evt.keyCode === 27) {
     const openedPopup = document.querySelector('.popup_opened');
     closePopup(openedPopup);
-    document.removeEventListener('keydown', handlerClosePopupEsc);
   }
-}
-
-// функция закрывает попап на клик по overlay
-function handlerClosePopupOverlay(openedPopup) {
-  const popupContainer = openedPopup.querySelector('.popup__container');
-
-  openedPopup.addEventListener('click', function(evt) {
-    if (evt.Target !== evt.currentTarget) {
-      closePopup(openedPopup);
-    }
-  });
-
-  popupContainer.addEventListener('click', (evt) => evt.stopPropagation());
 }
 
 // функция закрывает попап
 function closePopup(popup) {
   popup.classList.remove('popup_opened');
+  document.removeEventListener('keydown', handlerClosePopupEsc);
 }
 
-// функция переносит данные со страницы в попап
+// функция открывает попап редактирования профиля
 function openEventProfilePopup() {
+  resetValidation(profilePopup, validationSetting.inactiveButtonClass);
   openPopup(profilePopup);
   profilePopupNameInput.value = profileName.textContent;
   profilePopupStatusInput.value = profileStatus.textContent;
@@ -169,6 +154,27 @@ newCardPopupForm.addEventListener('submit', submitNewCardPopupForm);
 
 // функция закрытия попапа добавления новой карточки
 function openNewCardPopup() {
-  resetValidation(newCardPopup);
+  resetValidation(newCardPopup, validationSetting.inactiveButtonClass);
   openPopup(newCardPopup);
 }
+
+// привязка события закрывает попап добавления карточки на overlay
+newCardPopup.addEventListener('click', (event) => {
+  if (event.target.classList.contains('popup')) {
+    closePopup(newCardPopup);
+  }
+});
+
+// привязка события закрывает попап редактирования профиля на overlay
+profilePopup.addEventListener('click', (event) => {
+  if (event.target.classList.contains('popup')) {
+    closePopup(profilePopup);
+  }
+});
+
+// привязка события закрывает попап карточки на overlay
+cardPopup.addEventListener('click', (event) => {
+  if (event.target.classList.contains('popup')) {
+    closePopup(cardPopup);
+  }
+});
