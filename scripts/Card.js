@@ -1,34 +1,38 @@
-class Card {
+export default class Card {
   constructor(data, cardSelector) {
     this._cardImageLink = data.link;
     this._cardName = data.name;
     this._cardSelector = cardSelector;
   }
-
+// функция переключает состояния лайка
   _toggleLike(card) {
-    this._likeCardButton = card.querySelector('.card__like');
-    _likeCardButton.addEventListener('click', () => _likeCardButton.classList.toggle('card__like_active'));
+    this._likeCardButton = this.card.querySelector('.card__like');
+    this._likeCardButton.addEventListener('click', () => this._likeCardButton.classList.toggle('card__like_active'));
   }
-
+// функция удаляет карточку
   _deleteCard(card) {
-    this._deleteCardButton = card.querySelector('.card__delete-button');
-    _deleteCardButton.addEventListener('click', () => card.remove());
+    this._deleteCardButton = this.card.querySelector('.card__delete-button');
+    this._deleteCardButton.addEventListener('click', () => this.card.remove());
   }
-
-  createCard() {
+// функция создает карточку
+  _createCard() {
     this._template = document.querySelector(`${this._cardSelector}`).content.querySelector('.card');
-    this._card = template.cloneNode(true);
-    this._cardImage = template.querySelector('.card__image');
-    this._cardTitle = template.querySelector('.card__title');
+    this.card = this._template.cloneNode(true);
+    this.cardImage = this.card.querySelector('.card__image');
+    this._cardTitle = this.card.querySelector('.card__title');
 
     this._cardTitle.textContent = this._cardName;
-    this._cardImage.src = this._cardImageLink;
-    this._cardImage.alt = `Изображение ${this._cardName}`;
+    this.cardImage.src = this._cardImageLink;
+    this.cardImage.alt = `Изображение ${this._cardName}`;
+  }
 
-    this._toggleLike(this._card);
+  createCardHandler() {
+    this._createCard();
 
-    this._deleteCard(this._card);
+    this._toggleLike(this.card);
 
-    return this._card;
+    this._deleteCard(this.card);
+
+    return this.card;
   }
 }
