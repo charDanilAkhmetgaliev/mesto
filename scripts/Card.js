@@ -1,16 +1,16 @@
 export default class Card {
-  constructor(data, cardSelector) {
-    this._cardImageLink = data.link;
-    this._cardName = data.name;
+  constructor(cardDataName, cardDataLink, cardSelector) {
+    this._cardImageLink = cardDataLink;
+    this._cardName = cardDataName;
     this._cardSelector = cardSelector;
   }
 // функция переключает состояния лайка
-  _toggleLike(card) {
+  _toggleLike() {
     this._likeCardButton = this.card.querySelector('.card__like');
     this._likeCardButton.addEventListener('click', () => this._likeCardButton.classList.toggle('card__like_active'));
   }
 // функция удаляет карточку
-  _deleteCard(card) {
+  _deleteCard() {
     this._deleteCardButton = this.card.querySelector('.card__delete-button');
     this._deleteCardButton.addEventListener('click', () => this.card.remove());
   }

@@ -81,10 +81,10 @@ const openCardPopup = (cardName, cardLink) => {
 closeCardPopupButton.addEventListener('click', () => closePopup(cardPopup));
 
 // функция добавляет новую карточку на страницу
-function addCard(initialCardData) {
-  const card = new Card(initialCardData, '.template');
+function addCard(cardName, cardLink) {
+  const card = new Card(cardName, cardLink, '.template');
   const readyCard = card.createCardHandler();
-  card.cardImage.addEventListener('click', () => openCardPopup(initialCardData.name, initialCardData.link));
+  card.cardImage.addEventListener('click', () => openCardPopup(cardName, cardLink));
   // добавляет новую карточку в html разметку
   cardsList.prepend(readyCard);
 }
@@ -92,7 +92,7 @@ function addCard(initialCardData) {
 // цикл проходит по каждым данным карточек из массива стандартных в обратном порядке,
 // и вызывает функцию добавления новой карточки с соответствующими данными
 initialCards.reverse().forEach((initialCardData) => {
-  addCard(initialCardData);
+  addCard(initialCardData.name, initialCardData.link);
 });
 
 
