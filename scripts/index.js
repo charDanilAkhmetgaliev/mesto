@@ -2,16 +2,17 @@
 import Card from './Card.js';
 import FormValidator from './FormValidator.js';
 
+const validationSetting = {
+  formSelector: '.popup__form',
+  inputSelector: '.popup__input',
+  submitButtonSelector: '.popup__save-button',
+  inactiveButtonClass: 'popup__save-button_inactive',
+  inputErrorClass: 'popup__input_error',
+  errorClass: 'popup__error_active'
+}
+
 // функция включает валидацию форм
 function startValidation() {
-  const validationSetting = {
-    formSelector: '.popup__form',
-    inputSelector: '.popup__input',
-    submitButtonSelector: '.popup__save-button',
-    inactiveButtonClass: 'popup__save-button_inactive',
-    inputErrorClass: 'popup__input_error',
-    errorClass: 'popup__error_active'
-  }
   const formList = document.querySelectorAll('.popup__form');
   formList.forEach((formElement) => {
     formElement.addEventListener('submit', function (evt) {
@@ -24,6 +25,15 @@ function startValidation() {
 
 // вызов функции включения валидаци форм
 startValidation();
+
+// функция активирует сброс валидации
+function resetValidationHandler(popup) {
+  if (!(popup.classList.contains('popup_card'))) {
+    const popupForm = popup.querySelector('.popup__form');
+    const formValidator = new FormValidator(validationSetting, popupForm);
+    formValidator.resetValidation(popup);
+  }
+}
 
 // РЕАЛИЗАЦИЯ РЕДАКТИРОВАНИЯ ДАННЫХ ПРОФИЛЯ
 // объявление переменных
@@ -60,7 +70,7 @@ function closePopup(popup) {
 
 // функция открывает попап редактирования профиля
 function openEventProfilePopup() {
-  formValidator.resetValidation(profilePopup);
+  resetValidationHandler(profilePopup);
   openPopup(profilePopup);
   profilePopupNameInput.value = profileName.textContent;
   profilePopupStatusInput.value = profileStatus.textContent;
@@ -157,7 +167,7 @@ newCardPopupForm.addEventListener('submit', submitNewCardPopupForm);
 
 // функция закрытия попапа добавления новой карточки
 function openNewCardPopup() {
-  // resetValidation(newCardPopup);
+  resetValidationHandler(newCardPopup);
   openPopup(newCardPopup);
 }
 

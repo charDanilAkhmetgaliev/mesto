@@ -63,11 +63,9 @@ export default class FormValidator {
   }
 
   resetValidation(popup) {
-    if (!(popup.classList.contains('popup_card'))) {
       this._saveButton = popup.querySelector('.popup__save-button');
-      this._popupForm = popup.querySelector('.popup__form');
-      this._formErrorList = Array.from(popupForm.querySelectorAll('.popup__error'));
-      this._formInputList = Array.from(popupForm.querySelectorAll('.popup__input'));
+      this._formErrorList = Array.from(this._formElement.querySelectorAll('.popup__error'));
+      this._formInputList = Array.from(this._formElement.querySelectorAll('.popup__input'));
 
       this._inactiveButton(this._saveButton);
 
@@ -79,7 +77,6 @@ export default class FormValidator {
         formInput.classList.remove('popup__input_error');
       });
 
-      this._popupForm.reset();
+      this._formElement.reset();
     }
-  }
 }
