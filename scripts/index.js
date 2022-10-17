@@ -1,4 +1,30 @@
+// импорт модулей
 import Card from './Card.js';
+import FormValidator from './FormValidator.js';
+
+// функция включает валидацию форм
+function startValidation() {
+  const validationSetting = {
+    formSelector: '.popup__form',
+    inputSelector: '.popup__input',
+    submitButtonSelector: '.popup__save-button',
+    inactiveButtonClass: 'popup__save-button_inactive',
+    inputErrorClass: 'popup__input_error',
+    errorClass: 'popup__error_active'
+  }
+  const formList = document.querySelectorAll('.popup__form');
+  formList.forEach((formElement) => {
+    formElement.addEventListener('submit', function (evt) {
+      evt.preventDefault();
+    });
+    const formValidator = new FormValidator(validationSetting, formElement);
+    formValidator.enableValidation();
+  });
+}
+
+// вызов функции включения валидаци форм
+startValidation();
+
 // РЕАЛИЗАЦИЯ РЕДАКТИРОВАНИЯ ДАННЫХ ПРОФИЛЯ
 // объявление переменных
 const openEditProfilePopupButton = document.querySelector('.profile__edit-button');
@@ -34,7 +60,7 @@ function closePopup(popup) {
 
 // функция открывает попап редактирования профиля
 function openEventProfilePopup() {
-  resetValidation(profilePopup, validationSetting.inactiveButtonClass);
+  formValidator.resetValidation(profilePopup);
   openPopup(profilePopup);
   profilePopupNameInput.value = profileName.textContent;
   profilePopupStatusInput.value = profileStatus.textContent;
@@ -131,7 +157,7 @@ newCardPopupForm.addEventListener('submit', submitNewCardPopupForm);
 
 // функция закрытия попапа добавления новой карточки
 function openNewCardPopup() {
-  resetValidation(newCardPopup, validationSetting.inactiveButtonClass);
+  resetValidation(newCardPopup);
   openPopup(newCardPopup);
 }
 
