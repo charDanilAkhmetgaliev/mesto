@@ -1,3 +1,40 @@
+// подключение модулей
+import Card from './Card.js';
+import FormValidator from './FormValidator.js';
+
+const validationSetting = {
+  formSelector: '.popup__form',
+  inputSelector: '.popup__input',
+  submitButtonSelector: '.popup__save-button',
+  inactiveButtonClass: 'popup__save-button_inactive',
+  inputErrorClass: 'popup__input_error',
+  errorClass: 'popup__error_active'
+}
+
+// функция включает валидацию форм
+function startValidation() {
+  const formList = document.querySelectorAll('.popup__form');
+  formList.forEach((formElement) => {
+    formElement.addEventListener('submit', function (evt) {
+      evt.preventDefault();
+    });
+    const formValidator = new FormValidator(validationSetting, formElement);
+    formValidator.enableValidation();
+  });
+}
+
+// вызов функции включения валидаци форм
+startValidation();
+
+// функция активирует сброс валидации
+function resetValidationHandler(popup) {
+  if (!(popup.classList.contains('popup_card'))) {
+    const popupForm = popup.querySelector('.popup__form');
+    const formValidator = new FormValidator(validationSetting, popupForm);
+    formValidator.resetValidation(popup);
+  }
+}
+
 // РЕАЛИЗАЦИЯ РЕДАКТИРОВАНИЯ ДАННЫХ ПРОФИЛЯ
 // объявление переменных
 const openEditProfilePopupButton = document.querySelector('.profile__edit-button');
@@ -33,7 +70,7 @@ function closePopup(popup) {
 
 // функция открывает попап редактирования профиля
 function openEventProfilePopup() {
-  resetValidation(profilePopup, validationSetting.inactiveButtonClass);
+  resetValidationHandler(profilePopup);
   openPopup(profilePopup);
   profilePopupNameInput.value = profileName.textContent;
   profilePopupStatusInput.value = profileStatus.textContent;
@@ -60,23 +97,14 @@ profilePopupFormElement.addEventListener('submit', submitPopupProfileForm);
 
 // РЕАЛИЗАЦИЯ АВТОМАТИЧЕСКОГО ДОБАВЛЕНИЯ СТАНДАРТНЫХ КАРТОЧЕК
 // объявление переменных
-const template = document.querySelector('.template').content.querySelector('.card');
 const cardsList = document.querySelector('.elements__list');
-// функция переключает состояния лайка
-const toggleLike = (card) => {
-  const likeCardButton = card.querySelector('.card__like');
-  likeCardButton.addEventListener('click', () => likeCardButton.classList.toggle('card__like_active'));
-}
-// функция удаляет карточку
-const deleteCard = (card) => {
-  const deleteCardButton = card.querySelector('.card__delete-button');
-  deleteCardButton.addEventListener('click', () => card.remove());
-}
+
 // объявление переменных
 const cardPopup = document.querySelector('.popup_card');
 const closeCardPopupButton = cardPopup.querySelector('.popup__close-button');
 const cardPopupImage = cardPopup.querySelector('.popup__image');
 const cardPopupLabel = cardPopup.querySelector('.popup__label');
+
 // функция открывает попап с карточкой
 const openCardPopup = (cardName, cardLink) => {
   cardPopupImage.src = cardLink;
@@ -88,35 +116,20 @@ const openCardPopup = (cardName, cardLink) => {
 // привязка события закрывает попап с карточкой
 closeCardPopupButton.addEventListener('click', () => closePopup(cardPopup));
 
-// функция создает карточку
-const createCard = (cardName, cardLink) => {
-  // создает новую карточку из шаблона
-  const card = template.cloneNode(true);
-  const cardImage = card.querySelector('.card__image');
-  const cardTitle = card.querySelector('.card__title');
-  // переносит данные из формы попапа в новую карточку
-  cardTitle.textContent = cardName;
-  cardImage.src = cardLink;
-  cardImage.alt = `Изображение ${cardName}`;
-  // вызывает функцию связки событий лайка с кнопкой
-  toggleLike(card);
-  // вызывает функцию связки удаления карточки с кнопкой
-  deleteCard(card);
-  // привязка события открывает попап карточки
-  cardImage.addEventListener('click', () => openCardPopup(cardName, cardLink));
-  // возвращает готовую новую карточку
-  return card;
-}
-
 // функция добавляет новую карточку на страницу
 function addCard(cardName, cardLink) {
+  const card = new Card(cardName, cardLink, '.template');
+  const readyCard = card.createCardHandler();
+  card.cardImage.addEventListener('click', () => openCardPopup(cardName, cardLink));
   // добавляет новую карточку в html разметку
-  cardsList.prepend(createCard(cardName, cardLink));
+  cardsList.prepend(readyCard);
 }
 
 // цикл проходит по каждым данным карточек из массива стандартных в обратном порядке,
 // и вызывает функцию добавления новой карточки с соответствующими данными
-initialCards.reverse().forEach((initialCardData) => addCard(initialCardData.name, initialCardData.link));
+initialCards.reverse().forEach((initialCardData) => {
+  addCard(initialCardData.name, initialCardData.link);
+});
 
 
 // РЕАЛИЗАЦИЯ РУЧНОГО ДОБАВЛЕНИЯ КАРТОЧКИ
@@ -154,7 +167,7 @@ newCardPopupForm.addEventListener('submit', submitNewCardPopupForm);
 
 // функция закрытия попапа добавления новой карточки
 function openNewCardPopup() {
-  resetValidation(newCardPopup, validationSetting.inactiveButtonClass);
+  resetValidationHandler(newCardPopup);
   openPopup(newCardPopup);
 }
 
