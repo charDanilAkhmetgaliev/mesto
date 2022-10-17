@@ -157,7 +157,7 @@ newCardPopupForm.addEventListener('submit', submitNewCardPopupForm);
 
 // функция закрытия попапа добавления новой карточки
 function openNewCardPopup() {
-  resetValidation(newCardPopup);
+  // resetValidation(newCardPopup);
   openPopup(newCardPopup);
 }
 
