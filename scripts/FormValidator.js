@@ -4,6 +4,7 @@ export default class FormValidator {
     this._formElement = formElement;
   }
 
+  // функция показывает ошибку
   _showInputError(inputElement) {
     this._errorElement = this._formElement.querySelector(`.${inputElement.id}-error`);
     inputElement.classList.add(this._validationSetting.inputErrorClass);
@@ -11,6 +12,7 @@ export default class FormValidator {
     this._errorElement.classList.add(this._validationSetting.errorClass);
   }
 
+  // функция скрывает ошибку
   _hideInputError(inputElement) {
     this._errorElement = this._formElement.querySelector(`.${inputElement.id}-error`);
     inputElement.classList.remove(this._validationSetting.inputErrorClass);
@@ -18,12 +20,14 @@ export default class FormValidator {
     this._errorElement.textContent = '';
   }
 
+  // функция проверяет инпуты на валидность
   _hasInvalidInput() {
     return this._inputList.some(function (inputElement) {
       return !inputElement.validity.valid;
     });
   }
 
+  // функция проверяет на валидацию и показывает ошибки
   _checkInputValidity(inputElement) {
     if (!inputElement.validity.valid) {
       this._showInputError(inputElement);
@@ -32,6 +36,7 @@ export default class FormValidator {
     }
   }
 
+  // функция вкл/выкл кнопку
   _toggleButtonState() {
     if (this._hasInvalidInput()) {
       this._inactiveButton(this._buttonElement);
@@ -40,16 +45,19 @@ export default class FormValidator {
     }
   }
 
+  // функция деактивирует кнопку
   _inactiveButton(buttonElement) {
     buttonElement.classList.add(this._validationSetting.inactiveButtonClass);
     buttonElement.setAttribute('disabled', 'true');
   }
 
+  // функция активирует кнопку
   _aciveButton(buttonElement) {
     buttonElement.classList.remove(this._validationSetting.inactiveButtonClass);
     buttonElement.removeAttribute('disabled', 'false');
   }
 
+  // функция связывает событие валидации с инпутами
   enableValidation() {
     this._inputList = Array.from(this._formElement.querySelectorAll(this._validationSetting.inputSelector));
     this._buttonElement = this._formElement.querySelector(this._validationSetting.submitButtonSelector);
@@ -62,6 +70,7 @@ export default class FormValidator {
     });
   }
 
+  // функция сбрасывает валидцию форм
   resetValidation(popup) {
       this._saveButton = popup.querySelector('.popup__save-button');
       this._formErrorList = Array.from(this._formElement.querySelectorAll('.popup__error'));

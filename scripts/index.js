@@ -1,4 +1,4 @@
-// импорт модулей
+// подключение модулей
 import Card from './Card.js';
 import FormValidator from './FormValidator.js';
 
