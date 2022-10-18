@@ -1,38 +1,50 @@
 export default class Card {
-  constructor(cardDataName, cardDataLink, cardSelector) {
+  constructor(cardDataName, cardDataLink, cardSelector, handleOpenCardPopup) {
     this._cardImageLink = cardDataLink;
     this._cardName = cardDataName;
     this._cardSelector = cardSelector;
+    this._handleOpenCardPopup = handleOpenCardPopup;
   }
-// функция переключает состояния лайка
+
+  // метод добавляет слушатель к кнопке лайка
+  _addToggleLikeListener() {
+    this._likeCardButton = this._card.querySelector('.card__like');
+    this._likeCardButton.addEventListener('click', () => this._toggleLike());
+  }
+  // метод переключает состояния лайка
   _toggleLike() {
-    this._likeCardButton = this.card.querySelector('.card__like');
-    this._likeCardButton.addEventListener('click', () => this._likeCardButton.classList.toggle('card__like_active'));
+    this._likeCardButton.classList.toggle('card__like_active');
   }
-// функция удаляет карточку
+  // метод добавляет слушатель к кнопке удаления карточки
+  _addDeleteCardListener() {
+    this._deleteCardButton = this._card.querySelector('.card__delete-button');
+    this._deleteCardButton.addEventListener('click', () => this._deleteCard());
+  }
+  // метод удаляет карточку
   _deleteCard() {
-    this._deleteCardButton = this.card.querySelector('.card__delete-button');
-    this._deleteCardButton.addEventListener('click', () => this.card.remove());
+    this._card.remove();
   }
-// функция создает карточку
+  // метод создает карточку
   _createCard() {
     this._template = document.querySelector(`${this._cardSelector}`).content.querySelector('.card');
-    this.card = this._template.cloneNode(true);
-    this.cardImage = this.card.querySelector('.card__image');
-    this._cardTitle = this.card.querySelector('.card__title');
+    this._card = this._template.cloneNode(true);
+    this.cardImage = this._card.querySelector('.card__image');
+    this._cardTitle = this._card.querySelector('.card__title');
 
     this._cardTitle.textContent = this._cardName;
     this.cardImage.src = this._cardImageLink;
     this.cardImage.alt = `Изображение ${this._cardName}`;
+
+    this.cardImage.addEventListener('click', () => this._handleOpenCardPopup(this._cardName, this._cardImageLink));
   }
 
   createCardHandler() {
     this._createCard();
 
-    this._toggleLike(this.card);
+    this._addToggleLikeListener(this._card);
 
-    this._deleteCard(this.card);
+    this._addDeleteCardListener(this._card);
 
-    return this.card;
+    return this._card;
   }
 }
