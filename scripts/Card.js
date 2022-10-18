@@ -35,7 +35,7 @@ export default class Card {
     this.cardImage.src = this._cardImageLink;
     this.cardImage.alt = `Изображение ${this._cardName}`;
 
-    this.cardImage.addEventListener('click', () => this._handleOpenCardPopup(this._cardTitle, this._cardImageLink));
+    this.cardImage.addEventListener('click', () => this._handleOpenCardPopup(this._cardName, this._cardImageLink));
   }
 
   createCardHandler() {
