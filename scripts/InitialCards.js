@@ -1,5 +1,5 @@
 //Объявление массива данных стандартных карточек
-const initialCards = [
+export const initialCards = [
     {
       name: 'Кулл-шариф',
       link: './images/kul-sharif.jpg'

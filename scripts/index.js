@@ -1,6 +1,7 @@
 // подключение модулей
 import Card from './Card.js';
 import FormValidator from './FormValidator.js';
+import { initialCards } from './InitialCards.js';
 
 const validationSetting = {
   formSelector: '.popup__form',
