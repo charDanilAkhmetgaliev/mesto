@@ -1,9 +1,11 @@
 export default class Card {
-  constructor(cardDataName, cardDataLink, cardSelector) {
+  constructor(cardDataName, cardDataLink, cardSelector, handleOpenCardPopup) {
     this._cardImageLink = cardDataLink;
     this._cardName = cardDataName;
     this._cardSelector = cardSelector;
+    this._handleOpenCardPopup = handleOpenCardPopup;
   }
+
   // метод добавляет слушатель к кнопке лайка
   _addToggleLikeListener() {
     this._likeCardButton = this._card.querySelector('.card__like');
@@ -32,6 +34,8 @@ export default class Card {
     this._cardTitle.textContent = this._cardName;
     this.cardImage.src = this._cardImageLink;
     this.cardImage.alt = `Изображение ${this._cardName}`;
+
+    this.cardImage.addEventListener('click', () => this._handleOpenCardPopup(this._cardTitle, this._cardImageLink));
   }
 
   createCardHandler() {
