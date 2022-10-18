@@ -6,7 +6,7 @@ export default class Card {
   }
   // метод добавляет слушатель к кнопке лайка
   _addToggleLikeListener() {
-    this._likeCardButton = this.card.querySelector('.card__like');
+    this._likeCardButton = this._card.querySelector('.card__like');
     this._likeCardButton.addEventListener('click', () => this._toggleLike());
   }
   // метод переключает состояния лайка
@@ -15,19 +15,19 @@ export default class Card {
   }
   // метод добавляет слушатель к кнопке удаления карточки
   _addDeleteCardListener() {
-    this._deleteCardButton = this.card.querySelector('.card__delete-button');
+    this._deleteCardButton = this._card.querySelector('.card__delete-button');
     this._deleteCardButton.addEventListener('click', () => this._deleteCard());
   }
   // метод удаляет карточку
   _deleteCard() {
-    this.card.remove();
+    this._card.remove();
   }
   // метод создает карточку
   _createCard() {
     this._template = document.querySelector(`${this._cardSelector}`).content.querySelector('.card');
-    this.card = this._template.cloneNode(true);
-    this.cardImage = this.card.querySelector('.card__image');
-    this._cardTitle = this.card.querySelector('.card__title');
+    this._card = this._template.cloneNode(true);
+    this.cardImage = this._card.querySelector('.card__image');
+    this._cardTitle = this._card.querySelector('.card__title');
 
     this._cardTitle.textContent = this._cardName;
     this.cardImage.src = this._cardImageLink;
@@ -37,10 +37,10 @@ export default class Card {
   createCardHandler() {
     this._createCard();
 
-    this._addToggleLikeListener(this.card);
+    this._addToggleLikeListener(this._card);
 
-    this._addDeleteCardListener(this.card);
+    this._addDeleteCardListener(this._card);
 
-    return this.card;
+    return this._card;
   }
 }
