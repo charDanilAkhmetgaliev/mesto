@@ -73,7 +73,7 @@ export default class FormValidator {
 
   // функция сбрасывает валидцию форм
   resetValidation() {
-    this._inactiveButton(this._buttonElement);
+    this._inactiveButton();
 
     this._formErrorList.forEach((formError) => {
       formError.textContent = '';

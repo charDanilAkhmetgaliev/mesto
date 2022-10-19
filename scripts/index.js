@@ -13,21 +13,6 @@ const validationSetting = {
   errorClass: '.popup__error'
 }
 
-// функция включает валидацию форм
-function startValidation() {
-  const formList = document.querySelectorAll('.popup__form');
-  formList.forEach((formElement) => {
-    formElement.addEventListener('submit', function (evt) {
-      evt.preventDefault();
-    });
-    const formValidator = new FormValidator(validationSetting, formElement);
-    formValidator.enableValidation();
-  });
-}
-
-// вызов функции включения валидаци форм
-startValidation();
-
 // РЕАЛИЗАЦИЯ РЕДАКТИРОВАНИЯ ДАННЫХ ПРОФИЛЯ
 // объявление переменных
 const openEditProfilePopupButton = document.querySelector('.profile__edit-button');
