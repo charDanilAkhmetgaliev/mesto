@@ -2,6 +2,7 @@
 import Card from './Card.js';
 import FormValidator from './FormValidator.js';
 import { initialCards } from './InitialCards.js';
+import Section from './Section.js';
 
 const validationSetting = {
   formSelector: '.popup__form',
@@ -78,13 +79,11 @@ profilePopupFormElement.addEventListener('submit', submitPopupProfileForm);
 
 // РЕАЛИЗАЦИЯ АВТОМАТИЧЕСКОГО ДОБАВЛЕНИЯ СТАНДАРТНЫХ КАРТОЧЕК
 // объявление переменных
-const cardsList = document.querySelector('.elements__list');
-
-// объявление переменных
 const cardPopup = document.querySelector('.popup_card');
 const closeCardPopupButton = cardPopup.querySelector('.popup__close-button');
 const cardPopupImage = cardPopup.querySelector('.popup__image');
 const cardPopupLabel = cardPopup.querySelector('.popup__label');
+const cardsListSelector = '.elements__list';
 
 // привязка события закрывает попап с карточкой
 closeCardPopupButton.addEventListener('click', () => closePopup(cardPopup));
@@ -98,19 +97,34 @@ function handleOpenCardPopup(cardName, cardLink) {
   openPopup(cardPopup);
 }
 
+const cardsList = new Section(
+  {
+    items: initialCards,
+    renderer: (item) => {
+      const card = new Card(item.name, item.link, '.template', handleOpenCardPopup);
+      const readyCard = card.createCardHandler();
+
+      cardsList.addItem(readyCard);
+    }
+  },
+  cardsListSelector
+); 
+
+cardsList.setItems();
+
 // функция добавляет новую карточку на страницу
-function addCard(cardName, cardLink) {
-  const card = new Card(cardName, cardLink, '.template', handleOpenCardPopup);
-  const readyCard = card.createCardHandler();
-  // добавляет новую карточку в html разметку
-  cardsList.prepend(readyCard);
-}
+// function addCard(cardName, cardLink) {
+//   const card = new Card(cardName, cardLink, '.template', handleOpenCardPopup);
+//   const readyCard = card.createCardHandler();
+//   // добавляет новую карточку в html разметку
+//   cardsList.prepend(readyCard);
+// }
 
 // цикл проходит по каждым данным карточек из массива стандартных в обратном порядке,
 // и вызывает функцию добавления новой карточки с соответствующими данными
-initialCards.reverse().forEach((initialCardData) => {
-  addCard(initialCardData.name, initialCardData.link);
-});
+// initialCards.reverse().forEach((initialCardData) => {
+//   addCard(initialCardData.name, initialCardData.link);
+// });
 
 
 // РЕАЛИЗАЦИЯ РУЧНОГО ДОБАВЛЕНИЯ КАРТОЧКИ
@@ -133,7 +147,7 @@ function submitNewCardPopupForm(evt) {
   const cardName = newCardPopupNameInput.value;
   const cardLink = newCardPopupLinkInput.value;
   // вызывает функцию добваления новой карточки
-  addCard(cardName, cardLink);
+
   // закрывает попап
   closePopup(newCardPopup);
   // очищает поля формы попапа
