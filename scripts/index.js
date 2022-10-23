@@ -103,7 +103,7 @@ const cardsList = new Section(
     renderer: (item) => {
       const card = new Card(item.name, item.link, '.template', handleOpenCardPopup);
       const readyCard = card.createCardHandler();
-
+    
       cardsList.addItem(readyCard);
     }
   },
@@ -111,21 +111,6 @@ const cardsList = new Section(
 ); 
 
 cardsList.setItems();
-
-// функция добавляет новую карточку на страницу
-// function addCard(cardName, cardLink) {
-//   const card = new Card(cardName, cardLink, '.template', handleOpenCardPopup);
-//   const readyCard = card.createCardHandler();
-//   // добавляет новую карточку в html разметку
-//   cardsList.prepend(readyCard);
-// }
-
-// цикл проходит по каждым данным карточек из массива стандартных в обратном порядке,
-// и вызывает функцию добавления новой карточки с соответствующими данными
-// initialCards.reverse().forEach((initialCardData) => {
-//   addCard(initialCardData.name, initialCardData.link);
-// });
-
 
 // РЕАЛИЗАЦИЯ РУЧНОГО ДОБАВЛЕНИЯ КАРТОЧКИ
 // объявление переменных
@@ -147,7 +132,8 @@ function submitNewCardPopupForm(evt) {
   const cardName = newCardPopupNameInput.value;
   const cardLink = newCardPopupLinkInput.value;
   // вызывает функцию добваления новой карточки
-
+  initialCards.unshift({ name: cardName, link: cardLink });
+  cardsList.setItems();
   // закрывает попап
   closePopup(newCardPopup);
   // очищает поля формы попапа
