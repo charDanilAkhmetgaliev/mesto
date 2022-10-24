@@ -1,23 +1,4 @@
 export default class Section {
-<<<<<<< HEAD
-  constructor({ items, renderer }, containerSelector) {
-    this._items = items;
-    this._renderer = renderer;
-    this._containerSelector = containerSelector;
-    this._container = document.querySelector(containerSelector);
-  }
-
-  addItem() {
-
-  }
-
-  setItems() {
-    // this._items.forEach((item) => {
-    //   this._renderer(item);
-    // });
-  }
-}
-=======
     constructor({ items, renderer }, containerSelector) {
         this._items = items;
         this._renderer = renderer;
@@ -39,4 +20,3 @@ export default class Section {
         });
     }
 }
->>>>>>> 355b46196a5fc1d72c83ca346c24ae64cbd96105
