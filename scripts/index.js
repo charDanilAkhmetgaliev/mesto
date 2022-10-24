@@ -102,16 +102,15 @@ function handleOpenCardPopup(cardName, cardLink) {
 function addCard(cardName, cardLink) {
   const card = new Card(cardName, cardLink, '.template', handleOpenCardPopup);
   const readyCard = card.createCardHandler();
-  // добавляет новую карточку в html разметку
-  cardsList.prepend(readyCard);
+
+  return readyCard;
 }
 
 // цикл проходит по каждым данным карточек из массива стандартных в обратном порядке,
 // и вызывает функцию добавления новой карточки с соответствующими данными
 initialCards.reverse().forEach((initialCardData) => {
-  addCard(initialCardData.name, initialCardData.link);
+  const readyCard = addCard(initialCardData.name, initialCardData.link);
 });
-
 
 // РЕАЛИЗАЦИЯ РУЧНОГО ДОБАВЛЕНИЯ КАРТОЧКИ
 // объявление переменных
