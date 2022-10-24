@@ -2,6 +2,7 @@
 import Card from './Card.js';
 import FormValidator from './FormValidator.js';
 import { initialCards } from './InitialCards.js';
+import Section from './Section.js';
 
 const validationSetting = {
   formSelector: '.popup__form',
@@ -78,13 +79,11 @@ profilePopupFormElement.addEventListener('submit', submitPopupProfileForm);
 
 // РЕАЛИЗАЦИЯ АВТОМАТИЧЕСКОГО ДОБАВЛЕНИЯ СТАНДАРТНЫХ КАРТОЧЕК
 // объявление переменных
-const cardsList = document.querySelector('.elements__list');
-
-// объявление переменных
 const cardPopup = document.querySelector('.popup_card');
 const closeCardPopupButton = cardPopup.querySelector('.popup__close-button');
 const cardPopupImage = cardPopup.querySelector('.popup__image');
 const cardPopupLabel = cardPopup.querySelector('.popup__label');
+const cardsListSelector = '.elements__list';
 
 // привязка события закрывает попап с карточкой
 closeCardPopupButton.addEventListener('click', () => closePopup(cardPopup));
@@ -98,6 +97,7 @@ function handleOpenCardPopup(cardName, cardLink) {
   openPopup(cardPopup);
 }
 
+<<<<<<< HEAD
 // функция добавляет новую карточку на страницу
 function addCard(cardName, cardLink) {
   const card = new Card(cardName, cardLink, '.template', handleOpenCardPopup);
@@ -112,6 +112,23 @@ initialCards.reverse().forEach((initialCardData) => {
   const readyCard = addCard(initialCardData.name, initialCardData.link);
 });
 
+=======
+const cardsList = new Section(
+  {
+    items: initialCards,
+    renderer: (item) => {
+      const card = new Card(item.name, item.link, '.template', handleOpenCardPopup);
+      const readyCard = card.createCardHandler();
+    
+      cardsList.addItem(readyCard);
+    }
+  },
+  cardsListSelector
+); 
+
+cardsList.setItems();
+
+>>>>>>> 355b46196a5fc1d72c83ca346c24ae64cbd96105
 // РЕАЛИЗАЦИЯ РУЧНОГО ДОБАВЛЕНИЯ КАРТОЧКИ
 // объявление переменных
 const addNewCardButton = document.querySelector('.profile__add-button');
@@ -132,7 +149,8 @@ function submitNewCardPopupForm(evt) {
   const cardName = newCardPopupNameInput.value;
   const cardLink = newCardPopupLinkInput.value;
   // вызывает функцию добваления новой карточки
-  addCard(cardName, cardLink);
+  initialCards.unshift({ name: cardName, link: cardLink });
+  cardsList.setItems();
   // закрывает попап
   closePopup(newCardPopup);
   // очищает поля формы попапа
