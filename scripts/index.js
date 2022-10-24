@@ -86,7 +86,6 @@ const closeCardPopupButton = cardPopup.querySelector('.popup__close-button');
 const cardPopupImage = cardPopup.querySelector('.popup__image');
 const cardPopupLabel = cardPopup.querySelector('.popup__label');
 
-
 // привязка события закрывает попап с карточкой
 closeCardPopupButton.addEventListener('click', () => closePopup(cardPopup));
 
@@ -105,12 +104,12 @@ const cardsList = new Section(
     renderer: (item) => {
       const card = new Card(item.name, item.link, '.template', handleOpenCardPopup);
       const readyCard = card.createCardHandler();
-    
+
       cardsList.addItem(readyCard);
     }
   },
   cardsListSelector
-); 
+);
 
 cardsList.setItems();
 
@@ -126,7 +125,7 @@ const newCardPopupLinkInput = newCardPopup.querySelector('.popup__input_value-ty
 const newCardPopupFormValidator = new FormValidator(validationSetting, newCardPopupForm);
 newCardPopupFormValidator.enableValidation();
 
-// Функция добавления карточку на страницу
+// Функция добавления карточки на страницу
 function submitNewCardPopupForm(evt) {
   // отменяет отправку данных и перезагрузку страницы после события submit
   evt.preventDefault();
