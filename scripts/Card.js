@@ -1,9 +1,11 @@
+import PopupWithImage from "./PopupWithImage.js";
+
 export default class Card {
-  constructor(cardDataName, cardDataLink, cardSelector, handleOpenCardPopup) {
+  constructor(cardDataName, cardDataLink, cardSelector, handleCardClick) {
     this._cardImageLink = cardDataLink;
     this._cardName = cardDataName;
     this._cardSelector = cardSelector;
-    this._handleOpenCardPopup = handleOpenCardPopup;
+    this._handleCardClick = handleCardClick;
   }
 
   // метод добавляет слушатель к кнопке лайка
@@ -35,7 +37,7 @@ export default class Card {
     this.cardImage.src = this._cardImageLink;
     this.cardImage.alt = `Изображение ${this._cardName}`;
 
-    this.cardImage.addEventListener('click', () => this._handleOpenCardPopup(this._cardName, this._cardImageLink));
+    this.cardImage.addEventListener('click', () => this._handleCardClick(this._cardName, this._cardImageLink));
   }
 
   createCardHandler() {
