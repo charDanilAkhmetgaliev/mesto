@@ -1,9 +1,6 @@
-import PopupWithImage from "./PopupWithImage.js";
-
 export default class Card {
-  constructor(cardDataName, cardDataLink, cardSelector, handleCardClick) {
-    this._cardImageLink = cardDataLink;
-    this._cardName = cardDataName;
+  constructor(cardData, cardSelector, handleCardClick) {
+    this._cardData = cardData;
     this._cardSelector = cardSelector;
     this._handleCardClick = handleCardClick;
   }
@@ -33,11 +30,11 @@ export default class Card {
     this.cardImage = this._card.querySelector('.card__image');
     this._cardTitle = this._card.querySelector('.card__title');
 
-    this._cardTitle.textContent = this._cardName;
-    this.cardImage.src = this._cardImageLink;
-    this.cardImage.alt = `Изображение ${this._cardName}`;
+    this._cardTitle.textContent = this._cardData.name;
+    this.cardImage.src = this._cardData.link;
+    this.cardImage.alt = `Изображение ${this._cardData.name}`;
 
-    this.cardImage.addEventListener('click', () => this._handleCardClick(this._cardName, this._cardImageLink));
+    this.cardImage.addEventListener('click', () => this._handleCardClick(this._cardData.name, this._cardData.link));
   }
 
   createCardHandler() {

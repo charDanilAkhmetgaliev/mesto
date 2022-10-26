@@ -5,10 +5,6 @@ export default class PopupWithImage extends Popup {
     super(popupSelector);
   }
 
-  log() {
-    console.log(this._popup);
-  }
-
   _setData(cardName, cardLink) {
     this._popup.querySelector('.popup__image').src = cardLink;
     this._popup.querySelector('.popup__image').alt = `Изображение ${cardName}`;
@@ -19,8 +15,4 @@ export default class PopupWithImage extends Popup {
     this._setData(cardName, cardLink);
     super.open();
   }
-
-  // close = () => {
-  //   super.close();
-  // }
 }

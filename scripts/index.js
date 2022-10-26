@@ -3,8 +3,13 @@ import Card from './Card.js';
 import FormValidator from './FormValidator.js';
 import { initialCards } from './InitialCards.js';
 import PopupWithImage from './PopupWithImage.js';
+import PopupWithForm from './PopupWithForm.js';
 import Section from './Section.js';
-import { cardsListSelector, cardPopupSelector } from './utils/constants.js';
+import { cardsListSelector,
+  cardPopupSelector,
+  addCardPopupSelector,
+  openAddCardPopupButton,
+  popupFormSelector } from './utils/constants.js';
 
 const validationSetting = {
   formSelector: '.popup__form',
@@ -32,8 +37,31 @@ const profilePopupFormElement = profilePopup.querySelector('.popup__form');
 const profilePopupFormValidator = new FormValidator(validationSetting, profilePopupFormElement);
 profilePopupFormValidator.enableValidation();
 
-const popupWithImage = new PopupWithImage(cardPopupSelector);
-popupWithImage.log()
+const newCardPopup = document.querySelector(addCardPopupSelector);
+const newCardPopupForm = newCardPopup.querySelector(popupFormSelector);
+
+const newCardPopupFormValidator = new FormValidator(validationSetting, newCardPopupForm);
+newCardPopupFormValidator.enableValidation();
+
+const popupOpenImage = new PopupWithImage(cardPopupSelector);
+
+const newCard = new PopupWithForm({
+  submitForm: (evt) => {
+    evt.preventDefault();
+    const cardData = newCard._getInputValues();
+    initialCards.unshift({ name: cardData.name, link: cardData.link });
+    cardsList.setItems();
+    newCard.close();
+    },
+  resetValidator: () => {
+    newCardPopupFormValidator.resetValidation();
+    }
+  },
+  addCardPopupSelector
+);
+
+openAddCardPopupButton.addEventListener('click', () => newCard.open());
+
 // функция открывает попап
 // function openPopup(popup) {
 //   popup.classList.add('popup_opened');
@@ -41,7 +69,7 @@ popupWithImage.log()
 // }
 
 // функция закрывает попап при нажатии на esc
-// function handlerClosePopupEsc(evt) {
+// function   (evt) {
 //   if (evt.key === 'Escape') {
 //     const openedPopup = document.querySelector('.popup_opened');
 //     closePopup(openedPopup);
@@ -101,7 +129,7 @@ const cardsList = new Section(
   {
     items: initialCards,
     renderer: (item) => {
-      const card = new Card(item.name, item.link, '.template', popupWithImage.open);
+      const card = new Card(item, '.template', popupOpenImage.open);
       const readyCard = card.createCardHandler();
 
       cardsList.addItem(readyCard);
@@ -114,31 +142,9 @@ cardsList.setItems();
 
 // РЕАЛИЗАЦИЯ РУЧНОГО ДОБАВЛЕНИЯ КАРТОЧКИ
 // объявление переменных
-const addNewCardButton = document.querySelector('.profile__add-button');
-const newCardPopup = document.querySelector('.popup_new-card');
-const closeNewCardPopupButton = newCardPopup.querySelector('.popup__close-button');
-const newCardPopupForm = newCardPopup.querySelector('.popup__form');
-const newCardPopupNameInput = newCardPopup.querySelector('.popup__input_value-type_name');
-const newCardPopupLinkInput = newCardPopup.querySelector('.popup__input_value-type_link');
 
-const newCardPopupFormValidator = new FormValidator(validationSetting, newCardPopupForm);
-newCardPopupFormValidator.enableValidation();
 
-// Функция добавления карточки на страницу
-function submitNewCardPopupForm(evt) {
-  // отменяет отправку данных и перезагрузку страницы после события submit
-  evt.preventDefault();
-  // объявление переменных
-  const cardName = newCardPopupNameInput.value;
-  const cardLink = newCardPopupLinkInput.value;
-  // вызывает функцию добваления новой карточки
-  initialCards.unshift({ name: cardName, link: cardLink });
-  cardsList.setItems();
-  // закрывает попап
-  closePopup(newCardPopup);
-  // очищает поля формы попапа
-  newCardPopupForm.reset();
-}
+
 
 // Привязка события открытия/закрытия попапа к кнопкам
 // addNewCardButton.addEventListener('click', openNewCardPopup);
@@ -147,7 +153,7 @@ function submitNewCardPopupForm(evt) {
 // });
 
 // Привязка обрабатвает событие добавления новой карточки
-newCardPopupForm.addEventListener('submit', submitNewCardPopupForm);
+// newCardPopupForm.addEventListener('submit', submitNewCardPopupForm);
 
 // функция закрытия попапа добавления новой карточки
 // function openNewCardPopup() {
