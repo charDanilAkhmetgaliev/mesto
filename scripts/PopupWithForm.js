@@ -25,7 +25,6 @@ export default class PopupWithForm extends Popup {
   }
 
   close() {
-    console.log('я this');
     this._popupForm.reset();
     this._resetValidator();
     super.close();

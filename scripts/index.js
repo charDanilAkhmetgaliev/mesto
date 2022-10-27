@@ -1,15 +1,23 @@
 // подключение модулей
 import Card from './Card.js';
 import FormValidator from './FormValidator.js';
-import { initialCards } from './InitialCards.js';
 import PopupWithImage from './PopupWithImage.js';
 import PopupWithForm from './PopupWithForm.js';
 import Section from './Section.js';
+import UserInfo from './UserInfo.js';
+
+import { initialCards } from './InitialCards.js';
 import { cardsListSelector,
   cardPopupSelector,
   addCardPopupSelector,
   openAddCardPopupButton,
-  popupFormSelector } from './utils/constants.js';
+  openProfilePopupButton,
+  profilePopupSelector,
+  profilePopupFormElement,
+  addCardPopupFormElement,
+  userNameSelector,
+  userInfoSelector
+  } from './utils/constants.js';
 
 const validationSetting = {
   formSelector: '.popup__form',
@@ -23,41 +31,44 @@ const validationSetting = {
 
 // РЕАЛИЗАЦИЯ РЕДАКТИРОВАНИЯ ДАННЫХ ПРОФИЛЯ
 // объявление переменных
-const openEditProfilePopupButton = document.querySelector('.profile__edit-button');
-const profilePopup = document.querySelector('.popup_edit-profile');
-const closePopupProfileButton = profilePopup.querySelector('.popup__close-button');
-
-const profileName = document.querySelector('.profile__name');
-const profileStatus = document.querySelector('.profile__status');
-const profilePopupNameInput = profilePopup.querySelector('.popup__input_value-type_name');
-const profilePopupStatusInput = profilePopup.querySelector('.popup__input_value-type_status');
-
-const profilePopupFormElement = profilePopup.querySelector('.popup__form');
-
 const profilePopupFormValidator = new FormValidator(validationSetting, profilePopupFormElement);
 profilePopupFormValidator.enableValidation();
 
-const newCardPopup = document.querySelector(addCardPopupSelector);
-const newCardPopupForm = newCardPopup.querySelector(popupFormSelector);
-
-const newCardPopupFormValidator = new FormValidator(validationSetting, newCardPopupForm);
+const newCardPopupFormValidator = new FormValidator(validationSetting, addCardPopupFormElement);
 newCardPopupFormValidator.enableValidation();
 
 const popupOpenImage = new PopupWithImage(cardPopupSelector);
 
-const newCard = new PopupWithForm({
+const userInfo = new UserInfo({ userNameSelector, userInfoSelector });
+
+const cardPopup = new PopupWithForm({
   submitForm: (evt) => {
     evt.preventDefault();
-    const cardData = newCard._getInputValues();
+    const cardData = cardPopup._getInputValues();
     initialCards.unshift({ name: cardData.name, link: cardData.link });
     cardsList.setItems();
-    newCard.close();
+    cardPopup.close();
     },
   resetValidator: () => {
     newCardPopupFormValidator.resetValidation();
     }
   },
   addCardPopupSelector
+);
+
+const profilePopup = new PopupWithForm({
+  submitForm: (evt) => {
+    evt.preventDefault();
+    const userData = profilePopup._getInputValues();
+    console.log(userData);
+    userInfo.setUserInfo(userData);
+    profilePopup.close();
+   },
+  resetValidator: () => {
+    profilePopupFormValidator.resetValidation();
+  }
+  },
+  profilePopupSelector
 );
 
 const cardsList = new Section(
@@ -75,7 +86,12 @@ const cardsList = new Section(
 
 cardsList.setItems();
 
-openAddCardPopupButton.addEventListener('click', () => newCard.open());
+openAddCardPopupButton.addEventListener('click', () => {
+  const userData = userInfo.getUserInfo();
+
+  cardPopup.open();
+});
+openProfilePopupButton.addEventListener('click', () => profilePopup.open());
 
 // функция открывает попап
 // function openPopup(popup) {
@@ -117,11 +133,11 @@ openAddCardPopupButton.addEventListener('click', () => newCard.open());
 // }
 
 // Привязка события открытия/закрытия попапа к кнопкам
-openEditProfilePopupButton.addEventListener('click', openEventProfilePopup);
-closePopupProfileButton.addEventListener('click', () => closePopup(profilePopup));
+// openEditProfilePopupButton.addEventListener('click', openEventProfilePopup);
+// closePopupProfileButton.addEventListener('click', () => closePopup(profilePopup));
 
 // привязка события переноса данных на главную страницу
-profilePopupFormElement.addEventListener('submit', submitPopupProfileForm);
+// profilePopupFormElement.addEventListener('submit', submitPopupProfileForm);
 
 
 // РЕАЛИЗАЦИЯ АВТОМАТИЧЕСКОГО ДОБАВЛЕНИЯ СТАНДАРТНЫХ КАРТОЧЕК
