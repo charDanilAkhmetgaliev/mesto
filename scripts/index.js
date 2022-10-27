@@ -60,6 +60,21 @@ const newCard = new PopupWithForm({
   addCardPopupSelector
 );
 
+const cardsList = new Section(
+  {
+    items: initialCards,
+    renderer: (item) => {
+      const card = new Card(item, '.template', popupOpenImage.open);
+      const readyCard = card.createCardHandler();
+
+      cardsList.addItem(readyCard);
+    }
+  },
+  cardsListSelector
+);
+
+cardsList.setItems();
+
 openAddCardPopupButton.addEventListener('click', () => newCard.open());
 
 // функция открывает попап
@@ -83,23 +98,23 @@ openAddCardPopupButton.addEventListener('click', () => newCard.open());
 // }
 
 // функция открывает попап редактирования профиля
-function openEventProfilePopup() {
-  profilePopupFormValidator.resetValidation();
-  openPopup(profilePopup);
-  profilePopupNameInput.value = profileName.textContent;
-  profilePopupStatusInput.value = profileStatus.textContent;
-}
+// function openEventProfilePopup() {
+//   profilePopupFormValidator.resetValidation();
+//   openPopup(profilePopup);
+//   profilePopupNameInput.value = profileName.textContent;
+//   profilePopupStatusInput.value = profileStatus.textContent;
+// }
 
 // функция переноса данных с попапа на главную страницу
-function submitPopupProfileForm(evt) {
-  // отмена отправки данных и перезагрузки страницы после события submit
-  evt.preventDefault();
-  // перенос значений инпутов на главную страницу-------------
-  profileStatus.textContent = profilePopupStatusInput.value;
-  profileName.textContent = profilePopupNameInput.value;
-  // вызов функции открытия/закрытия попапа
-  closePopup(profilePopup);
-}
+// function submitPopupProfileForm(evt) {
+//   // отмена отправки данных и перезагрузки страницы после события submit
+//   evt.preventDefault();
+//   // перенос значений инпутов на главную страницу-------------
+//   profileStatus.textContent = profilePopupStatusInput.value;
+//   profileName.textContent = profilePopupNameInput.value;
+//   // вызов функции открытия/закрытия попапа
+//   closePopup(profilePopup);
+// }
 
 // Привязка события открытия/закрытия попапа к кнопкам
 openEditProfilePopupButton.addEventListener('click', openEventProfilePopup);
@@ -125,20 +140,7 @@ profilePopupFormElement.addEventListener('submit', submitPopupProfileForm);
 
 //   openPopup(cardPopup);
 // }
-const cardsList = new Section(
-  {
-    items: initialCards,
-    renderer: (item) => {
-      const card = new Card(item, '.template', popupOpenImage.open);
-      const readyCard = card.createCardHandler();
 
-      cardsList.addItem(readyCard);
-    }
-  },
-  cardsListSelector
-);
-
-cardsList.setItems();
 
 // РЕАЛИЗАЦИЯ РУЧНОГО ДОБАВЛЕНИЯ КАРТОЧКИ
 // объявление переменных
