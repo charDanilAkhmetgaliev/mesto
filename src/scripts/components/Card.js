@@ -1,9 +1,9 @@
 export default class Card {
-  constructor(cardDataName, cardDataLink, cardSelector, handleOpenCardPopup) {
-    this._cardImageLink = cardDataLink;
-    this._cardName = cardDataName;
+  constructor(cardData, cardSelector, handleCardClick, initialCards) {
+    this._cardData = cardData;
     this._cardSelector = cardSelector;
-    this._handleOpenCardPopup = handleOpenCardPopup;
+    this._handleCardClick = handleCardClick;
+    this._initialCards = initialCards;
   }
 
   // метод добавляет слушатель к кнопке лайка
@@ -23,6 +23,11 @@ export default class Card {
   // метод удаляет карточку
   _deleteCard() {
     this._card.remove();
+    this._initialCards.forEach((cardData, cardDataIndex) => {
+      if (cardData.name === this._cardData.name && cardData.link === this._cardData.link) {
+        this._initialCards.splice(cardDataIndex, 1);
+      }
+    });
   }
   // метод создает карточку
   _createCard() {
@@ -31,11 +36,11 @@ export default class Card {
     this.cardImage = this._card.querySelector('.card__image');
     this._cardTitle = this._card.querySelector('.card__title');
 
-    this._cardTitle.textContent = this._cardName;
-    this.cardImage.src = this._cardImageLink;
-    this.cardImage.alt = `Изображение ${this._cardName}`;
+    this._cardTitle.textContent = this._cardData.name;
+    this.cardImage.src = this._cardData.link;
+    this.cardImage.alt = `Изображение ${this._cardData.name}`;
 
-    this.cardImage.addEventListener('click', () => this._handleOpenCardPopup(this._cardName, this._cardImageLink));
+    this.cardImage.addEventListener('click', () => this._handleCardClick(this._cardData.name, this._cardData.link));
   }
 
   createCardHandler() {

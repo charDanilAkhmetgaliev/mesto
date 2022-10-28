@@ -1,0 +1,38 @@
+{
+  "name": "mesto",
+  "version": "0.0.1",
+  "description": "Учебный проект на курсе вэб-разработчика в [Яндекс.Практикум'е](https://practicum.yandex.ru/profile/web/). На сайте предложены интересные места и достопримечательности города Казани, Россия. Они продемонстрированы в блоке elements ввиде шести стандартных карточек. Сайт разработан приемом Responsive Web Design **Mobile First** для следующих разрешений: 320px, 1280px. Проект является первым на курсе, где практикуются и применяются основы JavaScript'а.",
+  "main": "index.js",
+  "scripts": {
+    "build": "webpack --mode production",
+    "dev": "webpack serve --mode development"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/charDanilAkhmetgaliev/mesto.git"
+  },
+  "author": "Danil' Akhmetgaliev",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/charDanilAkhmetgaliev/mesto/issues"
+  },
+  "homepage": "https://github.com/charDanilAkhmetgaliev/mesto#readme",
+  "devDependencies": {
+    "@babel/core": "^7.19.6",
+    "@babel/preset-env": "^7.19.4",
+    "autoprefixer": "^10.4.13",
+    "babel-loader": "^9.0.0",
+    "clean-webpack-plugin": "^4.0.0",
+    "css-loader": "^6.7.1",
+    "cssnano": "^5.1.14",
+    "html-webpack-plugin": "^5.5.0",
+    "mini-css-extract-plugin": "^2.6.1",
+    "postcss-loader": "^7.0.1",
+    "webpack": "^5.74.0",
+    "webpack-cli": "^4.10.0",
+    "webpack-dev-server": "^4.11.1"
+  },
+  "dependencies": {
+    "core-js": "^3.26.0"
+  }
+}
