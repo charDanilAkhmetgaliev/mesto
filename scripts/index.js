@@ -60,7 +60,6 @@ const profilePopup = new PopupWithForm({
   submitForm: (evt) => {
     evt.preventDefault();
     const userData = profilePopup._getInputValues();
-    console.log(userData);
     userInfo.setUserInfo(userData);
     profilePopup.close();
    },
@@ -86,12 +85,12 @@ const cardsList = new Section(
 
 cardsList.setItems();
 
-openAddCardPopupButton.addEventListener('click', () => {
+openAddCardPopupButton.addEventListener('click', () => cardPopup.open());
+openProfilePopupButton.addEventListener('click', () => {
   const userData = userInfo.getUserInfo();
-
-  cardPopup.open();
+  profilePopup.setInputValues(userData);
+  profilePopup.open();
 });
-openProfilePopupButton.addEventListener('click', () => profilePopup.open());
 
 // функция открывает попап
 // function openPopup(popup) {

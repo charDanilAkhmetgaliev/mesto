@@ -7,8 +7,8 @@ export default class UserInfo {
   getUserInfo() {
     this._UserData = {};
     this._UserData.name = this._userNameElement.textContent;
-    this._UserData.info = this._userInfoElement.textContent;
-    console.log(this._UserData);
+    this._UserData.status = this._userInfoElement.textContent;
+
     return this._UserData;
   }
 
