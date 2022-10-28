@@ -74,7 +74,7 @@ const cardsList = new Section(
   {
     items: initialCards,
     renderer: (item) => {
-      const card = new Card(item, '.template', popupOpenImage.open);
+      const card = new Card(item, '.template', popupOpenImage.open, initialCards);
       const readyCard = card.createCardHandler();
 
       cardsList.addItem(readyCard);

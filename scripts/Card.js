@@ -1,8 +1,9 @@
 export default class Card {
-  constructor(cardData, cardSelector, handleCardClick) {
+  constructor(cardData, cardSelector, handleCardClick, initialCards) {
     this._cardData = cardData;
     this._cardSelector = cardSelector;
     this._handleCardClick = handleCardClick;
+    this._initialCards = initialCards;
   }
 
   // метод добавляет слушатель к кнопке лайка
@@ -22,6 +23,11 @@ export default class Card {
   // метод удаляет карточку
   _deleteCard() {
     this._card.remove();
+    this._initialCards.forEach((cardData, cardDataIndex) => {
+      if (cardData.name === this._cardData.name && cardData.link === this._cardData.link) {
+        this._initialCards.splice(cardDataIndex, 1);
+      }
+    });
   }
   // метод создает карточку
   _createCard() {
