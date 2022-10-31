@@ -7,6 +7,15 @@ export const addCardPopupSelector = '.popup_new-card';
 export const profilePopupSelector = '.popup_edit-profile';
 export const userNameSelector = '.profile__name';
 export const userInfoSelector = '.profile__status';
+export const validationSetting = {
+  formSelector: '.popup__form',
+  inputSelector: '.popup__input',
+  submitButtonSelector: '.popup__save-button',
+  inactiveButtonClass: 'popup__save-button_inactive',
+  inputErrorClass: 'popup__input_error',
+  activeErrorClass: 'popup__error_active',
+  errorClass: '.popup__error'
+}
 
 // DOM-элементы
 export const openAddCardPopupButton = document.querySelector('.profile__add-button');

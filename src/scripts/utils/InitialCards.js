@@ -7,28 +7,28 @@ import musazhalilImage from '../../images/musa-djalil.jpg';
 import mileniumImage from '../../images/millenium.jpg';
 
 export const initialCards = [
-    {
-      name: 'Кулл-шариф',
-      link: kullsharifImage
-    },
-    {
-      name: 'Казанский Кремль',
-      link: kazanKremlinImage
-    },
-    {
-      name: 'Дворец Земледельцев',
-      link: dvoreczemImage
-    },
-    {
-      name: 'Центр семьи "Казан"',
-      link: chashaImage
-    },
-    {
-      name: 'Памятник Мусе Джалилю',
-      link: musazhalilImage
-    },
-    {
-      name: 'Мост "Миллениум"',
-      link: mileniumImage
-    }
-  ];
+  {
+    name: 'Кулл-шариф',
+    link: kullsharifImage
+  },
+  {
+    name: 'Казанский Кремль',
+    link: kazanKremlinImage
+  },
+  {
+    name: 'Дворец Земледельцев',
+    link: dvoreczemImage
+  },
+  {
+    name: 'Центр семьи "Казан"',
+    link: chashaImage
+  },
+  {
+    name: 'Памятник Мусе Джалилю',
+    link: musazhalilImage
+  },
+  {
+    name: 'Мост "Миллениум"',
+    link: mileniumImage
+  }
+];
