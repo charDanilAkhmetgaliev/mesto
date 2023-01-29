@@ -1,33 +1,34 @@
 export default class Card {
-  constructor(cardData, cardSelector, handleCardClick, initialCards) {
+  constructor(cardData, templateSelector, handleCardClick, initialCards) {
     this._cardData = cardData;
-    this._cardSelector = cardSelector;
+    this._cardSelector = templateSelector;
     this._handleCardClick = handleCardClick;
     this._initialCards = initialCards;
   }
 
   // метод добавляет слушатель к кнопке лайка
   _addToggleLikeListener() {
-    this._likeCardButton = this._card.querySelector('.card__like');
-    this._likeCardButton.addEventListener('click', () => this._toggleLike());
+    this._cardLikeButton = this._card.querySelector('.card__like');
+    this._cardLikeButton.addEventListener('click', () => this._toggleLike());
   }
   // метод переключает состояния лайка
   _toggleLike() {
-    this._likeCardButton.classList.toggle('card__like_active');
+    this._cardLikeButton.classList.toggle('card__like_active');
   }
   // метод добавляет слушатель к кнопке удаления карточки
   _addDeleteCardListener() {
-    this._deleteCardButton = this._card.querySelector('.card__delete-button');
-    this._deleteCardButton.addEventListener('click', () => this._deleteCard());
+    this._cardDeleteButton = this._card.querySelector('.card__delete-button');
+    this._cardDeleteButton.addEventListener('click', () => this._deleteCard());
   }
   // метод удаляет карточку
   _deleteCard() {
     this._card.remove();
-    this._initialCards.forEach((cardData, cardDataIndex) => {
-      if (cardData.name === this._cardData.name && cardData.link === this._cardData.link) {
-        this._initialCards.splice(cardDataIndex, 1);
-      }
-    });
+    this._card = null;
+    // this._initialCards.forEach((cardData, cardDataIndex) => {
+    //   if (cardData.name === this._cardData.name && cardData.link === this._cardData.link) {
+    //     this._initialCards.splice(cardDataIndex, 1);
+    //   }
+    // });
   }
   // метод создает карточку
   _createCard() {
@@ -40,15 +41,15 @@ export default class Card {
     this.cardImage.src = this._cardData.link;
     this.cardImage.alt = `Изображение ${this._cardData.name}`;
 
-    this.cardImage.addEventListener('click', () => this._handleCardClick(this._cardData.name, this._cardData.link));
+    this.cardImage.addEventListener('click', () => this._handleCardClick(this._cardData));
   }
 
   createCardHandler() {
     this._createCard();
 
-    this._addToggleLikeListener(this._card);
+    this._addToggleLikeListener();
 
-    this._addDeleteCardListener(this._card);
+    this._addDeleteCardListener();
 
     return this._card;
   }

@@ -13,8 +13,7 @@ export default class Section {
     this._contrainer.innerHTML = '';
   }
 
-  setItems() {
-    this._clear();
+  renderItems() {
     this._items.forEach((item) => {
       this._renderer(item);
     });

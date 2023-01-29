@@ -22,7 +22,6 @@ import { cardsListSelector,
   } from '../utils/constants.js';
 
 
-
 // РЕАЛИЗАЦИЯ РЕДАКТИРОВАНИЯ ДАННЫХ ПРОФИЛЯ
 // объявление переменных
 const profilePopupFormValidator = new FormValidator(validationSetting, profilePopupFormElement);
@@ -36,14 +35,9 @@ const popupOpenImage = new PopupWithImage(cardPopupSelector);
 const userInfo = new UserInfo({ userNameSelector, userInfoSelector });
 
 const cardPopup = new PopupWithForm({
-    submitForm: (evt) => {
-      evt.preventDefault();
-      const cardData = cardPopup._getInputValues();
-      initialCards.unshift({ name: cardData.name, link: cardData.link });
-      cardsSection.setItems();
-      cardPopup.close();
-    },
-    resetValidator: () => {
+    submitForm: (formData) => {
+      initialCards.unshift({ name: formData.name, link: formData.link });
+      cardsSection.renderItems();
       newCardPopupFormValidator.resetValidation();
     }
   },
@@ -51,13 +45,8 @@ const cardPopup = new PopupWithForm({
 );
 
 const profilePopup = new PopupWithForm({
-    submitForm: (evt) => {
-      evt.preventDefault();
-      const userData = profilePopup._getInputValues();
-      userInfo.setUserInfo(userData);
-      profilePopup.close();
-    },
-    resetValidator: () => {
+    submitForm: (formData) => {
+      userInfo.setUserInfo(formData);
       profilePopupFormValidator.resetValidation();
     }
   },
@@ -77,10 +66,13 @@ const cardsSection = new Section(
   cardsListSelector
 );
 
-cardsSection.setItems();
+cardsSection.renderItems();
 
-openAddCardPopupButton.addEventListener('click', () => cardPopup.open());
+openAddCardPopupButton.addEventListener('click', () => {
+  newCardPopupFormValidator.resetValidation();
+  cardPopup.open()});
 openProfilePopupButton.addEventListener('click', () => {
+  profilePopupFormValidator.resetValidation();
   const userData = userInfo.getUserInfo();
   profilePopup.setInputValues(userData);
   profilePopup.open();
