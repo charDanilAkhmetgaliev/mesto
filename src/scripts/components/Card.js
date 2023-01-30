@@ -1,9 +1,10 @@
 export default class Card {
   constructor(cardData, templateSelector, handleCardClick, initialCards) {
     this._cardData = cardData;
-    this._cardSelector = templateSelector;
+    // this._cardSelector = templateSelector;
     this._handleCardClick = handleCardClick;
     this._initialCards = initialCards;
+    this._dataTemplateElement = document.querySelector(`${templateSelector}`).content;
   }
 
   // метод добавляет слушатель к кнопке лайка
@@ -30,10 +31,10 @@ export default class Card {
     //   }
     // });
   }
-  // метод создает карточку
-  _createCard() {
-    this._template = document.querySelector(`${this._cardSelector}`).content.querySelector('.card');
-    this._card = this._template.cloneNode(true);
+  // метод клонирует новый карточный элемент и наполняет его содержимым
+  _buildCardContent() {
+    this._cardElement = this._dataTemplateElement.querySelector('.card');
+    this._card = this._cardElement.cloneNode(true);
     this.cardImage = this._card.querySelector('.card__image');
     this._cardTitle = this._card.querySelector('.card__title');
 
@@ -44,8 +45,9 @@ export default class Card {
     this.cardImage.addEventListener('click', () => this._handleCardClick(this._cardData));
   }
 
-  createCardHandler() {
-    this._createCard();
+  // метод создает карточку
+  createCard() {
+    this._buildCardContent();
 
     this._addToggleLikeListener();
 

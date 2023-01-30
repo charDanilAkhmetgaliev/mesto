@@ -82,7 +82,5 @@ export default class FormValidator {
     this._inputList.forEach((formInput) => {
       formInput.classList.remove(this._validationSetting.inputErrorClass);
     });
-
-    this._formElement.reset();
   }
 }
