@@ -89,7 +89,8 @@ function transferProfileData() {
 // привязка слушателей событий к кнопкам открытия попапов
 openAddCardPopupButton.addEventListener('click', () => {
   newCardPopupFormValidator.resetValidation();
-  cardPopup.open()});
+  cardPopup.open();
+});
 
 openProfilePopupButton.addEventListener('click', () => {
   profilePopupFormValidator.resetValidation();
