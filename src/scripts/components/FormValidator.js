@@ -2,6 +2,9 @@ export default class FormValidator {
   constructor(validationSetting, formElement) {
     this._validationSetting = validationSetting;
     this._formElement = formElement;
+    this._inputList = Array.from(this._formElement.querySelectorAll(this._validationSetting.inputSelector));
+    this._buttonElement = this._formElement.querySelector(this._validationSetting.submitButtonSelector);
+    this._formErrorList = Array.from(this._formElement.querySelectorAll(this._validationSetting.errorClass));
   }
 
   // функция показывает ошибку
@@ -39,29 +42,26 @@ export default class FormValidator {
   // функция вкл/выкл кнопку
   _toggleButtonState() {
     if (this._hasInvalidInput()) {
-      this._inactiveButton(this._buttonElement);
+      this._disableSubmitButton();
     } else {
-      this._aciveButton(this._buttonElement);
+      this._enableSubmitButton();
     }
   }
 
   // функция деактивирует кнопку
-  _inactiveButton() {
+  _disableSubmitButton() {
     this._buttonElement.classList.add(this._validationSetting.inactiveButtonClass);
-    this._buttonElement.setAttribute('disabled', 'true');
+    this._buttonElement.disabled = true;
   }
 
   // функция активирует кнопку
-  _aciveButton() {
+  _enableSubmitButton() {
     this._buttonElement.classList.remove(this._validationSetting.inactiveButtonClass);
-    this._buttonElement.removeAttribute('disabled', 'false');
+    this._buttonElement.disabled = false;
   }
 
   // функция связывает событие валидации с инпутами
   enableValidation() {
-    this._inputList = Array.from(this._formElement.querySelectorAll(this._validationSetting.inputSelector));
-    this._buttonElement = this._formElement.querySelector(this._validationSetting.submitButtonSelector);
-    this._formErrorList = Array.from(this._formElement.querySelectorAll(this._validationSetting.errorClass));
     this._toggleButtonState();
     this._inputList.forEach((inputElement) => {
       inputElement.addEventListener('input', () => {
@@ -73,7 +73,7 @@ export default class FormValidator {
 
   // функция сбрасывает валидцию форм
   resetValidation() {
-    this._inactiveButton();
+    this._disableSubmitButton();
 
     this._formErrorList.forEach((formError) => {
       formError.textContent = '';
@@ -82,7 +82,5 @@ export default class FormValidator {
     this._inputList.forEach((formInput) => {
       formInput.classList.remove(this._validationSetting.inputErrorClass);
     });
-
-    this._formElement.reset();
   }
 }
