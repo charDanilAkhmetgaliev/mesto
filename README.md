@@ -15,7 +15,7 @@
 * **CSS3**
 * **JS**
 
-Структура файлов отсортирована по методологии БЭМ Nested.
+Структура файлов отсортирована по методологии БЭМ Nested. При разработке использовалась ООП парадигма.
 
 ## Ссылка на GitHub Pages
 [https://chardanilakhmetgaliev.github.io/mesto/index.html](https://chardanilakhmetgaliev.github.io/mesto/index.html)
