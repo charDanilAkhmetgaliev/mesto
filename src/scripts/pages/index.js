@@ -40,8 +40,7 @@ const userInfo = new UserInfo({ userNameSelector, userInfoSelector });
 // создание экземпляра класса попапа с формой для новой карточки
 const cardPopup = new PopupWithForm({
     submitForm: (formData) => {
-      initialCards.unshift({ name: formData.name, link: formData.link });
-      cardsSection.renderItems();
+      cardsSection.renderItem(formData);
       newCardPopupFormValidator.resetValidation();
     }
   },
@@ -69,7 +68,7 @@ const cardsSection = new Section(
   {
     items: initialCards,
     renderer: (item) => {
-      const card = new Card(item, '.template', popupOpenImage.open, initialCards);
+      const card = new Card(item, '.template', popupOpenImage.open);
       const readyCard = card.createCard();
 
       cardsSection.addItem(readyCard);
