@@ -11,12 +11,12 @@ import UserInfo from '../components/UserInfo.js';
 import { initialCards } from '../utils/InitialCards.js';
 import { cardsListSelector,
   cardPopupSelector,
-  addCardPopupSelector,
-  openAddCardPopupButton,
-  openProfilePopupButton,
+  cardAddPopupSelector,
+  cardPopupOpenButton,
+  profilePopupEditButton,
   profilePopupSelector,
   profilePopupFormElement,
-  addCardPopupFormElement,
+  cardAddPopupFormElement,
   userNameSelector,
   userInfoSelector,
   validationSetting
@@ -27,8 +27,8 @@ const profilePopupFormValidator = new FormValidator(validationSetting, profilePo
 profilePopupFormValidator.enableValidation();
 
 // создание экземпляра класса валидации формы добавления новой карточки
-const newCardPopupFormValidator = new FormValidator(validationSetting, addCardPopupFormElement);
-newCardPopupFormValidator.enableValidation();
+const cardPopupFormValidator = new FormValidator(validationSetting, cardAddPopupFormElement);
+cardPopupFormValidator.enableValidation();
 
 // создание экземпляра класса попапа с изображением
 const popupOpenImage = new PopupWithImage(cardPopupSelector);
@@ -41,10 +41,10 @@ const userInfo = new UserInfo({ userNameSelector, userInfoSelector });
 const cardPopup = new PopupWithForm({
     submitForm: (formData) => {
       cardsSection.renderItem(formData);
-      newCardPopupFormValidator.resetValidation();
+      cardPopupFormValidator.resetValidation();
     }
   },
-  addCardPopupSelector
+  cardAddPopupSelector
 );
 
 // вызов функции привязки слушателей событий к попапу карточки
@@ -69,9 +69,9 @@ const cardsSection = new Section(
     items: initialCards,
     renderer: (item) => {
       const card = new Card(item, '.template', popupOpenImage.open);
-      const readyCard = card.createCard();
+      const contentFullCard = card.createCard();
 
-      cardsSection.addItem(readyCard);
+      cardsSection.addItem(contentFullCard);
     }
   },
   cardsListSelector
@@ -87,12 +87,12 @@ function transferProfileData() {
 }
 
 // привязка слушателей событий к кнопкам открытия попапов
-openAddCardPopupButton.addEventListener('click', () => {
-  newCardPopupFormValidator.resetValidation();
+cardPopupOpenButton.addEventListener('click', () => {
+  cardPopupFormValidator.resetValidation();
   cardPopup.open();
 });
 
-openProfilePopupButton.addEventListener('click', () => {
+profilePopupEditButton.addEventListener('click', () => {
   profilePopupFormValidator.resetValidation();
   transferProfileData();
   profilePopup.open();
