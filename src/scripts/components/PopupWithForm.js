@@ -30,13 +30,11 @@ export default class PopupWithForm extends Popup {
       evt.preventDefault();
       const formData = this._getInputValues();
       this._handleSubmit(formData);
-      this.close();
     });
   }
 
   close() {
     this._popupForm.reset();
-    // this._resetValidator();
     super.close();
   }
 }

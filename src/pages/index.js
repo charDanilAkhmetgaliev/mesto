@@ -42,6 +42,7 @@ const cardPopup = new PopupWithForm({
     submitForm: (formData) => {
       cardsSection.renderItem(formData);
       cardPopupFormValidator.resetValidation();
+      cardPopup.close();
     }
   },
   cardAddPopupSelector
@@ -55,6 +56,7 @@ const profilePopup = new PopupWithForm({
     submitForm: (formData) => {
       userInfo.setUserInfo(formData);
       profilePopupFormValidator.resetValidation();
+      profilePopup.close();
     }
   },
   profilePopupSelector
