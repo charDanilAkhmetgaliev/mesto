@@ -22,6 +22,7 @@ export default class Card {
   // метод удаляет карточку
   _deleteCard() {
     this._card.remove();
+    this._card = null;
   }
   // метод клонирует новый карточный элемент и наполняет его содержимым
   _buildCardContent() {

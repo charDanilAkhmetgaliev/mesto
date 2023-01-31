@@ -75,12 +75,8 @@ export default class FormValidator {
   resetValidation() {
     this._disableSubmitButton();
 
-    this._formErrorList.forEach((formError) => {
-      formError.textContent = '';
-    });
-
-    this._inputList.forEach((formInput) => {
-      formInput.classList.remove(this._validationSetting.inputErrorClass);
+    this._inputList.forEach((inputElement) => {
+      this._hideInputError(inputElement);
     });
   }
 }
