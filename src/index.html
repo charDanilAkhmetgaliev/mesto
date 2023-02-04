@@ -19,10 +19,10 @@
         <img class="profile__avatar" src="<%=require('./images/Avatar.png')%>" alt="Аватар пользователя">
         <div class="profile__info">
           <div class="profile__info-container">
-            <h1 class="profile__name">Жак-Ив Кусто</h1>
+            <h1 class="profile__name"></h1>
             <button class="profile__edit-button" type="button" aria-label="Редактировать"></button>
           </div>
-          <p class="profile__status">Исследователь океана</p>
+          <p class="profile__status"></p>
         </div>
       </div>
       <button class="profile__add-button" type="button" aria-label="Добавить"></button>
@@ -45,7 +45,7 @@
             <span class="popup__error profile-name-input-error"></span>
           </label>
           <label class="popup__input-field">
-            <input id="profile-status-input" type="text" class="popup__input popup__input_value-type_status" name="status" minlength="2" maxlength="200" required/>
+            <input id="profile-status-input" type="text" class="popup__input popup__input_value-type_status" name="about" minlength="2" maxlength="200" required/>
             <span class="popup__error profile-status-input-error"></span>
           </label>
         </ul>

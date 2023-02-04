@@ -6,6 +6,7 @@ import PopupWithImage from '../scripts/components/PopupWithImage.js';
 import PopupWithForm from '../scripts/components/PopupWithForm.js';
 import Section from '../scripts/components/Section.js';
 import UserInfo from '../scripts/components/UserInfo.js';
+import Api from '../scripts/components/Api.js';
 
 // импорт константных данных
 import { initialCards,
@@ -19,7 +20,9 @@ import { initialCards,
   cardAddPopupFormElement,
   userNameSelector,
   userInfoSelector,
-  validationSetting
+  validationSetting,
+  url,
+  userData as userAuthData
   } from '../scripts/utils/constants.js';
 
 // создание экземпляра класса валидации формы профиля
@@ -99,3 +102,16 @@ profilePopupEditButton.addEventListener('click', () => {
   transferProfileData();
   profilePopup.open();
 });
+
+function authorization() {
+  const api = new Api(url, userAuthData);
+  api.authorizationToServer().then((data) => {
+    console.log(data);
+    userInfo.setUserInfo(data);
+  })
+  .catch((err) => {
+    userInfo.setUserInfo({ name: err, about: '' });
+  })
+}
+
+authorization();
