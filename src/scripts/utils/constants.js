@@ -23,42 +23,6 @@ export const profilePopupEditButton = document.querySelector('.profile__edit-but
 export const profilePopupFormElement = document.querySelector(profilePopupSelector).querySelector(popupFormSelector);
 export const cardAddPopupFormElement = document.querySelector(cardAddPopupSelector).querySelector(popupFormSelector);
 
-// импортировать изображения
-import kullsharifImage from '../../images/kul-sharif.jpg';
-import kazanKremlinImage from '../../images/kremlin.jpg';
-import dvoreczemImage from '../../images/dvorec-zem.jpg';
-import chashaImage from '../../images/chasha.jpg';
-import musazhalilImage from '../../images/musa-djalil.jpg';
-import mileniumImage from '../../images/millenium.jpg';
-
-// массив стандартных карточек
-export const initialCards = [
-  {
-    name: 'Кулл-шариф',
-    link: kullsharifImage
-  },
-  {
-    name: 'Казанский Кремль',
-    link: kazanKremlinImage
-  },
-  {
-    name: 'Дворец Земледельцев',
-    link: dvoreczemImage
-  },
-  {
-    name: 'Центр семьи "Казан"',
-    link: chashaImage
-  },
-  {
-    name: 'Памятник Мусе Джалилю',
-    link: musazhalilImage
-  },
-  {
-    name: 'Мост "Миллениум"',
-    link: mileniumImage
-  }
-];
-
 // данные подключения к серверу
 export const url = 'https://mesto.nomoreparties.co/v1';
 // данные пользователя

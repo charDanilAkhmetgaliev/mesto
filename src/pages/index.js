@@ -9,8 +9,7 @@ import UserInfo from '../scripts/components/UserInfo.js';
 import Api from '../scripts/components/Api.js';
 
 // импорт константных данных
-import { initialCards,
-  cardsListSelector,
+import { cardsListSelector,
   cardPopupSelector,
   cardAddPopupSelector,
   cardPopupOpenButton,
@@ -71,7 +70,6 @@ profilePopup.setEventListeners();
 // создание экземпляра класса отрисовки секции
 const cardsSection = new Section(
   {
-    items: initialCards,
     renderer: (item) => {
       const card = new Card(item, '.template', popupOpenImage.open);
       const contentFullCard = card.createCard();
@@ -81,9 +79,6 @@ const cardsSection = new Section(
   },
   cardsListSelector
 );
-
-// непосредственно отрисовка секции с карточками
-cardsSection.renderItems();
 
 // функция переноса данных со страницы в попап профиля
 function transferProfileData() {
@@ -106,12 +101,18 @@ profilePopupEditButton.addEventListener('click', () => {
 function authorization() {
   const api = new Api(url, userAuthData);
   api.authorizationToServer().then((data) => {
-    console.log(data);
+    console.log('Profile ->', data);
     userInfo.setUserInfo(data);
   })
   .catch((err) => {
     userInfo.setUserInfo({ name: err, about: '' });
   })
+
+  api.receiveCardsData().then((cardsData) => {
+    console.log('Cards ->', cardsData);
+    cardsSection.renderItems(cardsData);
+  })
+  .catch(err => console.log(err))
 }
 
 authorization();

@@ -15,13 +15,21 @@ export default class Api {
       if (response.ok) {
         return response.json();
       }
-      return Promise.reject('Упс! Что-то пошло не так!');
+      return Promise.reject('Ошибка авторизации!');
     })
   }
 
-  // receiveCardsData() {
-  //   return fetch(`${this._url}/${this._cohort}/cards`, {
-
-  //   })
-  // }
+  receiveCardsData() {
+    return fetch(`${this._url}/${this._cohort}/cards`, {
+      headers: {
+        'authorization': `${this._userToken}`
+      }
+    })
+    .then((response) => {
+      if (response.ok) {
+        return response.json();
+      }
+      return Promise.reject('[WARNING] Cards not found!');
+    })
+  }
 }
