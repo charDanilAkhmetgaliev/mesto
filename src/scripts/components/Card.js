@@ -30,10 +30,12 @@ export default class Card {
     this._card = this._cardElement.cloneNode(true);
     this.cardImage = this._card.querySelector('.card__image');
     this._cardTitle = this._card.querySelector('.card__title');
+    this._cardLikesCount = this._card.querySelector('.card__likes-count');
 
     this._cardTitle.textContent = this._cardData.name;
     this.cardImage.src = this._cardData.link;
     this.cardImage.alt = `Изображение ${this._cardData.name}`;
+    this._cardLikesCount.textContent = this._cardData.likes.length;
 
     this.cardImage.addEventListener('click', () => this._handleCardClick(this._cardData));
   }
