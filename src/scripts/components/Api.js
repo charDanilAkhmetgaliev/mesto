@@ -30,7 +30,7 @@ export default class Api {
     .then(response => this._processResponse(response, 'Cards not found'))
   }
 
-  updateUserData(name, about) {
+  updateUserData({ name, about }) {
     return fetch(`${this._url}/${this._cohort}/users/me`, {
       method: 'PATCH',
       headers: {
@@ -43,5 +43,20 @@ export default class Api {
       })
     })
     .then(response => this._processResponse(response, 'Ошибка обновления профиля'))
+  }
+
+  sendCardData({ name, link }) {
+    return fetch(`${this._url}/${this._cohort}/cards`, {
+      method: 'POST',
+      headers: {
+        'authorization': `${this._userToken}`,
+        'content-type': 'application/json'
+      },
+      body: JSON.stringify({
+        name: name, 
+        link: link
+      })
+    })
+    .then(response => this._processResponse(response, 'Ошибка добавления карточки'))
   }
 }

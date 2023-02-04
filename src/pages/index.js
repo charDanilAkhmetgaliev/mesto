@@ -24,20 +24,29 @@ import { cardsListSelector,
   userData as userAuthData
   } from '../scripts/utils/constants.js';
 
-// авторизация пользователя
-const api = new Api(url, userAuthData);
-  
-api.authorizationToServer().then((data) => {
-  console.log('Profile ->', data);
-  userInfo.setUserInfo(data.name, data.about);
-})
-.catch(err => console.log(err))
+// функция авторизации пользователя
+function authorization() {
+  // создание экземпляра класса API
+  const api = new Api(url, userAuthData);
 
-api.receiveCardsData().then((cardsData) => {
-  console.log('Cards ->', cardsData);
-  cardsSection.renderItems(cardsData);
-})
-.catch(err => console.log(err))
+  // промис с запросом данных о пользователе
+  api.authorizationToServer().then((data) => {
+    console.log('Profile ->', data);
+    userInfo.setUserInfo(data);
+  })
+  .catch(err => console.log(err))
+
+  // промис с запросом данных о карточках
+  api.receiveCardsData().then((cardsData) => {
+    console.log('Cards ->', cardsData);
+    cardsSection.renderItems(cardsData.reverse());
+  })
+  .catch(err => console.log(err))
+
+  return api;
+}
+
+const api = authorization();
 
 // создание экземпляра класса валидации формы профиля
 const profilePopupFormValidator = new FormValidator(validationSetting, profilePopupFormElement);
@@ -57,7 +66,12 @@ const userInfo = new UserInfo({ userNameSelector, userInfoSelector });
 // создание экземпляра класса попапа с формой для новой карточки
 const cardPopup = new PopupWithForm({
     submitForm: (formData) => {
-      cardsSection.renderItem(formData);
+      api.sendCardData(formData).then((cardData) => {
+        console.log('Карточка добавлена ->', cardData);
+        cardsSection.renderItem(formData);
+      })
+      .catch(err => console.log(err))
+
       cardPopupFormValidator.resetValidation();
       cardPopup.close();
     }
@@ -71,9 +85,9 @@ cardPopup.setEventListeners();
 // создание экземпляра класса попапа с формой для данных профиля
 const profilePopup = new PopupWithForm({
     submitForm: (formData) => {
-      api.updateUserData(formData.name, formData.about).then((profileData) => {
+      api.updateUserData(formData).then((profileData) => {
         console.log('Профиль успешно обновлен ->', profileData);
-        userInfo.setUserInfo(formData.name, formData.about);
+        userInfo.setUserInfo(formData);
       })
       .catch(err => console.log(err));
 
