@@ -24,6 +24,21 @@ import { cardsListSelector,
   userData as userAuthData
   } from '../scripts/utils/constants.js';
 
+// авторизация пользователя
+const api = new Api(url, userAuthData);
+  
+api.authorizationToServer().then((data) => {
+  console.log('Profile ->', data);
+  userInfo.setUserInfo(data.name, data.about);
+})
+.catch(err => console.log(err))
+
+api.receiveCardsData().then((cardsData) => {
+  console.log('Cards ->', cardsData);
+  cardsSection.renderItems(cardsData);
+})
+.catch(err => console.log(err))
+
 // создание экземпляра класса валидации формы профиля
 const profilePopupFormValidator = new FormValidator(validationSetting, profilePopupFormElement);
 profilePopupFormValidator.enableValidation();
@@ -56,7 +71,12 @@ cardPopup.setEventListeners();
 // создание экземпляра класса попапа с формой для данных профиля
 const profilePopup = new PopupWithForm({
     submitForm: (formData) => {
-      userInfo.setUserInfo(formData);
+      api.updateUserData(formData.name, formData.about).then((profileData) => {
+        console.log('Профиль успешно обновлен ->', profileData);
+        userInfo.setUserInfo(formData.name, formData.about);
+      })
+      .catch(err => console.log(err));
+
       profilePopupFormValidator.resetValidation();
       profilePopup.close();
     }
@@ -97,22 +117,3 @@ profilePopupEditButton.addEventListener('click', () => {
   transferProfileData();
   profilePopup.open();
 });
-
-function authorization() {
-  const api = new Api(url, userAuthData);
-  api.authorizationToServer().then((data) => {
-    console.log('Profile ->', data);
-    userInfo.setUserInfo(data);
-  })
-  .catch((err) => {
-    userInfo.setUserInfo({ name: err, about: '' });
-  })
-
-  api.receiveCardsData().then((cardsData) => {
-    console.log('Cards ->', cardsData);
-    cardsSection.renderItems(cardsData);
-  })
-  .catch(err => console.log(err))
-}
-
-authorization();

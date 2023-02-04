@@ -5,18 +5,20 @@ export default class Api {
     this._cohort = cohortName;
   }
 
+  _processResponse(response, error) {
+    if (response.ok) {
+      return response.json();
+    }
+    return Promise.reject(error);
+  }
+
   authorizationToServer() {
     return fetch(`${this._url}/${this._cohort}/users/me`, {
       headers: {
         'authorization': `${this._userToken}`
       }
     })
-    .then((response) => {
-      if (response.ok) {
-        return response.json();
-      }
-      return Promise.reject('Ошибка авторизации!');
-    })
+    .then(response => this._processResponse(response, 'Ошибка авторизации'))
   }
 
   receiveCardsData() {
@@ -25,11 +27,21 @@ export default class Api {
         'authorization': `${this._userToken}`
       }
     })
-    .then((response) => {
-      if (response.ok) {
-        return response.json();
-      }
-      return Promise.reject('[WARNING] Cards not found!');
+    .then(response => this._processResponse(response, 'Cards not found'))
+  }
+
+  updateUserData(name, about) {
+    return fetch(`${this._url}/${this._cohort}/users/me`, {
+      method: 'PATCH',
+      headers: {
+        'authorization': `${this._userToken}`,
+        'content-type': 'application/json'
+      },
+      body: JSON.stringify({
+        name: name,
+        about: about
+      })
     })
+    .then(response => this._processResponse(response, 'Ошибка обновления профиля'))
   }
 }
