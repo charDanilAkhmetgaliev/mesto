@@ -10,7 +10,6 @@
   color: rgb(255, 255, 255);
   font-size: 14px;
   transition: opacity 0.1s ease;
-  transform: translate(0px, -4px);
 }
 
 .popup__save-button:hover {
@@ -25,6 +24,6 @@
   .popup__save-button {
     height: 50px;
     font-size: 18px;
-    transform: translate(0px, -6px);
+    line-height: 18px;
   }
 }

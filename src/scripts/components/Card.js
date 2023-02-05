@@ -1,8 +1,9 @@
 export default class Card {
-  constructor(cardData, templateSelector, handleCardClick) {
+  constructor(cardData, templateSelector, handleCardClick, cardDeletePopup) {
     this._cardData = cardData;
     this._handleCardClick = handleCardClick;
     this._dataTemplateElement = document.querySelector(`${templateSelector}`).content;
+    this._cardDeletePopup = cardDeletePopup;
   }
 
   // метод добавляет слушатель к кнопке лайка
@@ -17,13 +18,14 @@ export default class Card {
   // метод добавляет слушатель к кнопке удаления карточки
   _addDeleteCardListener() {
     this._cardDeleteButton = this._card.querySelector('.card__delete-button');
-    this._cardDeleteButton.addEventListener('click', () => this._deleteCard());
+    this._cardDeleteButton.addEventListener('click', () => this._cardDeletePopup.open());
   }
   // метод удаляет карточку
   _deleteCard() {
     this._card.remove();
     this._card = null;
   }
+
   // метод клонирует новый карточный элемент и наполняет его содержимым
   _buildCardContent() {
     this._cardElement = this._dataTemplateElement.querySelector('.card');

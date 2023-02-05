@@ -53,10 +53,16 @@ export default class Api {
         'content-type': 'application/json'
       },
       body: JSON.stringify({
-        name: name, 
+        name: name,
         link: link
       })
     })
     .then(response => this._processResponse(response, 'Ошибка добавления карточки'))
   }
+
+  // destroyCardData() {
+  //   return fetch(`${this._url}/${this._cohort}/cards`, {
+  //     method: De
+  //   })
+  // }
 }

@@ -7,6 +7,7 @@ export const cardAddPopupSelector = '.popup_new-card';
 export const profilePopupSelector = '.popup_edit-profile';
 export const userNameSelector = '.profile__name';
 export const userInfoSelector = '.profile__status';
+export const cardDeletePopupSelector = '.popup_card-delete';
 export const validationSetting = {
   formSelector: '.popup__form',
   inputSelector: '.popup__input',
