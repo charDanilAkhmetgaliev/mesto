@@ -60,9 +60,13 @@ export default class Api {
     .then(response => this._processResponse(response, 'Ошибка добавления карточки'))
   }
 
-  // destroyCardData() {
-  //   return fetch(`${this._url}/${this._cohort}/cards`, {
-  //     method: De
-  //   })
-  // }
+  destroyCardData(cardId) {
+    return fetch(`${this._url}/${this._cohort}/cards/${cardId}`, {
+      method: 'DELETE',
+      headers: {
+        'authorization': `${this._userToken}`,
+      }
+    })
+    .then((response) => this._processResponse(response, 'Ошибка удаления карточки'))
+  }
 }

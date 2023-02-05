@@ -1,9 +1,10 @@
 export default class Card {
-  constructor(cardData, templateSelector, handleCardClick, cardDeletePopup) {
+  constructor(cardData, templateSelector, handleCardClick, cardDelPopup) {
     this._cardData = cardData;
     this._handleCardClick = handleCardClick;
     this._dataTemplateElement = document.querySelector(`${templateSelector}`).content;
-    this._cardDeletePopup = cardDeletePopup;
+    this._cardUserId = cardData.owner._id;
+    this._cardDelPopup = cardDelPopup;
   }
 
   // метод добавляет слушатель к кнопке лайка
@@ -15,24 +16,31 @@ export default class Card {
   _toggleLike() {
     this._cardLikeButton.classList.toggle('card__like_active');
   }
-  // метод добавляет слушатель к кнопке удаления карточки
-  _addDeleteCardListener() {
-    this._cardDeleteButton = this._card.querySelector('.card__delete-button');
-    this._cardDeleteButton.addEventListener('click', () => this._cardDeletePopup.open());
-  }
+
   // метод удаляет карточку
   _deleteCard() {
     this._card.remove();
     this._card = null;
   }
 
+  _processDelCardButton(userData) {
+    this._userId = userData._id;
+    if (Object.is(this._cardUserId, this._userId)) {
+      this._cardDeleteButton.classList.add('card__delete-button_active');
+      this._cardDeleteButton.addEventListener('click', () => this._cardDelPopup.open(this._cardData._id));
+    }
+  }
+
   // метод клонирует новый карточный элемент и наполняет его содержимым
-  _buildCardContent() {
+  _buildCardContent(userData) {
     this._cardElement = this._dataTemplateElement.querySelector('.card');
     this._card = this._cardElement.cloneNode(true);
     this.cardImage = this._card.querySelector('.card__image');
     this._cardTitle = this._card.querySelector('.card__title');
     this._cardLikesCount = this._card.querySelector('.card__likes-count');
+    this._cardDeleteButton = this._card.querySelector('.card__delete-button');
+
+    this._processDelCardButton(userData);
 
     this._cardTitle.textContent = this._cardData.name;
     this.cardImage.src = this._cardData.link;
@@ -43,12 +51,12 @@ export default class Card {
   }
 
   // метод создает карточку
-  createCard() {
-    this._buildCardContent();
+  createCard(userData) {
+    this._buildCardContent(userData);
 
     this._addToggleLikeListener();
 
-    this._addDeleteCardListener();
+    // this._addDeleteCardListener();
 
     return this._card;
   }

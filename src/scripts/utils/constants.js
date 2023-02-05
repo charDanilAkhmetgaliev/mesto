@@ -7,7 +7,7 @@ export const cardAddPopupSelector = '.popup_new-card';
 export const profilePopupSelector = '.popup_edit-profile';
 export const userNameSelector = '.profile__name';
 export const userInfoSelector = '.profile__status';
-export const cardDeletePopupSelector = '.popup_card-delete';
+export const cardDelPopupSelector = '.popup_card-delete';
 export const validationSetting = {
   formSelector: '.popup__form',
   inputSelector: '.popup__input',
@@ -27,7 +27,7 @@ export const cardAddPopupFormElement = document.querySelector(cardAddPopupSelect
 // данные подключения к серверу
 export const url = 'https://mesto.nomoreparties.co/v1';
 // данные пользователя
-export const userData = {
+export const userAuthData = {
   userToken: '320b4a75-5470-48e7-b4e8-36be65b57c43',
   cohortName: 'cohort-58'
 }

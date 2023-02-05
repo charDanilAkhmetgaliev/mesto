@@ -8,9 +8,7 @@ export default class Section {
     this._container.prepend(element);
   }
 
-  renderItems(cards) {
-    cards.forEach((card) => {
-      this.renderItem(card);
-    });
+  clearCards() {
+    this._container.innerHTML = '';
   }
 }
