@@ -10,7 +10,10 @@ import UserInfo from '../scripts/components/UserInfo.js';
 import Api from '../scripts/components/Api.js';
 
 // импорт константных данных
-import { cardDelPopupSelector,
+import { avatarUpdPopupFormElement,
+  avatarUpdateButton,
+  avatarUpdatePopupSelector,
+  cardDelPopupSelector,
   cardsListSelector,
   cardPopupSelector,
   cardAddPopupSelector,
@@ -19,8 +22,6 @@ import { cardDelPopupSelector,
   profilePopupSelector,
   profilePopupFormElement,
   cardAddPopupFormElement,
-  userNameSelector,
-  userInfoSelector,
   validationSetting,
   url,
   userAuthData
@@ -37,14 +38,19 @@ function authorization() {
     function updateCards() {
       api.receiveCardsData().then((cardsData) => {
         const cardsDataSort = cardsData.reverse();
+
         console.log('Cards ->', cardsDataSort);
+
         cardsSection.clearCards();
         cardsDataSort.forEach(cardData => {
           cardsSection.renderItem(cardData);
-        });
+        })
       })
       .catch(err => console.log(err))
     }
+
+    const avatarUpdPopupFormValidator = new FormValidator(validationSetting, avatarUpdPopupFormElement);
+    avatarUpdPopupFormValidator.enableValidation();
 
     // создание экземпляра класса валидации формы профиля
     const profilePopupFormValidator = new FormValidator(validationSetting, profilePopupFormElement);
@@ -59,7 +65,7 @@ function authorization() {
     popupOpenImage.setEventListeners();
 
     // создание экземпляра класса
-    const userInfo = new UserInfo({ userNameSelector, userInfoSelector });
+    const userInfo = new UserInfo();
 
     const cardDelPopup = new PopupWithConfirmation({
       submitForm: (cardId) => {
@@ -76,6 +82,22 @@ function authorization() {
     );
 
     cardDelPopup.setEventListeners();
+
+    const avatarUpdatePopup = new PopupWithForm({
+        submitForm: (formData) => {
+          api.updateAvatar(formData.link).then((avatarData) => {
+            console.log(avatarData);
+            userInfo.setUserInfo(avatarData);
+          })
+          .catch(err => console.log(err));
+
+          avatarUpdatePopup.close();
+        }
+      },
+      avatarUpdatePopupSelector
+    );
+
+    avatarUpdatePopup.setEventListeners();
 
     // создание экземпляра класса попапа с формой для новой карточки
     const cardPopup = new PopupWithForm({
@@ -116,9 +138,28 @@ function authorization() {
     // создание экземпляра класса отрисовки секции
     const cardsSection = new Section(
       {
-        renderer: (item) => {
-          const card = new Card(item, '.template', popupOpenImage.open, cardDelPopup);
-          const contentFullCard = card.createCard(userData);
+        renderer: (cardData) => {
+          const card = new Card({
+            cardData: cardData,
+            templateSelector: '.template',
+            handleCardClick: popupOpenImage.open,
+            cardDelPopup: cardDelPopup,
+            doLike: (cardId) => {
+              api.doLikeCard(cardId).then((cardData) => {
+                console.log('лайк добавлен ->', cardData);
+                updateCards();
+              })
+              .catch(err => console.log(err));
+            },
+            delLike: (cardId) => {
+              api.delLikeCard(cardId).then((cardData) => {
+                console.log('лайк удален ->', cardData);
+                updateCards();
+              })
+              .catch(err => console.log(err));
+            }
+          });
+          const contentFullCard = card.createCard(userData._id);
 
           cardsSection.addItem(contentFullCard);
         }
@@ -132,6 +173,10 @@ function authorization() {
       profilePopup.setInputValues(userData);
     }
 
+    avatarUpdateButton.addEventListener('click', () => {
+      avatarUpdPopupFormValidator.resetValidation();
+      avatarUpdatePopup.open();
+    });
     // привязка слушателей событий к кнопкам открытия попапов
     cardPopupOpenButton.addEventListener('click', () => {
       cardPopupFormValidator.resetValidation();
@@ -145,8 +190,8 @@ function authorization() {
     });
 
     userInfo.setUserInfo(userData);
-    updateCards(userData);
-    setInterval(updateCards, 5000, userData);
+    const cardsRefresh = setInterval(updateCards, 5000, userData);
+    updateCards();
 })
 .catch(err => console.log(err))
 

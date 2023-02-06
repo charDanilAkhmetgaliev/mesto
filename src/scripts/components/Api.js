@@ -64,9 +64,43 @@ export default class Api {
     return fetch(`${this._url}/${this._cohort}/cards/${cardId}`, {
       method: 'DELETE',
       headers: {
-        'authorization': `${this._userToken}`,
+        'authorization': `${this._userToken}`
       }
     })
     .then((response) => this._processResponse(response, 'Ошибка удаления карточки'))
+  }
+
+  doLikeCard(cardId) {
+    return fetch(`${this._url}/${this._cohort}/cards/${cardId}/likes`, {
+      method: 'PUT',
+      headers: {
+        'authorization': `${this._userToken}`,
+      }
+    })
+    .then((response) => this._processResponse(response, 'Ошибка лайка'))
+  }
+
+  delLikeCard(cardId) {
+    return fetch(`${this._url}/${this._cohort}/cards/${cardId}/likes`, {
+      method: 'DELETE',
+      headers: {
+        'authorization': `${this._userToken}`,
+      }
+    })
+    .then((response) => this._processResponse(response, 'Ошибка удаления лайка'))
+  }
+
+  updateAvatar(avatarLink) {
+    return fetch(`${this._url}/${this._cohort}/users/me/avatar`, {
+      method: 'PATCH',
+      headers: {
+        'authorization': `${this._userToken}`,
+        'content-type': 'application/json'
+      },
+      body: JSON.stringify({
+        avatar: avatarLink
+      })
+    })
+    .then((response => this._processResponse(response, 'Ошибка обновления аватара')))
   }
 }

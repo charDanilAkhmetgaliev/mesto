@@ -16,7 +16,11 @@
   <main class="content">
     <section class="profile">
       <div class="profile__container">
-        <img class="profile__avatar" src="<%=require('./images/Avatar.png')%>" alt="Аватар пользователя">
+        <div class="profile__avatar-container">
+          <img class="profile__avatar" src="<%=require('./images/Avatar.png')%>" alt="Аватар пользователя">
+          <div class="profile__avatar-overlay"></div>
+          <button class="profile__edit-avatar-button" type="button" aria-label="Изменить аватар"></button>
+        </div>
         <div class="profile__info">
           <div class="profile__info-container">
             <h1 class="profile__name"></h1>
@@ -85,6 +89,21 @@
       <form class="popup__form" name="popupForm" novalidate>
         <h3 class="popup__title">Вы уверены?</h3>
         <button type="submit" class="popup__save-button">Да</button>
+      </form>
+      <button type="button" class="popup__close-button" aria-label="Закрыть"></button>
+    </div>
+  </div>
+  <div class="popup popup_avatar-update">
+    <div class="popup__container popup__container_form">
+      <form class="popup__form" name="popupForm" novalidate>
+        <h3 class="popup__title">Обновить аватар</h3>
+        <ul class="popup__inputs">
+          <label class="popup__input-field">
+            <input id="new-card-url-input" type="url" class="popup__input popup__input_value-type_link" name="link" placeholder="Ссылка на картинку" required/>
+            <span class="popup__error new-card-url-input-error"></span>
+          </label>
+        </ul>
+        <button type="submit" class="popup__save-button">Создать</button>
       </form>
       <button type="button" class="popup__close-button" aria-label="Закрыть"></button>
     </div>

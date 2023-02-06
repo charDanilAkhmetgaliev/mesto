@@ -8,6 +8,16 @@ export const profilePopupSelector = '.popup_edit-profile';
 export const userNameSelector = '.profile__name';
 export const userInfoSelector = '.profile__status';
 export const cardDelPopupSelector = '.popup_card-delete';
+export const likeButtonSelector = '.card__like';
+export const likeActiveSelector = 'card__like_active';
+export const activeDelCardButtonSelector = 'card__delete-button_active';
+export const cardSelector = '.card';
+export const cardImageSelector = '.card__image';
+export const cardTitleSelector = '.card__title';
+export const cardLikesCountSelector = '.card__likes-count';
+export const cardDelButtonSelector = '.card__delete-button';
+export const userAvatarSelector = '.profile__avatar';
+export const avatarUpdatePopupSelector = '.popup_avatar-update';
 export const validationSetting = {
   formSelector: '.popup__form',
   inputSelector: '.popup__input',
@@ -19,10 +29,12 @@ export const validationSetting = {
 }
 
 // DOM-элементы
+export const avatarUpdateButton = document.querySelector('.profile__edit-avatar-button');
 export const cardPopupOpenButton = document.querySelector('.profile__add-button');
 export const profilePopupEditButton = document.querySelector('.profile__edit-button');
 export const profilePopupFormElement = document.querySelector(profilePopupSelector).querySelector(popupFormSelector);
 export const cardAddPopupFormElement = document.querySelector(cardAddPopupSelector).querySelector(popupFormSelector);
+export const avatarUpdPopupFormElement = document.querySelector(avatarUpdatePopupSelector).querySelector(popupFormSelector);
 
 // данные подключения к серверу
 export const url = 'https://mesto.nomoreparties.co/v1';
