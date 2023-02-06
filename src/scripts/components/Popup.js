@@ -1,7 +1,11 @@
+import { popupCloseButtonSelector,
+  popupSubmitButtonSelector } from "../utils/constants.js";
+
 export default class Popup {
   constructor(popupSelector) {
     this._popup = document.querySelector(popupSelector);
-    this._buttonClose = this._popup.querySelector('.popup__close-button');
+    this._buttonClose = this._popup.querySelector(popupCloseButtonSelector);
+    this._popupSubmitButton = this._popup.querySelector(popupSubmitButtonSelector);
   }
 
   _handleEscClose = (evt) => {
@@ -27,5 +31,14 @@ export default class Popup {
   close() {
     this._popup.classList.remove('popup_opened');
     document.removeEventListener('keydown', this._handleEscClose);
+  }
+
+  renderLoading(isLoading) {
+    if (isLoading) {
+      this._textDefSubmitButton = this._popupSubmitButton.textContent;
+      this._popupSubmitButton.textContent = 'Сохранение...';
+    } else {
+      this._popupSubmitButton.textContent = this._textDefSubmitButton;
+    }
   }
 }

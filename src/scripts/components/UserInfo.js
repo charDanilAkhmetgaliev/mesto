@@ -1,19 +1,27 @@
+import {
+  userNameSelector,
+  userInfoSelector,
+  userAvatarSelector
+ } from "../utils/constants.js";
+
 export default class UserInfo {
-  constructor({ userNameSelector, userInfoSelector }) {
+  constructor() {
     this._userNameElement = document.querySelector(userNameSelector);
     this._userInfoElement = document.querySelector(userInfoSelector);
+    this._userAvatar = document.querySelector(userAvatarSelector);
   }
 
   getUserInfo() {
     this._userData = {};
     this._userData.name = this._userNameElement.textContent;
-    this._userData.status = this._userInfoElement.textContent;
+    this._userData.about = this._userInfoElement.textContent;
 
     return this._userData;
   }
 
-  setUserInfo(userData) {
-    this._userNameElement.textContent = userData.name;
-    this._userInfoElement.textContent = userData.status;
+  setUserInfo({ name, about, avatar }) {
+    this._userNameElement.textContent = name;
+    this._userInfoElement.textContent = about;
+    this._userAvatar.src = avatar;
   }
 }
