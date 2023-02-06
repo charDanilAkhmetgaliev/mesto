@@ -12,95 +12,27 @@ export default class Api {
     return Promise.reject(error);
   }
 
-  authorizationToServer() {
-    return fetch(`${this._url}/${this._cohort}/users/me`, {
+  createSimpleRequest(extensionUrl, requestMethod, errorText) {
+    this._completeUrl = `${this._url}/${this._cohort}`.concat(extensionUrl);
+    return fetch(this._completeUrl, {
+      method: requestMethod,
       headers: {
         'authorization': `${this._userToken}`
       }
     })
-    .then(response => this._processResponse(response, 'Ошибка авторизации'))
+    .then(response => this._processResponse(response, errorText))
   }
 
-  receiveCardsData() {
-    return fetch(`${this._url}/${this._cohort}/cards`, {
-      headers: {
-        'authorization': `${this._userToken}`
-      }
-    })
-    .then(response => this._processResponse(response, 'Cards not found'))
-  }
-
-  updateUserData({ name, about }) {
-    return fetch(`${this._url}/${this._cohort}/users/me`, {
-      method: 'PATCH',
+  createBodyRequest(extensionUrl, requestMethod, errorText, bodyData) {
+    this._completeUrl = `${this._url}/${this._cohort}`.concat(extensionUrl);
+    return fetch(this._completeUrl, {
+      method: requestMethod,
       headers: {
         'authorization': `${this._userToken}`,
         'content-type': 'application/json'
       },
-      body: JSON.stringify({
-        name: name,
-        about: about
-      })
+      body: JSON.stringify(bodyData)
     })
-    .then(response => this._processResponse(response, 'Ошибка обновления профиля'))
-  }
-
-  sendCardData({ name, link }) {
-    return fetch(`${this._url}/${this._cohort}/cards`, {
-      method: 'POST',
-      headers: {
-        'authorization': `${this._userToken}`,
-        'content-type': 'application/json'
-      },
-      body: JSON.stringify({
-        name: name,
-        link: link
-      })
-    })
-    .then(response => this._processResponse(response, 'Ошибка добавления карточки'))
-  }
-
-  destroyCardData(cardId) {
-    return fetch(`${this._url}/${this._cohort}/cards/${cardId}`, {
-      method: 'DELETE',
-      headers: {
-        'authorization': `${this._userToken}`
-      }
-    })
-    .then((response) => this._processResponse(response, 'Ошибка удаления карточки'))
-  }
-
-  doLikeCard(cardId) {
-    return fetch(`${this._url}/${this._cohort}/cards/${cardId}/likes`, {
-      method: 'PUT',
-      headers: {
-        'authorization': `${this._userToken}`,
-      }
-    })
-    .then((response) => this._processResponse(response, 'Ошибка лайка'))
-  }
-
-  delLikeCard(cardId) {
-    return fetch(`${this._url}/${this._cohort}/cards/${cardId}/likes`, {
-      method: 'DELETE',
-      headers: {
-        'authorization': `${this._userToken}`,
-      }
-    })
-    .then((response) => this._processResponse(response, 'Ошибка удаления лайка'))
-  }
-
-  updateAvatar(avatarLink) {
-    return fetch(`${this._url}/${this._cohort}/users/me/avatar`, {
-      method: 'PATCH',
-      headers: {
-        'authorization': `${this._userToken}`,
-        'content-type': 'application/json'
-      },
-      body: JSON.stringify({
-        avatar: avatarLink
-      })
-    })
-    .then((response => this._processResponse(response, 'Ошибка обновления аватара')))
+    .then(response => this._processResponse(response, errorText))
   }
 }

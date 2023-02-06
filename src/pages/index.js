@@ -32,21 +32,23 @@ function authorization() {
   // создание экземпляра класса API
   const api = new Api(url, userAuthData);
 
-  api.authorizationToServer().then((userData) => {
-    console.log('Profile ->', userData);
+  api.createSimpleRequest('/users/me', 'GET', 'Ошибка авторизации').then((userData) => {
 
+    // функция обновляет карточки на странице
     function updateCards() {
-      api.receiveCardsData().then((cardsData) => {
-        const cardsDataSort = cardsData.reverse();
-
-        console.log('Cards ->', cardsDataSort);
-
+      api.createSimpleRequest('/cards', 'GET', 'Ошибка обновления карточек').then((cardsData) => {
+        cardsData.reverse();
         cardsSection.clearCards();
-        cardsDataSort.forEach(cardData => {
+        cardsData.forEach(cardData => {
           cardsSection.renderItem(cardData);
         })
       })
-      .catch(err => console.log(err))
+    }
+
+    function rendererPage() {
+      userInfo.setUserInfo(userData);
+      updateCards();
+      setInterval(updateCards, 4000);
     }
 
     const avatarUpdPopupFormValidator = new FormValidator(validationSetting, avatarUpdPopupFormElement);
@@ -69,8 +71,7 @@ function authorization() {
 
     const cardDelPopup = new PopupWithConfirmation({
       submitForm: (cardId) => {
-        return api.destroyCardData(cardId).then((answer) => {
-          console.log(`${answer}`);
+        return api.createSimpleRequest(`/cards/${cardId}`, 'DELETE', 'Ошибка удаления карточки').then((answer) => {
           updateCards();
           cardDelPopup.close();
         })
@@ -83,8 +84,7 @@ function authorization() {
 
     const avatarUpdatePopup = new PopupWithForm({
         submitForm: (formData) => {
-          return api.updateAvatar(formData.link).then((avatarData) => {
-            console.log(avatarData);
+          return api.createBodyRequest('/users/me/avatar', 'PATCH', 'Ошибка обновления аватара', formData).then((avatarData) => {
             userInfo.setUserInfo(avatarData);
             avatarUpdatePopup.close();
           })
@@ -98,8 +98,7 @@ function authorization() {
     // создание экземпляра класса попапа с формой для новой карточки
     const cardPopup = new PopupWithForm({
         submitForm: (formData) => {
-          return api.sendCardData(formData).then((cardData) => {
-            console.log('Карточка добавлена ->', cardData);
+          return api.createBodyRequest('/cards', 'POST', 'Ошибка добавления карточки', formData).then((cardData) => {
             cardsSection.renderItem(cardData);
             cardPopup.close();
           })
@@ -114,8 +113,7 @@ function authorization() {
     // создание экземпляра класса попапа с формой для данных профиля
     const profilePopup = new PopupWithForm({
         submitForm: (formData) => {
-          return api.updateUserData(formData).then((profileData) => {
-            console.log('Профиль успешно обновлен ->', profileData);
+          return api.createBodyRequest('/users/me', 'PATCH', 'Ошибка обновления профиля', formData).then((profileData) => {
             userInfo.setUserInfo(profileData);
             profilePopup.close();
           })
@@ -137,14 +135,12 @@ function authorization() {
             handleCardClick: popupOpenImage.open,
             cardDelPopup: cardDelPopup,
             doLike: (cardId) => {
-              return api.doLikeCard(cardId).then((cardData) => {
-                console.log('лайк добавлен ->', cardData);
+              return api.createSimpleRequest(`/cards/${cardId}/likes`, 'PUT', 'Ошибка лайка').then((cardData) => {
                 updateCards();
               })
             },
             delLike: (cardId) => {
-              return api.delLikeCard(cardId).then((cardData) => {
-                console.log('лайк удален ->', cardData);
+              return api.createSimpleRequest(`/cards/${cardId}/likes`, 'DELETE', 'Ошибка удаления лайка').then((cardData) => {
                 updateCards();
               })
             }
@@ -179,13 +175,8 @@ function authorization() {
       profilePopup.open();
     });
 
-    userInfo.setUserInfo(userData);
-    const cardsRefresh = setInterval(updateCards, 5000, userData);
-    updateCards();
-})
-.catch(err => console.log(err))
-
-return api;
+    rendererPage();
+  })
 }
 
 authorization();
