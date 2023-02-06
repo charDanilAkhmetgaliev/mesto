@@ -69,13 +69,11 @@ function authorization() {
 
     const cardDelPopup = new PopupWithConfirmation({
       submitForm: (cardId) => {
-        api.destroyCardData(cardId).then((answer) => {
+        return api.destroyCardData(cardId).then((answer) => {
           console.log(`${answer}`);
           updateCards();
+          cardDelPopup.close();
         })
-        .catch(err => console.log(err));
-
-        cardDelPopup.close();
       }
     },
       cardDelPopupSelector
@@ -85,13 +83,11 @@ function authorization() {
 
     const avatarUpdatePopup = new PopupWithForm({
         submitForm: (formData) => {
-          api.updateAvatar(formData.link).then((avatarData) => {
+          return api.updateAvatar(formData.link).then((avatarData) => {
             console.log(avatarData);
             userInfo.setUserInfo(avatarData);
+            avatarUpdatePopup.close();
           })
-          .catch(err => console.log(err));
-
-          avatarUpdatePopup.close();
         }
       },
       avatarUpdatePopupSelector
@@ -102,13 +98,11 @@ function authorization() {
     // создание экземпляра класса попапа с формой для новой карточки
     const cardPopup = new PopupWithForm({
         submitForm: (formData) => {
-          api.sendCardData(formData).then((cardData) => {
+          return api.sendCardData(formData).then((cardData) => {
             console.log('Карточка добавлена ->', cardData);
             cardsSection.renderItem(cardData);
+            cardPopup.close();
           })
-          .catch(err => console.log(err));
-
-          cardPopup.close();
         }
       },
       cardAddPopupSelector
@@ -120,13 +114,11 @@ function authorization() {
     // создание экземпляра класса попапа с формой для данных профиля
     const profilePopup = new PopupWithForm({
         submitForm: (formData) => {
-          api.updateUserData(formData).then((profileData) => {
+          return api.updateUserData(formData).then((profileData) => {
             console.log('Профиль успешно обновлен ->', profileData);
             userInfo.setUserInfo(profileData);
+            profilePopup.close();
           })
-          .catch(err => console.log(err));
-
-          profilePopup.close();
         }
       },
       profilePopupSelector
@@ -145,18 +137,16 @@ function authorization() {
             handleCardClick: popupOpenImage.open,
             cardDelPopup: cardDelPopup,
             doLike: (cardId) => {
-              api.doLikeCard(cardId).then((cardData) => {
+              return api.doLikeCard(cardId).then((cardData) => {
                 console.log('лайк добавлен ->', cardData);
                 updateCards();
               })
-              .catch(err => console.log(err));
             },
             delLike: (cardId) => {
-              api.delLikeCard(cardId).then((cardData) => {
+              return api.delLikeCard(cardId).then((cardData) => {
                 console.log('лайк удален ->', cardData);
                 updateCards();
               })
-              .catch(err => console.log(err));
             }
           });
           const contentFullCard = card.createCard(userData._id);

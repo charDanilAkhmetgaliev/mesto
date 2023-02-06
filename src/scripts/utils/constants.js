@@ -18,6 +18,8 @@ export const cardLikesCountSelector = '.card__likes-count';
 export const cardDelButtonSelector = '.card__delete-button';
 export const userAvatarSelector = '.profile__avatar';
 export const avatarUpdatePopupSelector = '.popup_avatar-update';
+export const popupCloseButtonSelector = '.popup__close-button';
+export const popupSubmitButtonSelector = '.popup__save-button';
 export const validationSetting = {
   formSelector: '.popup__form',
   inputSelector: '.popup__input',

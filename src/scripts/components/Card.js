@@ -23,7 +23,7 @@ export default class Card {
   // метод добавляет слушатель к кнопке лайка
   _addToggleLikeListener() {
     this._cardLikeButton.addEventListener('click', () => {
-      this._processDoLike();
+      this._processDoLike().catch(err => console.log(err));
     });
   }
 
@@ -42,10 +42,10 @@ export default class Card {
   _processDoLike() {
     if (this._isLiked) {
       this._toggleLike();
-      this._handleDelLike(this._cardData._id);
+      return this._handleDelLike(this._cardData._id)
     } else {
       this._toggleLike();
-      this._handleDoLike(this._cardData._id);
+      return this._handleDoLike(this._cardData._id)
     }
   }
 
