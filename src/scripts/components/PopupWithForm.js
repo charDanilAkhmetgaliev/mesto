@@ -29,6 +29,7 @@ export default class PopupWithForm extends Popup {
       evt.preventDefault();
       super.renderLoading(true);
       this._handleSubmit(this._getInputValues())
+      .then(() => this.close())
       .catch(err => console.log(err))
       .finally(() => super.renderLoading(false));
     });

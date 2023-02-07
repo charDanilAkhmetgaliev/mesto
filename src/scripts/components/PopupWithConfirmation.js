@@ -12,6 +12,7 @@ export default class PopupWithConfirmation extends Popup {
       evt.preventDefault();
       super.renderLoading(true)
       this._handleSubmit(this._cardId)
+      .then(() => this.close())
       .catch(err => console.log(err))
       .finally(() => super.renderLoading(false));
     })

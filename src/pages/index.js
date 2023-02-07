@@ -73,7 +73,6 @@ function authorization() {
       submitForm: (cardId) => {
         return api.createSimpleRequest(`/cards/${cardId}`, 'DELETE', 'Ошибка удаления карточки').then((answer) => {
           updateCards();
-          cardDelPopup.close();
         })
       }
     },
@@ -86,7 +85,6 @@ function authorization() {
         submitForm: (formData) => {
           return api.createBodyRequest('/users/me/avatar', 'PATCH', 'Ошибка обновления аватара', formData).then((avatarData) => {
             userInfo.setUserInfo(avatarData);
-            avatarUpdatePopup.close();
           })
         }
       },
@@ -100,7 +98,6 @@ function authorization() {
         submitForm: (formData) => {
           return api.createBodyRequest('/cards', 'POST', 'Ошибка добавления карточки', formData).then((cardData) => {
             cardsSection.renderItem(cardData);
-            cardPopup.close();
           })
         }
       },
@@ -115,7 +112,6 @@ function authorization() {
         submitForm: (formData) => {
           return api.createBodyRequest('/users/me', 'PATCH', 'Ошибка обновления профиля', formData).then((profileData) => {
             userInfo.setUserInfo(profileData);
-            profilePopup.close();
           })
         }
       },
