@@ -71,7 +71,7 @@ function authorization() {
 
     const cardDelPopup = new PopupWithConfirmation({
       submitForm: (cardId) => {
-        return api.createSimpleRequest(`/cards/${cardId}`, 'DELETE', 'Ошибка удаления карточки').then((answer) => {
+        return api.createSimpleRequest(`/cards/${cardId}`, 'DELETE', 'Ошибка удаления карточки').then(() => {
           updateCards();
         })
       }
@@ -131,12 +131,12 @@ function authorization() {
             handleCardClick: popupOpenImage.open,
             cardDelPopup: cardDelPopup,
             doLike: (cardId) => {
-              return api.createSimpleRequest(`/cards/${cardId}/likes`, 'PUT', 'Ошибка лайка').then((cardData) => {
+              return api.createSimpleRequest(`/cards/${cardId}/likes`, 'PUT', 'Ошибка лайка').then(() => {
                 updateCards();
               })
             },
             delLike: (cardId) => {
-              return api.createSimpleRequest(`/cards/${cardId}/likes`, 'DELETE', 'Ошибка удаления лайка').then((cardData) => {
+              return api.createSimpleRequest(`/cards/${cardId}/likes`, 'DELETE', 'Ошибка удаления лайка').then(() => {
                 updateCards();
               })
             }
