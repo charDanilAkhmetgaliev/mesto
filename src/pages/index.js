@@ -32,11 +32,11 @@ function authorization() {
   // создание экземпляра класса API
   const api = new Api(url, userAuthData);
 
-  api.createSimpleRequest('/users/me', 'GET', 'Ошибка авторизации').then((userData) => {
+  api.getUserInfo().then((userData) => {
 
     // функция обновляет карточки на странице
     function updateCards() {
-      api.createSimpleRequest('/cards', 'GET', 'Ошибка обновления карточек').then((cardsData) => {
+      api.getCardsData().then((cardsData) => {
         cardsData.reverse();
         cardsSection.clearCards();
         cardsData.forEach(cardData => {
@@ -71,7 +71,7 @@ function authorization() {
 
     const cardDelPopup = new PopupWithConfirmation({
       submitForm: (cardId) => {
-        return api.createSimpleRequest(`/cards/${cardId}`, 'DELETE', 'Ошибка удаления карточки').then(() => {
+        return api.deleteCardData(cardId).then(() => {
           updateCards();
         })
       }
@@ -83,7 +83,7 @@ function authorization() {
 
     const avatarUpdatePopup = new PopupWithForm({
         submitForm: (formData) => {
-          return api.createBodyRequest('/users/me/avatar', 'PATCH', 'Ошибка обновления аватара', formData).then((avatarData) => {
+          return api.updateAvatarData(formData).then((avatarData) => {
             userInfo.setUserInfo(avatarData);
           })
         }
@@ -96,7 +96,7 @@ function authorization() {
     // создание экземпляра класса попапа с формой для новой карточки
     const cardPopup = new PopupWithForm({
         submitForm: (formData) => {
-          return api.createBodyRequest('/cards', 'POST', 'Ошибка добавления карточки', formData).then((cardData) => {
+          return api.sendCardData(formData).then((cardData) => {
             cardsSection.renderItem(cardData);
           })
         }
@@ -110,7 +110,7 @@ function authorization() {
     // создание экземпляра класса попапа с формой для данных профиля
     const profilePopup = new PopupWithForm({
         submitForm: (formData) => {
-          return api.createBodyRequest('/users/me', 'PATCH', 'Ошибка обновления профиля', formData).then((profileData) => {
+          return api.updateProfileData(formData).then((profileData) => {
             userInfo.setUserInfo(profileData);
           })
         }
@@ -131,12 +131,12 @@ function authorization() {
             handleCardClick: popupOpenImage.open,
             cardDelPopup: cardDelPopup,
             doLike: (cardId) => {
-              return api.createSimpleRequest(`/cards/${cardId}/likes`, 'PUT', 'Ошибка лайка').then(() => {
+              return api.addLikeToCard(cardId).then(() => {
                 updateCards();
               })
             },
             delLike: (cardId) => {
-              return api.createSimpleRequest(`/cards/${cardId}/likes`, 'DELETE', 'Ошибка удаления лайка').then(() => {
+              return api.delLikeToCard(cardId).then(() => {
                 updateCards();
               })
             }
