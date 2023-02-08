@@ -23,8 +23,9 @@ export default class Card {
   // метод добавляет слушатель к кнопке лайка
   _addToggleLikeListener() {
     this._cardLikeButton.addEventListener('click', () => {
-      this._processDoLike().then(this._toggleLike())
-        .catch(err => console.log(err));
+      this._processDoLike()
+      .then(this._toggleLike())
+      .catch(err => console.log(err));
     });
   }
 
@@ -40,16 +41,24 @@ export default class Card {
     this._cardLikeButton.classList.toggle(likeActiveSelector);
   }
 
+  removeCard() {
+    this._card.remove();
+    this._card = null;
+  }
+
   _processDoLike() {
     if (this._isLiked) {
+      this._cardLikesCount.textContent = --this._cardLikesCount.textContent;
+      this._isLiked = false;
       return this._handleDelLike(this._cardData._id)
     } else {
+      this._cardLikesCount.textContent = ++this._cardLikesCount.textContent;
+      this._isLiked = true;
       return this._handleDoLike(this._cardData._id)
     }
   }
 
   _processRenderLike() {
-    this._cardLikesCount = this._card.querySelector(cardLikesCountSelector);
     this._cardLikesCount.textContent = this._cardLikes.length;
     if (this._isLiked) {
       this._toggleLike();
@@ -72,9 +81,8 @@ export default class Card {
     this._cardDeleteButton = this._card.querySelector(cardDelButtonSelector);
     this._cardLikes = this._cardData.likes;
     this._cardLikeButton = this._card.querySelector(likeButtonSelector);
+    this._cardLikesCount = this._card.querySelector(cardLikesCountSelector);
     this._checkLiked();
-
-    this._processDelCardButton();
 
     this._cardTitle.textContent = this._cardData.name;
     this.cardImage.src = this._cardData.link;
@@ -90,6 +98,8 @@ export default class Card {
     this._buildCardContent();
 
     this._addToggleLikeListener();
+
+    this._processDelCardButton();
 
     return this._card;
   }

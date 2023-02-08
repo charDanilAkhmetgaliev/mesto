@@ -26,6 +26,7 @@ import { avatarUpdPopupFormElement,
   url,
   userAuthData
   } from '../scripts/utils/constants.js';
+import {logPlugin} from "@babel/preset-env/lib/debug";
 
 // функция авторизации пользователя
 function authorization() {
@@ -38,6 +39,7 @@ function authorization() {
     function updateCards() {
       api.getCardsData().then((cardsData) => {
         cardsData.reverse();
+        console.log(cardsData)
         cardsSection.clearCards();
         cardsData.forEach(cardData => {
           cardsSection.renderItem(cardData);
@@ -72,7 +74,6 @@ function authorization() {
     const cardDelPopup = new PopupWithConfirmation({
       submitForm: (cardId) => {
         return api.deleteCardData(cardId).then(() => {
-          updateCards();
         })
       }
     },
@@ -132,12 +133,12 @@ function authorization() {
             cardDelPopup: cardDelPopup,
             doLike: (cardId) => {
               return api.addLikeToCard(cardId).then(() => {
-                updateCards();
+                // updateCards();
               })
             },
             delLike: (cardId) => {
               return api.delLikeToCard(cardId).then(() => {
-                updateCards();
+                // updateCards();
               })
             }
           });
@@ -173,6 +174,7 @@ function authorization() {
 
     rendererPage();
   })
+  .catch((err) => console.log(err))
 }
 
 authorization();
