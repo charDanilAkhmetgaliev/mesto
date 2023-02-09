@@ -40,10 +40,7 @@ function authorization() {
       api.getCardsData().then((cardsData) => {
         cardsData.reverse();
         console.log(cardsData)
-        cardsSection.clearCards();
-        cardsData.forEach(cardData => {
-          cardsSection.renderItem(cardData);
-        })
+        cardsSection.initCardListSection(cardsData);
       })
     }
 
@@ -98,7 +95,7 @@ function authorization() {
     const cardPopup = new PopupWithForm({
         submitForm: (formData) => {
           return api.sendCardData(formData).then((cardData) => {
-            cardsSection.renderItem(cardData);
+            cardsSection._renderItem(cardData);
           })
         }
       },
@@ -122,32 +119,32 @@ function authorization() {
     // вызов функции привязки слушателей событий к попапу профиля
     profilePopup.setEventListeners();
 
+    function createCardElement(cardData) {
+      const card = new Card({
+        cardData: cardData,
+        templateSelector: '.template',
+        handleCardClick: popupOpenImage.open,
+        cardDelPopup: cardDelPopup,
+        doLike: (cardId) => {
+          return api.addLikeToCard(cardId).then(() => {
+          })
+        },
+        delLike: (cardId) => {
+          return api.delLikeToCard(cardId).then(() => {
+          })
+        }
+      });
+
+      return card.createCard(userData._id);
+    }
+
     // создание экземпляра класса отрисовки секции
     const cardsSection = new Section(
       {
         renderer: (cardData) => {
-          const card = new Card({
-            cardData: cardData,
-            templateSelector: '.template',
-            handleCardClick: popupOpenImage.open,
-            cardDelPopup: cardDelPopup,
-            doLike: (cardId) => {
-              return api.addLikeToCard(cardId).then(() => {
-                // updateCards();
-              })
-            },
-            delLike: (cardId) => {
-              return api.delLikeToCard(cardId).then(() => {
-                // updateCards();
-              })
-            }
-          });
-          const contentFullCard = card.createCard(userData._id);
-
-          cardsSection.addItem(contentFullCard);
+          return createCardElement(cardData);
         }
-      },
-      cardsListSelector
+      }
     );
 
     // функция переноса данных со страницы в попап профиля

@@ -1,14 +1,42 @@
+import { rootContainerSelector,
+         elementsListSelector} from '../utils/constants.js';
 export default class Section {
-  constructor({ renderer }, containerSelector) {
-    this.renderItem = renderer;
-    this._container = document.querySelector(containerSelector);
+  constructor({ renderer }) {
+    this._renderItem = renderer;
+    this._rootContainer = document.querySelector(rootContainerSelector);
   }
 
-  addItem(element) {
-    this._container.prepend(element);
+  _addItem(data) {
+    const element = this._renderItem(data);
+    this._sectionContainer.prepend(element);
   }
 
-  clearCards() {
-    this._container.innerHTML = '';
+  _fillSection(elementsData) {
+    elementsData.forEach((elementData) => {
+      this._addItem(elementData);
+    })
+  }
+
+  _renderSection(elementsData) {
+    console.log(this._sectionContainer);
+    this._fillSection(elementsData);
+    this._rootContainer.append(this._sectionContainer);
+  }
+
+  _createSection(tagName, className) {
+    this._sectionContainer = document.createElement(tagName);
+    this._sectionContainer.classList.add(className);
+  }
+
+  _removeSection() {
+    this._sectionContainer.remove();
+  }
+
+  initCardListSection(elementsData) {
+    if (this._sectionContainer) {
+      this._removeSection()
+    };
+    this._createSection('ul', elementsListSelector);
+    this._renderSection(elementsData);
   }
 }

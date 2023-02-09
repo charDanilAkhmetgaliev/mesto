@@ -1,5 +1,5 @@
 // Селекторы классов
-export const cardsListSelector = '.elements__list';
+export const rootContainerSelector = '.elements';
 export const cardPopupSelector = '.popup_card';
 export const formInputSelector = '.popup__input';
 export const popupFormSelector = '.popup__form';
@@ -20,6 +20,7 @@ export const userAvatarSelector = '.profile__avatar';
 export const avatarUpdatePopupSelector = '.popup_avatar-update';
 export const popupCloseButtonSelector = '.popup__close-button';
 export const popupSubmitButtonSelector = '.popup__save-button';
+export const elementsListSelector = 'elements__list';
 export const validationSetting = {
   formSelector: '.popup__form',
   inputSelector: '.popup__input',
