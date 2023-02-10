@@ -46,7 +46,7 @@ function authorization() {
     function rendererPage() {
       userInfo.setUserInfo(userData);
       updateCards();
-      setInterval(updateCards, 4000);
+      setInterval(updateCards, 10000);
     }
 
     const avatarUpdPopupFormValidator = new FormValidator(validationSetting, avatarUpdPopupFormElement);
