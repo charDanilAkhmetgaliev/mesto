@@ -26,22 +26,20 @@ import { avatarUpdPopupFormElement,
   url,
   userAuthData
   } from '../scripts/utils/constants.js';
+import {logPlugin} from "@babel/preset-env/lib/debug";
 
 // функция авторизации пользователя
 function authorization() {
   // создание экземпляра класса API
   const api = new Api(url, userAuthData);
 
-  api.createSimpleRequest('/users/me', 'GET', 'Ошибка авторизации').then((userData) => {
+  api.getUserInfo().then((userData) => {
 
     // функция обновляет карточки на странице
     function updateCards() {
-      api.createSimpleRequest('/cards', 'GET', 'Ошибка обновления карточек').then((cardsData) => {
+      api.getCardsData().then((cardsData) => {
         cardsData.reverse();
-        cardsSection.clearCards();
-        cardsData.forEach(cardData => {
-          cardsSection.renderItem(cardData);
-        })
+        cardsSection.updCardListSection(cardsData);
       })
     }
 
@@ -71,9 +69,8 @@ function authorization() {
 
     const cardDelPopup = new PopupWithConfirmation({
       submitForm: (cardId) => {
-        return api.createSimpleRequest(`/cards/${cardId}`, 'DELETE', 'Ошибка удаления карточки').then((answer) => {
-          updateCards();
-          cardDelPopup.close();
+        return api.deleteCardData(cardId).then((answer) => {
+          console.log(answer);
         })
       }
     },
@@ -84,9 +81,8 @@ function authorization() {
 
     const avatarUpdatePopup = new PopupWithForm({
         submitForm: (formData) => {
-          return api.createBodyRequest('/users/me/avatar', 'PATCH', 'Ошибка обновления аватара', formData).then((avatarData) => {
+          return api.updateAvatarData(formData).then((avatarData) => {
             userInfo.setUserInfo(avatarData);
-            avatarUpdatePopup.close();
           })
         }
       },
@@ -98,9 +94,8 @@ function authorization() {
     // создание экземпляра класса попапа с формой для новой карточки
     const cardPopup = new PopupWithForm({
         submitForm: (formData) => {
-          return api.createBodyRequest('/cards', 'POST', 'Ошибка добавления карточки', formData).then((cardData) => {
-            cardsSection.renderItem(cardData);
-            cardPopup.close();
+          return api.sendCardData(formData).then((cardData) => {
+            cardsSection.addItem(cardData);
           })
         }
       },
@@ -113,9 +108,8 @@ function authorization() {
     // создание экземпляра класса попапа с формой для данных профиля
     const profilePopup = new PopupWithForm({
         submitForm: (formData) => {
-          return api.createBodyRequest('/users/me', 'PATCH', 'Ошибка обновления профиля', formData).then((profileData) => {
+          return api.updateProfileData(formData).then((profileData) => {
             userInfo.setUserInfo(profileData);
-            profilePopup.close();
           })
         }
       },
@@ -125,32 +119,45 @@ function authorization() {
     // вызов функции привязки слушателей событий к попапу профиля
     profilePopup.setEventListeners();
 
+    function createCardElement(cardData) {
+      const card = new Card({
+        cardData: cardData,
+        templateSelector: '.template',
+        handleCardClick: popupOpenImage.open,
+        doLike: (cardId) => {
+          return api.addLikeToCard(cardId).then(() => {
+          })
+        },
+        delLike: (cardId) => {
+          return api.delLikeToCard(cardId).then(() => {
+          })
+        },
+        handleOpenDelPopup: (cardId) => {
+          cardDelPopup.open(cardId);
+          cardDelPopup.handleDeleteElem = () => {
+            cardDelPopup.processDelete()
+            .then(() => {
+              cardDelPopup.close();
+              card.removeCard();
+            })
+          }
+
+        },
+        handleOpenImage: (cardData) => {
+          popupOpenImage.open(cardData);
+        }
+      });
+      return card.createCard(userData._id);
+    }
+
+
     // создание экземпляра класса отрисовки секции
     const cardsSection = new Section(
       {
         renderer: (cardData) => {
-          const card = new Card({
-            cardData: cardData,
-            templateSelector: '.template',
-            handleCardClick: popupOpenImage.open,
-            cardDelPopup: cardDelPopup,
-            doLike: (cardId) => {
-              return api.createSimpleRequest(`/cards/${cardId}/likes`, 'PUT', 'Ошибка лайка').then((cardData) => {
-                updateCards();
-              })
-            },
-            delLike: (cardId) => {
-              return api.createSimpleRequest(`/cards/${cardId}/likes`, 'DELETE', 'Ошибка удаления лайка').then((cardData) => {
-                updateCards();
-              })
-            }
-          });
-          const contentFullCard = card.createCard(userData._id);
-
-          cardsSection.addItem(contentFullCard);
+          return createCardElement(cardData);
         }
-      },
-      cardsListSelector
+      }
     );
 
     // функция переноса данных со страницы в попап профиля
@@ -177,6 +184,7 @@ function authorization() {
 
     rendererPage();
   })
+  .catch((err) => console.log(err))
 }
 
 authorization();

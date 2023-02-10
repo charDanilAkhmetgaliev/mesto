@@ -12,7 +12,7 @@ export default class Api {
     return Promise.reject(error);
   }
 
-  createSimpleRequest(extensionUrl, requestMethod, errorText) {
+  _createSimpleRequest(extensionUrl, requestMethod, errorText) {
     this._completeUrl = `${this._url}/${this._cohort}`.concat(extensionUrl);
     return fetch(this._completeUrl, {
       method: requestMethod,
@@ -23,11 +23,12 @@ export default class Api {
     .then(response => this._processResponse(response, errorText))
   }
 
-  createBodyRequest(extensionUrl, requestMethod, errorText, bodyData) {
+  _createBodyRequest(extensionUrl, requestMethod, errorText, bodyData) {
     this._completeUrl = `${this._url}/${this._cohort}`.concat(extensionUrl);
     return fetch(this._completeUrl, {
       method: requestMethod,
       headers: {
+
         'authorization': `${this._userToken}`,
         'content-type': 'application/json'
       },
@@ -35,4 +36,38 @@ export default class Api {
     })
     .then(response => this._processResponse(response, errorText))
   }
+
+  getUserInfo() {
+    return this._createSimpleRequest('/users/me', 'GET', 'Ошибка авторизации')
+  }
+
+  getCardsData() {
+    return this._createSimpleRequest('/cards', 'GET', 'Ошибка обновления карточек')
+  }
+
+  deleteCardData(cardId) {
+    return this._createSimpleRequest(`/cards/${cardId}`, 'DELETE', 'Ошибка удаления карточки')
+  }
+
+  updateAvatarData(formData) {
+    return this._createBodyRequest('/users/me/avatar', 'PATCH', 'Ошибка обновления аватара', formData)
+  }
+
+  sendCardData(formData) {
+    return this._createBodyRequest('/cards', 'POST', 'Ошибка добавления карточки', formData)
+  }
+
+  updateProfileData(formData) {
+    return this._createBodyRequest('/users/me', 'PATCH', 'Ошибка обновления профиля', formData)
+  }
+
+  addLikeToCard(cardId) {
+    return this._createSimpleRequest(`/cards/${cardId}/likes`, 'PUT', 'Ошибка лайка')
+  }
+
+  delLikeToCard(cardId) {
+    return this._createSimpleRequest(`/cards/${cardId}/likes`, 'DELETE', 'Ошибка удаления лайка')
+  }
 }
+
+
