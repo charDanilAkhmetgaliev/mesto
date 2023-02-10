@@ -6,19 +6,18 @@ export default class Section {
     this._rootContainer = document.querySelector(rootContainerSelector);
   }
 
-  _addItem(data) {
+  addItem(data) {
     const element = this._renderItem(data);
     this._sectionContainer.prepend(element);
   }
 
   _fillSection(elementsData) {
     elementsData.forEach((elementData) => {
-      this._addItem(elementData);
+      this.addItem(elementData);
     })
   }
 
   _renderSection(elementsData) {
-    console.log(this._sectionContainer);
     this._fillSection(elementsData);
     this._rootContainer.append(this._sectionContainer);
   }
@@ -32,7 +31,7 @@ export default class Section {
     this._sectionContainer.remove();
   }
 
-  initCardListSection(elementsData) {
+  updCardListSection(elementsData) {
     if (this._sectionContainer) {
       this._removeSection()
     };
