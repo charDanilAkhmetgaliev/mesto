@@ -39,15 +39,14 @@ function authorization() {
     function updateCards() {
       api.getCardsData().then((cardsData) => {
         cardsData.reverse();
-        console.log(cardsData)
-        cardsSection.initCardListSection(cardsData);
+        cardsSection.updCardListSection(cardsData);
       })
     }
 
     function rendererPage() {
       userInfo.setUserInfo(userData);
       updateCards();
-      setInterval(updateCards, 4000);
+      setInterval(updateCards, 10000);
     }
 
     const avatarUpdPopupFormValidator = new FormValidator(validationSetting, avatarUpdPopupFormElement);
@@ -70,7 +69,8 @@ function authorization() {
 
     const cardDelPopup = new PopupWithConfirmation({
       submitForm: (cardId) => {
-        return api.deleteCardData(cardId).then(() => {
+        return api.deleteCardData(cardId).then((answer) => {
+          console.log(answer);
         })
       }
     },
@@ -95,7 +95,7 @@ function authorization() {
     const cardPopup = new PopupWithForm({
         submitForm: (formData) => {
           return api.sendCardData(formData).then((cardData) => {
-            cardsSection._renderItem(cardData);
+            cardsSection.addItem(cardData);
           })
         }
       },
@@ -124,7 +124,6 @@ function authorization() {
         cardData: cardData,
         templateSelector: '.template',
         handleCardClick: popupOpenImage.open,
-        cardDelPopup: cardDelPopup,
         doLike: (cardId) => {
           return api.addLikeToCard(cardId).then(() => {
           })
@@ -132,11 +131,25 @@ function authorization() {
         delLike: (cardId) => {
           return api.delLikeToCard(cardId).then(() => {
           })
+        },
+        handleOpenDelPopup: (cardId) => {
+          cardDelPopup.open(cardId);
+          cardDelPopup.handleDeleteElem = () => {
+            cardDelPopup.processDelete()
+            .then(() => {
+              cardDelPopup.close();
+              card.removeCard();
+            })
+          }
+
+        },
+        handleOpenImage: (cardData) => {
+          popupOpenImage.open(cardData);
         }
       });
-
       return card.createCard(userData._id);
     }
+
 
     // создание экземпляра класса отрисовки секции
     const cardsSection = new Section(
