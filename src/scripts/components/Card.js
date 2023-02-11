@@ -80,7 +80,7 @@ export default class Card {
     this._cardLikeButton.classList.toggle(likeActiveSelector);
   }
 
-  _addDelCardButton(cardDelPopup) {
+  _addDelCardButton() {
     if (this._userMe) {
       this._cardDeleteButton.classList.add(activeDelCardButtonSelector);
     }

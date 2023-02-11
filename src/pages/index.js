@@ -39,8 +39,10 @@ function authorization() {
     function updateCards() {
       api.getCardsData().then((cardsData) => {
         cardsData.reverse();
+        console.log(cardsData)
         cardsSection.updCardListSection(cardsData);
       })
+      .catch(err => console.log(err))
     }
 
     function rendererPage() {
