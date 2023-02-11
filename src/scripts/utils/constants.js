@@ -21,6 +21,7 @@ export const avatarUpdatePopupSelector = '.popup_avatar-update';
 export const popupCloseButtonSelector = '.popup__close-button';
 export const popupSubmitButtonSelector = '.popup__save-button';
 export const elementsListSelector = 'elements__list';
+export const templateElementSelector = '.template';
 export const validationSetting = {
   formSelector: '.popup__form',
   inputSelector: '.popup__input',

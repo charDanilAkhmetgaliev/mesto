@@ -5,20 +5,20 @@ import { likeButtonSelector,
   cardImageSelector,
   cardTitleSelector,
   cardLikesCountSelector,
-  cardDelButtonSelector
+  cardDelButtonSelector,
+  templateElementSelector
 } from '../utils/constants.js'
 import {logPlugin} from "@babel/preset-env/lib/debug";
 
 export default class Card {
-  constructor({ cardData, templateSelector, handleOpenImage, doLike, delLike, handleOpenDelPopup }) {
+  constructor({ cardData, handleOpenImage, handleOpenDelPopup, handleSendLikeRequest }) {
     this._cardData = cardData;
     this._cardUserId = cardData.owner._id;
-    this._handleDoLike = doLike;
-    this._handleDelLike = delLike;
     this._handleOpenDelPopup = handleOpenDelPopup;
     this._handleOpenImage = handleOpenImage;
+    this._sendLikeRequest = handleSendLikeRequest;
 
-    this._dataTemplateElement = document.querySelector(`${templateSelector}`).content;
+    this._dataTemplateElement = document.querySelector(`${templateElementSelector}`).content;
     this._cardElement = this._dataTemplateElement.querySelector(cardSelector);
     this._card = this._cardElement.cloneNode(true);
     this._cardImage = this._card.querySelector(cardImageSelector);
@@ -34,29 +34,25 @@ export default class Card {
   }
 
   _addEventListeners() {
-    this._cardImage.addEventListener('click', () => this._handleOpenImage(this._cardData));
-
-    this._cardDeleteButton.addEventListener('click', () => this._handleOpenDelPopup(this._cardData._id))
-
-    this._cardLikeButton.addEventListener('click', () => {
-      this._processDoLike()
-        .then((cardData) => {
-          this._cardLikesCount.textContent = cardData.likes.length;
-          this._toggleLike()
-          this._isLiked = !this._isLiked;
-        })
-        .catch(err => console.log(err));
-    });
+    this._cardImage.addEventListener('click', () => this._handleOpenImage());
+    this._cardDeleteButton.addEventListener('click', () => this._handleOpenDelPopup())
+    this._cardLikeButton.addEventListener('click', () => this._processDoLike());
   }
 
+  _processDoLike() {
+    this._sendLikeRequest()
+      .then((cardData) => {
+        this._cardLikesCount.textContent = cardData.likes.length;
+        this._toggleLike()
+        this._isLiked = !this._isLiked;
+      })
+      .catch(err => console.log(err));
+  }
 
   _checkLikedMe(userId) {
     this._cardLikes.forEach(like => {
         this._isLiked = this._cardLikes.length > 0 && Object.is(like._id, userId);
     })
-    if (this._isLiked) {
-      this._toggleLike();
-    }
   }
 
   _checkUser(userId) {
@@ -66,14 +62,6 @@ export default class Card {
   removeCard() {
     this._card.remove();
     this._card = null;
-  }
-
-  _processDoLike() {
-    if (this._isLiked) {
-      return this._handleDelLike(this._cardData._id)
-    } else {
-      return this._handleDoLike(this._cardData._id)
-    }
   }
 
   _toggleLike() {
@@ -90,6 +78,9 @@ export default class Card {
     this._cardTitle.textContent = this._cardData.name;
     this._cardImage.src = this._cardData.link;
     this._cardImage.alt = `Изображение ${this._cardData.name}`;
+    if (this._isLiked) {
+      this._toggleLike();
+    }
     this._addDelCardButton();
   }
 
