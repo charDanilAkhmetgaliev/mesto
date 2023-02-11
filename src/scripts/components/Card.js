@@ -40,7 +40,11 @@ export default class Card {
 
     this._cardLikeButton.addEventListener('click', () => {
       this._processDoLike()
-        .then(this._toggleLike())
+        .then((cardData) => {
+          this._cardLikesCount.textContent = cardData.likes.length;
+          this._toggleLike()
+          this._isLiked = !this._isLiked;
+        })
         .catch(err => console.log(err));
     });
   }
@@ -48,7 +52,7 @@ export default class Card {
 
   _checkLikedMe(userId) {
     this._cardLikes.forEach(like => {
-        this._isLiked = (this._cardLikes.length > 0 && Object.is(like._id, userId)) ? true : false;
+        this._isLiked = this._cardLikes.length > 0 && Object.is(like._id, userId);
     })
     if (this._isLiked) {
       this._toggleLike();
@@ -56,7 +60,7 @@ export default class Card {
   }
 
   _checkUser(userId) {
-    this._userMe = (Object.is(this._cardUserId, userId)) ? true : false;
+    this._userMe = Object.is(this._cardUserId, userId);
   }
 
   removeCard() {
@@ -66,12 +70,8 @@ export default class Card {
 
   _processDoLike() {
     if (this._isLiked) {
-      this._cardLikesCount.textContent = --this._cardLikesCount.textContent;
-      this._isLiked = false;
       return this._handleDelLike(this._cardData._id)
     } else {
-      this._cardLikesCount.textContent = ++this._cardLikesCount.textContent;
-      this._isLiked = true;
       return this._handleDoLike(this._cardData._id)
     }
   }

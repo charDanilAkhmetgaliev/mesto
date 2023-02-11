@@ -127,12 +127,10 @@ function authorization() {
         templateSelector: '.template',
         handleCardClick: popupOpenImage.open,
         doLike: (cardId) => {
-          return api.addLikeToCard(cardId).then(() => {
-          })
+          return api.addLikeToCard(cardId)
         },
         delLike: (cardId) => {
-          return api.delLikeToCard(cardId).then(() => {
-          })
+          return api.delLikeToCard(cardId)
         },
         handleOpenDelPopup: (cardId) => {
           cardDelPopup.open(cardId);
