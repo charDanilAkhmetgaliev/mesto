@@ -14,7 +14,6 @@ import { avatarUpdPopupFormElement,
   avatarUpdateButton,
   avatarUpdatePopupSelector,
   cardDelPopupSelector,
-  cardsListSelector,
   cardPopupSelector,
   cardAddPopupSelector,
   cardPopupOpenButton,
@@ -41,6 +40,7 @@ function authorization() {
         cardsData.reverse();
         cardsSection.updCardListSection(cardsData);
       })
+      .catch(err => console.log(err))
     }
 
     function rendererPage() {
@@ -122,29 +122,21 @@ function authorization() {
     function createCardElement(cardData) {
       const card = new Card({
         cardData: cardData,
-        templateSelector: '.template',
-        handleCardClick: popupOpenImage.open,
-        doLike: (cardId) => {
-          return api.addLikeToCard(cardId).then(() => {
-          })
+        handleSendLikeRequest: () => {
+          return (!card._isLiked) ? api.addLikeToCard(card._cardData._id) : api.delLikeToCard(card._cardData._id);
         },
-        delLike: (cardId) => {
-          return api.delLikeToCard(cardId).then(() => {
-          })
-        },
-        handleOpenDelPopup: (cardId) => {
-          cardDelPopup.open(cardId);
+        handleOpenDelPopup: () => {
+          cardDelPopup.open();
           cardDelPopup.handleDeleteElem = () => {
-            cardDelPopup.processDelete()
+            cardDelPopup.processDelete(card._cardData._id)
             .then(() => {
               cardDelPopup.close();
               card.removeCard();
             })
           }
-
         },
-        handleOpenImage: (cardData) => {
-          popupOpenImage.open(cardData);
+        handleOpenImage: () => {
+          popupOpenImage.open(card._cardData);
         }
       });
       return card.createCard(userData._id);

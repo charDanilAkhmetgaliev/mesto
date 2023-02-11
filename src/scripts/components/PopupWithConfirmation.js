@@ -15,14 +15,9 @@ export default class PopupWithConfirmation extends Popup {
     })
   }
 
-  processDelete() {
-    return this._handleSubmit(this._cardId)
-      .catch(err => console.log(err))
-      .finally(() => super.renderLoading(false))
-  }
-
-  open(cardId) {
-    this._cardId = cardId;
-    super.open();
+  processDelete(cardId) {
+    return this._handleSubmit(cardId)
+    .catch(err => console.log(err))
+    .finally(() => super.renderLoading(false))
   }
 }

@@ -62,7 +62,7 @@ export default class Api {
   }
 
   addLikeToCard(cardId) {
-    return this._createSimpleRequest(`/cards/${cardId}/likes`, 'PUT', 'Ошибка лайка')
+    return this._createSimpleRequest(`/cards/${cardId}/likes`, 'PUT', 'Ошибка добавления лайка')
   }
 
   delLikeToCard(cardId) {
